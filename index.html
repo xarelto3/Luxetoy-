@@ -1039,438 +1039,367 @@ function renderStats(){
     </div>
   </div>
 </div>
-  <!-- ═══════════════════════════════════════════════════ -->
-<!-- VENDEDOR VIP IA — Chat Flotante LuxeToy           -->
-<!-- Pegar justo antes de </body> en index.html        -->
-<!-- ═══════════════════════════════════════════════════ -->
 
+<!-- ═══════════════════════ LUMIÈRE CHAT VIP ═══════════════════════ -->
 <style>
-/* ── CHAT WIDGET ── */
-#vip-chat-btn {
-  position: fixed;
-  bottom: 88px;
-  right: 24px;
-  z-index: 300;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #c4a046, #8a6d2e);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  box-shadow: 0 4px 20px rgba(196,160,70,0.35);
-  transition: transform 0.2s, box-shadow 0.2s;
-  animation: chatPulse 3s infinite;
-}
-@keyframes chatPulse {
-  0%,100% { box-shadow: 0 4px 20px rgba(196,160,70,0.35); }
-  50%      { box-shadow: 0 4px 32px rgba(196,160,70,0.6); }
-}
-#vip-chat-btn:hover { transform: scale(1.08); }
-#vip-chat-btn .chat-badge {
-  position: absolute;
-  top: -4px; right: -4px;
-  background: #e8dfc8;
-  color: #080808;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  font-size: 9px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: none;
-}
-
-#vip-chat-panel {
-  position: fixed;
-  bottom: 154px;
-  right: 24px;
-  z-index: 300;
-  width: 340px;
-  max-height: 520px;
-  background: #0e0e0e;
-  border: 1px solid #2a2622;
-  display: none;
-  flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(196,160,70,0.15);
-  animation: chatSlideUp 0.3s cubic-bezier(.22,.68,0,1.2);
-}
-@keyframes chatSlideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-#vip-chat-panel.open { display: flex; }
-
-.chat-header {
-  background: linear-gradient(135deg, #1a1208, #0e0d0a);
-  border-bottom: 1px solid #2a2622;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-.chat-avatar {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #c4a046, #8a6d2e);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.chat-header-info { flex: 1; }
-.chat-header-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
-  color: #f5e9cc;
-  font-weight: 600;
-  line-height: 1;
-}
-.chat-header-status {
-  font-size: 9px;
-  color: #8a6d2e;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-.chat-header-status::before {
-  content: '●';
-  color: #3a7a4a;
-  margin-right: 4px;
-  font-size: 7px;
-}
-.chat-close {
-  background: transparent;
-  border: none;
-  color: #6b6050;
-  cursor: pointer;
-  font-size: 18px;
-  line-height: 1;
-  transition: color 0.2s;
-}
-.chat-close:hover { color: #c4a046; }
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 200px;
-  max-height: 320px;
-  scrollbar-width: thin;
-  scrollbar-color: #2a2622 transparent;
-}
-.chat-messages::-webkit-scrollbar { width: 3px; }
-.chat-messages::-webkit-scrollbar-thumb { background: #2a2622; }
-
-.chat-bubble {
-  max-width: 85%;
-  padding: 10px 13px;
-  font-family: 'Raleway', sans-serif;
-  font-size: 12px;
-  line-height: 1.6;
-  border-radius: 2px;
-}
-.chat-bubble.assistant {
-  background: #141414;
-  border: 1px solid #1e1e1e;
-  border-left: 2px solid #c4a046;
-  color: #e8dfc8;
-  align-self: flex-start;
-}
-.chat-bubble.user {
-  background: rgba(196,160,70,0.12);
-  border: 1px solid rgba(196,160,70,0.25);
-  color: #f5e9cc;
-  align-self: flex-end;
-  text-align: right;
-}
-.chat-bubble.typing {
-  background: #141414;
-  border: 1px solid #1e1e1e;
-  border-left: 2px solid #c4a046;
-  align-self: flex-start;
-  padding: 12px 16px;
-}
-.typing-dots {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-.typing-dots span {
-  width: 6px; height: 6px;
-  background: #c4a046;
-  border-radius: 50%;
-  animation: typingBounce 1.2s infinite;
-}
-.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes typingBounce {
-  0%,60%,100% { transform: translateY(0); opacity: 0.4; }
-  30%          { transform: translateY(-4px); opacity: 1; }
-}
-
-.chat-input-area {
-  border-top: 1px solid #1e1e1e;
-  padding: 12px;
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-  background: #0e0e0e;
-}
-.chat-input {
-  flex: 1;
-  background: #141414;
-  border: 1px solid #1e1e1e;
-  color: #e8dfc8;
-  padding: 9px 12px;
-  font-family: 'Raleway', sans-serif;
-  font-size: 12px;
-  outline: none;
-  resize: none;
-  height: 38px;
-  transition: border-color 0.2s;
-}
-.chat-input:focus { border-color: #8a6d2e; }
-.chat-input::placeholder { color: #6b6050; }
-.chat-send {
-  width: 38px; height: 38px;
-  background: #c4a046;
-  border: none;
-  color: #080808;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-.chat-send:hover { background: #f0d080; }
-.chat-send:disabled { background: #2a2622; color: #6b6050; cursor: not-allowed; }
-
-.chat-footer {
-  padding: 6px 12px 10px;
-  text-align: center;
-  font-family: 'Raleway', sans-serif;
-  font-size: 8px;
-  color: #6b6050;
-  letter-spacing: 0.1em;
-  border-top: 1px solid #1e1e1e;
-  flex-shrink: 0;
-}
-.chat-footer a { color: #8a6d2e; text-decoration: none; }
-.chat-footer a:hover { color: #c4a046; }
-
-.chat-quick-btns {
-  display: flex;
-  gap: 6px;
-  padding: 0 12px 10px;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
-.chat-quick-btn {
-  background: transparent;
-  border: 1px solid #2a2622;
-  color: #8a6d2e;
-  padding: 4px 10px;
-  font-family: 'Raleway', sans-serif;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.chat-quick-btn:hover {
-  border-color: #c4a046;
-  color: #c4a046;
-}
-
-@media (max-width: 400px) {
-  #vip-chat-panel {
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    max-height: 100vh;
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-  }
-  #vip-chat-btn { bottom: 24px; right: 16px; }
-}
+#lt-btn{position:fixed;bottom:90px;right:22px;z-index:400;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#c4a046,#8a6d2e);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 20px rgba(196,160,70,0.4);transition:transform 0.2s;animation:ltPulse 3s infinite;}
+@keyframes ltPulse{0%,100%{box-shadow:0 4px 20px rgba(196,160,70,0.35)}50%{box-shadow:0 4px 32px rgba(196,160,70,0.65)}}
+#lt-btn:hover{transform:scale(1.1)}
+#lt-notif{position:absolute;top:-5px;right:-5px;background:#f5e9cc;color:#080808;width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:700;display:none;align-items:center;justify-content:center;}
+#lt-panel{position:fixed;bottom:154px;right:22px;z-index:400;width:320px;max-height:500px;background:#0e0e0e;border:1px solid #2a2622;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.85),0 0 0 1px rgba(196,160,70,0.12);animation:ltUp 0.3s cubic-bezier(.22,.68,0,1.2);}
+@keyframes ltUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+#lt-panel.open{display:flex;}
+.lt-head{background:linear-gradient(135deg,#1a1208,#0e0d0a);border-bottom:1px solid #2a2622;padding:13px 15px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.lt-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#c4a046,#8a6d2e);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.lt-hname{font-family:'Cormorant Garamond',serif;font-size:14px;color:#f5e9cc;font-weight:600;line-height:1;}
+.lt-hstatus{font-size:8px;color:#8a6d2e;letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;}
+.lt-hstatus::before{content:'● ';color:#3a7a4a;font-size:7px;}
+.lt-x{background:transparent;border:none;color:#6b6050;cursor:pointer;font-size:18px;margin-left:auto;transition:color 0.2s;}
+.lt-x:hover{color:#c4a046;}
+.lt-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;min-height:180px;max-height:300px;}
+.lt-msgs::-webkit-scrollbar{width:3px;}
+.lt-msgs::-webkit-scrollbar-thumb{background:#2a2622;}
+.lt-bubble{max-width:88%;padding:9px 12px;font-family:'Raleway',sans-serif;font-size:12px;line-height:1.6;}
+.lt-bubble.ai{background:#141414;border:1px solid #1e1e1e;border-left:2px solid #c4a046;color:#e8dfc8;align-self:flex-start;}
+.lt-bubble.user{background:rgba(196,160,70,0.1);border:1px solid rgba(196,160,70,0.22);color:#f5e9cc;align-self:flex-end;text-align:right;}
+.lt-typing{background:#141414;border:1px solid #1e1e1e;border-left:2px solid #c4a046;align-self:flex-start;padding:11px 15px;}
+.lt-dots{display:flex;gap:4px;align-items:center;}
+.lt-dots span{width:6px;height:6px;background:#c4a046;border-radius:50%;animation:ltDot 1.2s infinite;}
+.lt-dots span:nth-child(2){animation-delay:0.2s;}
+.lt-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes ltDot{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-4px);opacity:1}}
+.lt-quick{display:flex;gap:5px;padding:0 12px 9px;flex-wrap:wrap;flex-shrink:0;}
+.lt-qbtn{background:transparent;border:1px solid #2a2622;color:#8a6d2e;padding:4px 9px;font-family:'Raleway',sans-serif;font-size:8px;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.lt-qbtn:hover{border-color:#c4a046;color:#c4a046;}
+.lt-inp-area{border-top:1px solid #1e1e1e;padding:10px;display:flex;gap:7px;flex-shrink:0;}
+.lt-inp{flex:1;background:#141414;border:1px solid #1e1e1e;color:#e8dfc8;padding:8px 11px;font-family:'Raleway',sans-serif;font-size:12px;outline:none;resize:none;height:36px;transition:border-color 0.2s;}
+.lt-inp:focus{border-color:#8a6d2e;}
+.lt-inp::placeholder{color:#6b6050;}
+.lt-send{width:36px;height:36px;background:#c4a046;border:none;color:#080808;cursor:pointer;font-size:14px;transition:all 0.2s;flex-shrink:0;}
+.lt-send:hover{background:#f0d080;}
+.lt-foot{padding:5px 12px 9px;text-align:center;font-family:'Raleway',sans-serif;font-size:8px;color:#6b6050;letter-spacing:0.1em;border-top:1px solid #1e1e1e;flex-shrink:0;}
+.lt-foot a{color:#8a6d2e;text-decoration:none;}
+.lt-foot a:hover{color:#c4a046;}
+@media(max-width:380px){#lt-panel{right:0;bottom:0;width:100vw;max-height:100vh;border-left:none;border-right:none;border-bottom:none;}#lt-btn{right:14px;bottom:22px;}}
 </style>
 
-<!-- Chat Button -->
-<button id="vip-chat-btn" onclick="toggleChat()" title="Vendedor VIP IA">
-  ✦
-  <span class="chat-badge" id="chat-notif" style="display:none">1</span>
-</button>
+<button id="lt-btn" onclick="ltToggle()">✦<span id="lt-notif">1</span></button>
 
-<!-- Chat Panel -->
-<div id="vip-chat-panel">
-  <!-- Header -->
-  <div class="chat-header">
-    <div class="chat-avatar">✦</div>
-    <div class="chat-header-info">
-      <div class="chat-header-name">Lumière — Asesora VIP</div>
-      <div class="chat-header-status">En línea · LuxeToy</div>
-    </div>
-    <button class="chat-close" onclick="toggleChat()">×</button>
+<div id="lt-panel">
+  <div class="lt-head">
+    <div class="lt-av">✦</div>
+    <div><div class="lt-hname">Lumière — Asesora VIP</div><div class="lt-hstatus">En línea · LuxeToy</div></div>
+    <button class="lt-x" onclick="ltToggle()">×</button>
   </div>
-
-  <!-- Messages -->
-  <div class="chat-messages" id="chat-messages"></div>
-
-  <!-- Quick options (initial) -->
-  <div class="chat-quick-btns" id="chat-quick">
-    <button class="chat-quick-btn" onclick="quickSend('¿Qué me recomiendas para regalo?')">🎁 Regalo especial</button>
-    <button class="chat-quick-btn" onclick="quickSend('¿Qué productos tienen para parejas?')">💑 Para parejas</button>
-    <button class="chat-quick-btn" onclick="quickSend('¿Cuáles son los más vendidos?')">⭐ Más vendidos</button>
-    <button class="chat-quick-btn" onclick="quickSend('¿Tienen opciones económicas?')">💰 Económicos</button>
+  <div class="lt-msgs" id="lt-msgs"></div>
+  <div class="lt-quick" id="lt-quick">
+    <button class="lt-qbtn" onclick="ltQuick('¿Qué me recomiendas para regalo?')">🎁 Regalo</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Qué tienen para parejas?')">💑 Parejas</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Cuáles son los más vendidos?')">⭐ Top ventas</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Tienen opciones económicas?')">💰 Económicos</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Cómo es el envío?')">📦 Envío</button>
+    <button class="lt-qbtn" onclick="ltQuick('Quiero algo para relajarme')">🌿 Relajación</button>
   </div>
-
-  <!-- Input -->
-  <div class="chat-input-area">
-    <textarea
-      id="chat-input"
-      class="chat-input"
-      placeholder="Escribe tu consulta..."
-      onkeydown="handleChatKey(event)"
-      rows="1"
-    ></textarea>
-    <button id="chat-send-btn" class="chat-send" onclick="sendChatMessage()">➤</button>
+  <div class="lt-inp-area">
+    <textarea id="lt-inp" class="lt-inp" placeholder="Escribe tu consulta..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ltSend();}"></textarea>
+    <button class="lt-send" onclick="ltSend()">➤</button>
   </div>
-
-  <div class="chat-footer">
-    Asistida por IA · Privacidad garantizada ·
-    <a href="https://wa.me/56930347664" target="_blank">WhatsApp</a>
-  </div>
+  <div class="lt-foot">Asistida por IA · Privacidad garantizada · <a href="https://wa.me/56930347664" target="_blank">WhatsApp</a></div>
 </div>
 
 <script>
-// ── VENDEDOR VIP CHAT ──────────────────────────────────────────────
-let chatHistory = [];
-let chatOpen = false;
-let chatInitialized = false;
-let chatLoading = false;
+// ══ LUMIÈRE — Vendedora VIP Inteligente ══════════════════════════════
+let ltOpen=false, ltReady=false;
 
-function toggleChat() {
-  chatOpen = !chatOpen;
-  const panel = document.getElementById('vip-chat-panel');
-  const notif = document.getElementById('chat-notif');
-  if (chatOpen) {
+const LT_CATALOG = [
+  {n:"Aura Silk",cat:"Estimulador de aire",p:89900,nivel:"Principiante",emoji:"🌸"},
+  {n:"Velvet Breeze Pro",cat:"Estimulador de aire",p:129900,nivel:"Intermedio",emoji:"💨"},
+  {n:"Zephyr Elite",cat:"Estimulador de aire",p:179900,nivel:"Avanzado",emoji:"✨"},
+  {n:"Celeste Touch",cat:"Estimulador de aire",p:64900,nivel:"Principiante",emoji:"🌙"},
+  {n:"Noir Pulse",cat:"Vibrador premium",p:74900,nivel:"Principiante",emoji:"💜"},
+  {n:"Lumière Curve",cat:"Vibrador premium",p:99900,nivel:"Intermedio",emoji:"🌹"},
+  {n:"Obsidian Luxe",cat:"Vibrador de lujo",p:159900,nivel:"Avanzado",emoji:"💎"},
+  {n:"Sakura Slim",cat:"Vibrador compacto",p:54900,nivel:"Principiante",emoji:"🌸"},
+  {n:"Dual Harmony",cat:"Vibrador para parejas",p:119900,nivel:"Intermedio",emoji:"💑"},
+  {n:"Serenity Wand",cat:"Masajeador corporal",p:89900,nivel:"Principiante",emoji:"🌿"},
+  {n:"Velvet Relax",cat:"Masajeador de cuello",p:69900,nivel:"Principiante",emoji:"🧘"},
+  {n:"Jade Pulse",cat:"Masajeador facial",p:49900,nivel:"Principiante",emoji:"💚"},
+  {n:"Aurora Thermo",cat:"Masajeador con calor",p:109900,nivel:"Intermedio",emoji:"🔥"},
+  {n:"Onyx Wearable",cat:"Masajeador portable",p:94900,nivel:"Avanzado",emoji:"⚡"},
+  {n:"Pure Glide",cat:"Lubricante acuoso",p:18900,nivel:"Principiante",emoji:"💧"},
+  {n:"Satin Touch",cat:"Aceite de masaje",p:24900,nivel:"Principiante",emoji:"🌺"},
+  {n:"CleanShield Pro",cat:"Limpiador spray",p:14900,nivel:"Principiante",emoji:"🧴"},
+  {n:"Ritual Oil Set",cat:"Kit de aceites",p:34900,nivel:"Principiante",emoji:"🕯️"},
+  {n:"Harmony Duo",cat:"Kit para parejas",p:139900,nivel:"Principiante",emoji:"❤️"},
+  {n:"Connexion Set",cat:"Kit sensorial parejas",p:89900,nivel:"Intermedio",emoji:"🎁"},
+  {n:"Senses Box",cat:"Caja sorpresa VIP",p:119900,nivel:"Intermedio",emoji:"📦"},
+  {n:"Midnight Ritual",cat:"Kit relajación",p:74900,nivel:"Principiante",emoji:"🌙"},
+  {n:"Velvet Ribbon",cat:"Accesorios textiles",p:39900,nivel:"Principiante",emoji:"🎀"},
+  {n:"Luna Chain",cat:"Joyería corporal",p:34900,nivel:"Principiante",emoji:"✨"},
+  {n:"Étoile Set",cat:"Set de joyería",p:54900,nivel:"Principiante",emoji:"💫"},
+  {n:"Crystal Glow",cat:"Vibrador de vidrio",p:84900,nivel:"Intermedio",emoji:"💎"},
+];
+
+const fmtP = n => "$" + Number(n).toLocaleString("es-CL");
+
+function ltProductLine(p){ return `${p.emoji} <strong style="color:#f0d080">${p.n}</strong> — ${p.cat} — <strong style="color:#c4a046">${fmtP(p.p)}</strong> (${p.nivel})`; }
+
+const LT_RESPONSES = [
+  {
+    keys:["regalo","regalar","obsequio","sorpresa","cumpleaños","aniversario","san valentin","enamorado"],
+    reply(){ 
+      const r=[LT_CATALOG[19],LT_CATALOG[20],LT_CATALOG[17]];
+      return `¡Un regalo de LuxeToy es siempre una elección memorable! ✦
+
+Para un regalo especial te recomiendo:
+
+${r.map(ltProductLine).join("
+")}
+
+Todos vienen en embalaje elegante y envío 100% discreto. ¿Tienes algún presupuesto en mente?`; 
+    }
+  },
+  {
+    keys:["pareja","parejas","juntos","dos","novio","novia","esposo","esposa","juntas"],
+    reply(){ 
+      const r=[LT_CATALOG[8],LT_CATALOG[18],LT_CATALOG[19]];
+      return `Para compartir en pareja, tenemos opciones especialmente diseñadas para la conexión y el bienestar de dos: ✦
+
+${r.map(ltProductLine).join("
+")}
+
+¿Prefieren algo suave y romántico, o buscan una experiencia más estimulante?`; 
+    }
+  },
+  {
+    keys:["vendido","popular","top","mejor","recomendado","más vendido","favorito"],
+    reply(){ 
+      const r=[LT_CATALOG[0],LT_CATALOG[4],LT_CATALOG[9],LT_CATALOG[18]];
+      return `Nuestros productos más amados por la comunidad VIP ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Todos cuentan con excelentes evaluaciones de nuestra clientela. ¿Alguno te llama la atención?`; 
+    }
+  },
+  {
+    keys:["económico","barato","precio","menos","accesible","presupuesto","bajo"],
+    reply(){ 
+      const r=LT_CATALOG.filter(p=>p.p<60000).sort((a,b)=>a.p-b.p).slice(0,3);
+      return `Tenemos opciones premium a precios muy accesibles ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Cada uno tiene la misma calidad y discreción que toda nuestra colección. ¿Te interesa alguno?`; 
+    }
+  },
+  {
+    keys:["lujo","premium","exclusivo","especial","lo mejor","alto","top","lujoso"],
+    reply(){ 
+      const r=LT_CATALOG.filter(p=>p.p>100000).sort((a,b)=>b.p-a.p).slice(0,3);
+      return `Nuestra línea de alta gama, para quienes buscan lo mejor ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Son nuestras joyas de colección. ¿Te gustaría saber más detalles de alguno?`; 
+    }
+  },
+  {
+    keys:["masaj","relaj","tension","espalda","cuello","muscul","dolor","estrés","stress"],
+    reply(){ 
+      const r=[LT_CATALOG[9],LT_CATALOG[10],LT_CATALOG[12],LT_CATALOG[13]];
+      return `Para el bienestar y la relajación, estas son nuestras opciones estrella ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Perfectos para aliviar la tensión del día a día. ¿Buscas algo para uso personal o para compartir?`; 
+    }
+  },
+  {
+    keys:["vibrad","estimulad","aire","succión","onda"],
+    reply(){ 
+      const r=[LT_CATALOG[0],LT_CATALOG[4],LT_CATALOG[5],LT_CATALOG[25]];
+      return `Nuestra colección de estimuladores y vibradores premium ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Todos en silicona médica, recargables y 100% impermeables. ¿Eres principiante o buscas algo más avanzado?`; 
+    }
+  },
+  {
+    keys:["envio","envío","despacho","llegada","discreto","discreción","embalaje","paquete"],
+    reply(){ 
+      return `Nuestra política de envío es 100% discreta ✦
+
+📦 <strong style="color:#f0d080">Packaging neutro</strong> — sin logos ni marcas visibles
+💳 <strong style="color:#f0d080">Cargo discreto</strong> — aparece como "Boutique JV" en tu estado de cuenta
+🚀 <strong style="color:#f0d080">Despacho en 48h</strong> — a todo Chile
+🆓 <strong style="color:#f0d080">Envío gratis</strong> sobre $50.000
+
+¿Tienes alguna consulta sobre tu pedido?`; 
+    }
+  },
+  {
+    keys:["aceite","lubricante","gel","crema","fragancia","aroma","olor"],
+    reply(){ 
+      const r=[LT_CATALOG[15],LT_CATALOG[14],LT_CATALOG[17]];
+      return `Nuestra línea de aceites y lubricantes premium ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Todos de origen natural, sin parabenos y dermatológicamente testeados. ¿Para uso personal o como parte de un ritual de pareja?`; 
+    }
+  },
+  {
+    keys:["joya","joyeria","cadena","collar","pulsera","accesorio","brazalete"],
+    reply(){ 
+      const r=[LT_CATALOG[23],LT_CATALOG[24],LT_CATALOG[22]];
+      return `Nuestra colección de joyería corporal discreta ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Acero inoxidable hipoalergénico, elegante y discreto para cualquier ocasión. ¿Tienes preferencia por dorado o plateado?`; 
+    }
+  },
+  {
+    keys:["principiante","primera vez","nuevo","nueva","nunca","empezar","comenzar","primer"],
+    reply(){ 
+      const r=LT_CATALOG.filter(p=>p.nivel==="Principiante").slice(0,3);
+      return `Para quienes se inician en el bienestar íntimo, estas son mis recomendaciones ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Son intuitivos, suaves y perfectos para comenzar. ¿Tienes alguna preferencia de categoría?`; 
+    }
+  },
+  {
+    keys:["hola","hello","buenas","buenos","hi","hey","saludos","bienvenid"],
+    reply(){ return `¡Hola! Un placer tenerte aquí ✦
+
+Soy Lumière, tu asesora VIP en LuxeToy. Estoy aquí para ayudarte a encontrar el producto perfecto con total discreción y elegancia.
+
+¿Qué tipo de experiencia estás buscando hoy? Puedo recomendarte según tu presupuesto, ocasión o preferencia. 🌹`; }
+  },
+  {
+    keys:["gracias","thank","perfecto","excelente","genial","buenísimo","chevere"],
+    reply(){ return `¡Es un placer acompañarte! ✦
+
+En LuxeToy siempre estamos para ti con total discreción. Si tienes más dudas o quieres personalizar tu experiencia, escríbeme cuando quieras.
+
+También puedes contactarme directamente por <a href="https://wa.me/56930347664" target="_blank" style="color:#c4a046">WhatsApp</a> para atención personalizada. 🌹`; }
+  },
+  {
+    keys:["precio","costo","vale","cuánto","cuanto","valor"],
+    reply(){ 
+      return `Nuestros precios van desde <strong style="color:#c4a046">$14.900</strong> hasta <strong style="color:#c4a046">$179.900</strong> dependiendo de la categoría y nivel ✦
+
+💫 Accesorios: desde $14.900
+🌸 Vibradores: desde $54.900
+🌿 Masajeadores: desde $49.900
+🎁 Kits de pareja: desde $74.900
+💎 Línea de lujo: desde $119.900
+
+¿Tienes un presupuesto específico? Te ayudo a encontrar lo mejor dentro de tu rango.`; 
+    }
+  },
+  {
+    keys:["pago","tarjeta","transferencia","mercado","webpay","débito","crédito"],
+    reply(){ 
+      return `Aceptamos todos los medios de pago ✦
+
+🟡 <strong style="color:#f0d080">Mercado Pago</strong> — sin costo adicional
+💳 <strong style="color:#f0d080">Tarjeta de crédito/débito</strong>
+🇨🇱 <strong style="color:#f0d080">Webpay Plus</strong> — portal Transbank
+🏦 <strong style="color:#f0d080">Transferencia bancaria</strong>
+
+Todos los cargos aparecen de forma 100% discreta en tu estado de cuenta. ¿Te puedo ayudar con algo más?`; 
+    }
+  },
+];
+
+const LT_DEFAULT = [
+  "Entiendo tu consulta ✦ Para ayudarte mejor, ¿podrías contarme un poco más? ¿Buscas algo para uso personal o para compartir en pareja?",
+  "Con gusto te asesoro ✦ ¿Tienes alguna preferencia de categoría? Contamos con estimuladores, masajeadores, kits de pareja y joyería corporal.",
+  "Estoy aquí para ti ✦ ¿Buscas algo específico o prefieres que te haga una recomendación según tu presupuesto?",
+  "Podría ayudarte mejor con un poco más de información ✦ ¿Es para regalo o uso personal? ¿Principiante o experiencia previa?",
+];
+
+function ltRespond(msg){
+  const m = msg.toLowerCase();
+  for(const r of LT_RESPONSES){
+    if(r.keys.some(k=>m.includes(k))) return r.reply();
+  }
+  return LT_DEFAULT[Math.floor(Math.random()*LT_DEFAULT.length)];
+}
+
+function ltToggle(){
+  ltOpen=!ltOpen;
+  const panel=document.getElementById('lt-panel');
+  const notif=document.getElementById('lt-notif');
+  const btn=document.getElementById('lt-btn');
+  if(ltOpen){
     panel.classList.add('open');
-    notif.style.display = 'none';
-    document.getElementById('vip-chat-btn').innerHTML = '×<span class="chat-badge" id="chat-notif" style="display:none">1</span>';
-    if (!chatInitialized) initChat();
-    setTimeout(() => document.getElementById('chat-input')?.focus(), 300);
+    notif.style.display='none';
+    btn.innerHTML='×<span id="lt-notif" style="display:none">1</span>';
+    if(!ltReady){ ltReady=true; setTimeout(()=>ltAddBubble('ai','Bienvenida/o a LuxeToy ✦ Soy Lumière, tu asesora VIP. ¿En qué puedo acompañarte hoy? 🌹'),400); }
+    setTimeout(()=>document.getElementById('lt-inp')?.focus(),300);
   } else {
     panel.classList.remove('open');
-    document.getElementById('vip-chat-btn').innerHTML = '✦<span class="chat-badge" id="chat-notif" style="display:none">1</span>';
+    btn.innerHTML='✦<span id="lt-notif" style="display:none">1</span>';
   }
 }
 
-function initChat() {
-  chatInitialized = true;
-  addBubble('assistant', 'Bienvenida/o a LuxeToy ✦ Soy Lumière, tu asesora VIP. ¿En qué puedo acompañarte hoy?');
-}
-
-function addBubble(role, text) {
-  const msgs = document.getElementById('chat-messages');
-  const div = document.createElement('div');
-  div.className = `chat-bubble ${role}`;
-  div.innerHTML = text.replace(/\n/g, '<br/>');
+function ltAddBubble(role,html){
+  const msgs=document.getElementById('lt-msgs');
+  const div=document.createElement('div');
+  div.className=`lt-bubble ${role}`;
+  div.innerHTML=html.replace(/\n/g,'<br/>');
   msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-  return div;
+  msgs.scrollTop=msgs.scrollHeight;
 }
 
-function showTyping() {
-  const msgs = document.getElementById('chat-messages');
-  const div = document.createElement('div');
-  div.className = 'chat-bubble typing';
-  div.id = 'typing-indicator';
-  div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+function ltShowTyping(){
+  const msgs=document.getElementById('lt-msgs');
+  const div=document.createElement('div');
+  div.className='lt-typing';div.id='lt-typing';
+  div.innerHTML='<div class="lt-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
 
-function hideTyping() {
-  document.getElementById('typing-indicator')?.remove();
+function ltQuick(txt){
+  document.getElementById('lt-quick').style.display='none';
+  document.getElementById('lt-inp').value=txt;
+  ltSend();
 }
 
-function handleChatKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendChatMessage();
+function ltSend(){
+  const inp=document.getElementById('lt-inp');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  document.getElementById('lt-quick').style.display='none';
+  ltAddBubble('user',txt);
+  inp.value='';
+  ltShowTyping();
+  setTimeout(()=>{
+    document.getElementById('lt-typing')?.remove();
+    ltAddBubble('ai',ltRespond(txt));
+  },900+Math.random()*600);
+}
+
+setTimeout(()=>{
+  if(!ltOpen){
+    const n=document.getElementById('lt-notif');
+    if(n){n.style.display='flex';}
   }
-}
-
-function quickSend(text) {
-  document.getElementById('chat-input').value = text;
-  document.getElementById('chat-quick').style.display = 'none';
-  sendChatMessage();
-}
-
-async function sendChatMessage() {
-  if (chatLoading) return;
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text) return;
-
-  // Hide quick buttons after first message
-  document.getElementById('chat-quick').style.display = 'none';
-
-  // Add user bubble
-  addBubble('user', text);
-  chatHistory.push({ role: 'user', content: text });
-  input.value = '';
-
-  // Disable send
-  chatLoading = true;
-  document.getElementById('chat-send-btn').disabled = true;
-  showTyping();
-
-  try {
-    const res = await fetch('/api/vendedor-vip', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: chatHistory }),
-    });
-
-    const data = await res.json();
-    hideTyping();
-
-    if (data.reply) {
-      addBubble('assistant', data.reply);
-      chatHistory.push({ role: 'assistant', content: data.reply });
-    } else {
-      addBubble('assistant', 'Lo siento, tuve un inconveniente. ¿Puedes escribirme por <a href="https://wa.me/56930347664" target="_blank" style="color:#c4a046">WhatsApp</a>?');
-    }
-  } catch (err) {
-    hideTyping();
-    addBubble('assistant', 'Hubo un error de conexión. Puedes contactarme por <a href="https://wa.me/56930347664" target="_blank" style="color:#c4a046">WhatsApp</a> 💬');
-  }
-
-  chatLoading = false;
-  document.getElementById('chat-send-btn').disabled = false;
-  input.focus();
-}
-
-// Show notification after 4 seconds if chat not opened
-setTimeout(() => {
-  if (!chatOpen && !chatInitialized) {
-    const notif = document.getElementById('chat-notif');
-    if (notif) notif.style.display = 'flex';
-  }
-}, 4000);
+},5000);
 </script>
 </body>
 </html>
