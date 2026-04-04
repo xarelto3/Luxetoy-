@@ -1,0 +1,38 @@
+{
+  "name": "Boutique VIP",
+  "short_name": "Boutique VIP",
+  "description": "Experiencias íntimas de alta gama · Luxury Boutique",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2C1810",
+  "theme_color": "#C9A84C",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Ver Catálogo",
+      "short_name": "Catálogo",
+      "url": "./index.html"
+    },
+    {
+      "name": "Hablar con Lucien",
+      "short_name": "Lucien IA",
+      "url": "./index.html"
+    }
+  ]
+}
