@@ -1,1 +1,3443 @@
 
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Boutique VIP</title>
+
+  <!-- =============================================
+       PWA — META TAGS PARA INSTALAR EN CELULAR
+  ============================================= -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2C1810" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- iOS (iPhone/iPad) -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Boutique VIP" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <!-- =============================================
+       TIPOGRAFÍAS ELEGANTES DESDE GOOGLE FONTS
+  ============================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       VARIABLES GLOBALES — Paleta de colores
+    ============================================= */
+    :root {
+      --crema:        #FDF6F0;
+      --crema-oscura: #F5E8DC;
+      --dorado:       #C9A84C;
+      --dorado-claro: #E8C96B;
+      --dorado-oscuro:#9E7A2A;
+      --marron:       #2C1810;
+      --marron-suave: #5C3D2E;
+      --blanco:       #FFFFFF;
+      --sombra-dorada: 0 4px 20px rgba(201,168,76,0.18);
+      --sombra-suave:  0 2px 12px rgba(44,24,16,0.08);
+      --radio:        16px;
+    }
+
+    /* =============================================
+       RESET Y BASE
+    ============================================= */
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Lato', sans-serif;
+      background: var(--crema);
+      color: var(--marron);
+      overflow: hidden;
+    }
+
+    /* =============================================
+       PANTALLA SPLASH — Bienvenida elegante
+    ============================================= */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: var(--marron);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeInSplash 0.5s ease forwards;
+      overflow: hidden;
+    }
+
+    /* Textura de fondo del splash */
+    #splash::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.08) 0%, transparent 50%);
+    }
+
+    /* Líneas decorativas del splash */
+    #splash::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, var(--dorado), transparent);
+      top: 15%;
+      left: 50%;
+    }
+
+    .splash-content {
+      position: relative;
+      text-align: center;
+      animation: fadeUpIn 1s ease 0.3s both;
+    }
+
+    .splash-ornamento {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 6px;
+      color: var(--dorado);
+      opacity: 0.7;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .splash-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 10vw, 52px);
+      font-weight: 700;
+      color: var(--dorado);
+      line-height: 1.1;
+      letter-spacing: 2px;
+      text-shadow: 0 0 40px rgba(201,168,76,0.4);
+    }
+
+    .splash-logo span {
+      display: block;
+      font-size: clamp(14px, 4vw, 18px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 4px;
+      color: var(--dorado-claro);
+      margin-top: 4px;
+    }
+
+    .splash-linea {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--dorado), transparent);
+      margin: 22px auto;
+    }
+
+    .splash-subtitulo {
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: rgba(201,168,76,0.75);
+      text-transform: uppercase;
+      margin-bottom: 50px;
+    }
+
+    .btn-splash {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--marron);
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      border: none;
+      padding: 16px 40px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+    }
+
+    .btn-splash:hover, .btn-splash:active {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(201,168,76,0.5);
+    }
+
+    /* Ocultar splash con fade */
+    #splash.ocultar {
+      animation: fadeOutSplash 0.6s ease forwards;
+    }
+
+    /* =============================================
+       APP PRINCIPAL — Contenedor
+    ============================================= */
+    #app {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    #app.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* =============================================
+       HEADER DE LA APP
+    ============================================= */
+    .app-header {
+      background: var(--blanco);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      padding: 14px 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      box-shadow: var(--sombra-suave);
+      position: relative;
+      z-index: 10;
+    }
+
+    .header-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--dorado-oscuro);
+      letter-spacing: 1px;
+    }
+
+    .header-logo span {
+      font-size: 11px;
+      font-weight: 300;
+      font-style: italic;
+      display: block;
+      color: var(--marron-suave);
+      letter-spacing: 2px;
+      margin-top: -2px;
+    }
+
+    .header-btn-carrito {
+      position: relative;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: var(--dorado-oscuro);
+    }
+
+    .carrito-badge {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: var(--dorado);
+      color: var(--marron);
+      font-size: 9px;
+      font-weight: 700;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      display: none;
+    }
+
+    /* =============================================
+       SECCIONES PRINCIPALES (páginas)
+    ============================================= */
+    .contenido-principal {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      background: var(--crema);
+      /* Espacio para la nav inferior */
+      padding-bottom: 75px;
+    }
+
+    /* Cada sección/página de la app */
+    .seccion {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .seccion.activa {
+      display: block;
+    }
+
+    /* =============================================
+       SECCIÓN INICIO — Hero y destacados
+    ============================================= */
+    .hero-banner {
+      background: linear-gradient(160deg, var(--marron) 0%, #4a2c1a 100%);
+      padding: 30px 22px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.15) 0%, transparent 65%);
+    }
+
+    .hero-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--dorado);
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 10px;
+    }
+
+    .hero-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--blanco);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .hero-titulo em {
+      color: var(--dorado-claro);
+      font-style: italic;
+    }
+
+    .hero-subtitulo {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--marron);
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      padding: 12px 28px;
+      border-radius: 2px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(201,168,76,0.4);
+    }
+
+    /* Ornamento decorativo del hero */
+    .hero-ornamento {
+      position: absolute;
+      right: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 100px;
+      opacity: 0.04;
+      color: var(--dorado);
+      font-family: 'Playfair Display', serif;
+      pointer-events: none;
+    }
+
+    /* Cards de categorías en inicio */
+    .seccion-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--marron);
+      padding: 22px 20px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .seccion-titulo::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(201,168,76,0.4), transparent);
+    }
+
+    /* =============================================
+       SCROLL HORIZONTAL DE CATEGORÍAS
+    ============================================= */
+    .categorias-scroll {
+      display: flex;
+      gap: 12px;
+      padding: 4px 20px 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .categorias-scroll::-webkit-scrollbar { display: none; }
+
+    .chip-categoria {
+      flex-shrink: 0;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(201,168,76,0.4);
+      background: var(--blanco);
+      color: var(--marron-suave);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .chip-categoria.activo, .chip-categoria:hover {
+      background: var(--marron);
+      color: var(--dorado);
+      border-color: var(--marron);
+    }
+
+    /* =============================================
+       GRID / CARDS DE PRODUCTOS
+    ============================================= */
+    .productos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 4px 16px 20px;
+    }
+
+    .card-producto {
+      background: var(--blanco);
+      border-radius: var(--radio);
+      overflow: hidden;
+      box-shadow: var(--sombra-dorada);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .card-producto:active {
+      transform: scale(0.97);
+    }
+
+    /* Imagen del producto */
+    .card-imagen {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: var(--crema-oscura);
+    }
+
+    /* Placeholder cuando no hay imagen real */
+    .card-imagen-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, var(--crema-oscura), var(--crema));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-imagen-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 30%, rgba(201,168,76,0.12), transparent 70%);
+    }
+
+    .card-imagen-placeholder .icono-prod {
+      font-size: 36px;
+      margin-bottom: 6px;
+      opacity: 0.6;
+    }
+
+    .card-imagen-placeholder .cat-label {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--dorado-oscuro);
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* Badge de producto */
+    .badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      font-family: 'Cinzel', serif;
+      font-size: 7px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    .badge-exclusivo {
+      background: var(--marron);
+      color: var(--dorado);
+    }
+
+    .badge-popular {
+      background: var(--dorado);
+      color: var(--marron);
+    }
+
+    /* Info de la card */
+    .card-info {
+      padding: 12px 12px 10px;
+    }
+
+    .card-categoria-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--dorado-oscuro);
+      opacity: 0.75;
+      margin-bottom: 4px;
+    }
+
+    .card-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--marron);
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .card-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--dorado-oscuro);
+      margin-bottom: 10px;
+    }
+
+    .card-precio span {
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--marron-suave);
+      margin-left: 4px;
+    }
+
+    /* Botón Adquirir */
+    .btn-adquirir {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--marron);
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      border: none;
+      padding: 10px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(201,168,76,0.3);
+    }
+
+    .btn-adquirir:active {
+      transform: scale(0.97);
+      box-shadow: 0 1px 4px rgba(201,168,76,0.2);
+    }
+
+    /* =============================================
+       SECCIÓN CATÁLOGO — Vista completa con filtros
+    ============================================= */
+    .catalogo-header {
+      background: var(--marron);
+      padding: 22px 20px 18px;
+    }
+
+    .catalogo-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--dorado);
+      margin-bottom: 4px;
+    }
+
+    .catalogo-header p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.5px;
+    }
+
+    /* =============================================
+       MODAL DETALLE DE PRODUCTO
+    ============================================= */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,24,16,0.75);
+      z-index: 500;
+      backdrop-filter: blur(4px);
+      align-items: flex-end;
+    }
+
+    .modal-overlay.activo {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: var(--blanco);
+      width: 100%;
+      border-radius: 24px 24px 0 0;
+      padding: 24px 22px 40px;
+      animation: slideUp 0.35s ease;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-handle {
+      width: 40px; height: 4px;
+      background: var(--crema-oscura);
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+
+    .modal-categoria {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dorado-oscuro);
+      margin-bottom: 6px;
+    }
+
+    .modal-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--marron);
+      margin-bottom: 8px;
+    }
+
+    .modal-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--dorado-oscuro);
+      margin-bottom: 16px;
+    }
+
+    .modal-descripcion {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--marron-suave);
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--crema-oscura);
+    }
+
+    .modal-caracteristicas {
+      margin-bottom: 24px;
+    }
+
+    .modal-caracteristicas h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dorado-oscuro);
+      margin-bottom: 10px;
+    }
+
+    .caract-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--marron-suave);
+    }
+
+    .caract-item::before {
+      content: '✦';
+      color: var(--dorado);
+      font-size: 8px;
+    }
+
+    .modal-btn-wa {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+    }
+
+    .modal-cerrar {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: var(--crema-oscura);
+      border: none;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      color: var(--marron);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* =============================================
+       SECCIÓN ASESORÍA (placeholder hasta Fase 3)
+    ============================================= */
+    .asesoria-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 30px;
+      text-align: center;
+    }
+
+    .asesoria-placeholder .icono {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    .asesoria-placeholder h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--marron);
+      margin-bottom: 10px;
+    }
+
+    .asesoria-placeholder p {
+      font-size: 14px;
+      color: var(--marron-suave);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .btn-wa-grande {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    }
+
+    /* =============================================
+       SECCIÓN MI CUENTA
+    ============================================= */
+    .mi-cuenta-hero {
+      background: linear-gradient(160deg, var(--marron), #4a2c1a);
+      padding: 40px 24px 30px;
+      text-align: center;
+      color: var(--blanco);
+    }
+
+    .cuenta-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 14px;
+    }
+
+    .cuenta-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--blanco);
+      margin-bottom: 4px;
+    }
+
+    .cuenta-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--dorado);
+      text-transform: uppercase;
+    }
+
+    .cuenta-menu {
+      padding: 16px;
+    }
+
+    .cuenta-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--blanco);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      box-shadow: var(--sombra-suave);
+      cursor: pointer;
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .cuenta-item:active { transform: scale(0.98); }
+
+    .cuenta-item-icono {
+      width: 40px; height: 40px;
+      background: var(--crema-oscura);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .cuenta-item-info { flex: 1; }
+    .cuenta-item-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      color: var(--marron);
+    }
+    .cuenta-item-sub {
+      font-size: 11px;
+      color: var(--marron-suave);
+      opacity: 0.7;
+    }
+
+    .cuenta-item-flecha {
+      color: var(--dorado);
+      font-size: 16px;
+    }
+
+    /* =============================================
+       NAVEGACIÓN INFERIOR
+    ============================================= */
+    .nav-inferior {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--blanco);
+      border-top: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(44,24,16,0.08);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      background: none;
+      color: var(--marron-suave);
+      opacity: 0.5;
+    }
+
+    .nav-item.activo {
+      opacity: 1;
+      color: var(--dorado-oscuro);
+    }
+
+    .nav-item .nav-icono {
+      font-size: 22px;
+      margin-bottom: 3px;
+      transition: transform 0.2s;
+    }
+
+    .nav-item.activo .nav-icono {
+      transform: scale(1.1);
+    }
+
+    .nav-item .nav-label {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* Línea activa debajo del ícono */
+    .nav-item::after {
+      content: '';
+      width: 0;
+      height: 2px;
+      background: var(--dorado);
+      border-radius: 2px;
+      margin-top: 6px;
+      transition: width 0.2s;
+    }
+
+    .nav-item.activo::after { width: 20px; }
+
+    /* =============================================
+       BOTÓN FLOTANTE VIP (WhatsApp)
+    ============================================= */
+    .fab-wa {
+      position: fixed;
+      bottom: 85px; right: 18px;
+      z-index: 200;
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      animation: pulsoWA 2.5s ease-in-out infinite;
+    }
+
+    /* =============================================
+       ANIMACIONES
+    ============================================= */
+    @keyframes fadeInSplash {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeOutSplash {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0; transform: scale(1.03); }
+    }
+
+    @keyframes fadeUpIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    @keyframes pulsoWA {
+      0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.5); }
+      50%       { box-shadow: 0 4px 30px rgba(37,211,102,0.8); }
+    }
+
+    /* =============================================
+       LUCIEN — CHAT IA (Fase 3)
+    ============================================= */
+
+    /* Botón flotante que abre a Lucien */
+    .lucien-fab {
+      position: fixed;
+      bottom: 85px; right: 18px;
+      z-index: 300;
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--marron), #4a2c1a);
+      border: 2px solid var(--dorado);
+      color: var(--dorado);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 24px rgba(201,168,76,0.45);
+      cursor: pointer;
+      animation: pulsoLucien 3s ease-in-out infinite;
+      transition: transform 0.2s;
+    }
+    .lucien-fab:active { transform: scale(0.93); }
+
+    @keyframes pulsoLucien {
+      0%, 100% { box-shadow: 0 4px 24px rgba(201,168,76,0.4); }
+      50%       { box-shadow: 0 6px 36px rgba(201,168,76,0.7); }
+    }
+
+    /* Tooltip encima del botón */
+    .lucien-fab-label {
+      position: fixed;
+      bottom: 150px; right: 14px;
+      z-index: 299;
+      background: var(--marron);
+      color: var(--dorado);
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(201,168,76,0.35);
+      white-space: nowrap;
+      animation: fadeUpIn 1s ease 1.5s both;
+      pointer-events: none;
+    }
+
+    /* Ventana principal del chat */
+    .lucien-chat {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 400;
+      background: var(--crema);
+      border-top: 2px solid var(--dorado);
+      border-radius: 24px 24px 0 0;
+      display: flex;
+      flex-direction: column;
+      height: 0;
+      overflow: hidden;
+      transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -8px 40px rgba(44,24,16,0.25);
+    }
+
+    .lucien-chat.abierto {
+      height: 88vh;
+    }
+
+    /* Header del chat */
+    .lucien-header {
+      background: linear-gradient(135deg, var(--marron), #4a2c1a);
+      padding: 16px 18px 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(201,168,76,0.25);
+    }
+
+    .lucien-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(201,168,76,0.4);
+    }
+
+    .lucien-header-info { flex: 1; }
+
+    .lucien-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      color: var(--dorado);
+      font-weight: 600;
+    }
+
+    .lucien-estado {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      margin-top: 1px;
+    }
+
+    .lucien-estado::before {
+      content: '● ';
+      color: #4ade80;
+      font-size: 10px;
+    }
+
+    .lucien-cerrar {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--dorado);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Área de mensajes */
+    .lucien-mensajes {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .lucien-mensajes::-webkit-scrollbar { display: none; }
+
+    /* Burbuja de mensaje — Lucien */
+    .msg-lucien {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      max-width: 88%;
+      align-self: flex-start;
+      animation: msgEntrar 0.3s ease;
+    }
+
+    .msg-lucien-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .msg-lucien-burbuja {
+      background: var(--blanco);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 18px 18px 18px 4px;
+      padding: 12px 14px;
+      box-shadow: var(--sombra-suave);
+    }
+
+    .msg-lucien-burbuja p {
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--marron);
+    }
+
+    .msg-lucien-nombre {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--dorado-oscuro);
+      margin-bottom: 5px;
+    }
+
+    /* Burbuja de mensaje — Usuario */
+    .msg-usuario {
+      align-self: flex-end;
+      max-width: 80%;
+      animation: msgEntrar 0.3s ease;
+    }
+
+    .msg-usuario-burbuja {
+      background: linear-gradient(135deg, var(--marron), #4a2c1a);
+      border-radius: 18px 18px 4px 18px;
+      padding: 12px 14px;
+    }
+
+    .msg-usuario-burbuja p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--blanco);
+    }
+
+    /* Indicador de escritura (tres puntos animados) */
+    .msg-typing {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      align-self: flex-start;
+      animation: msgEntrar 0.3s ease;
+    }
+
+    .typing-dots {
+      background: var(--blanco);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 18px 18px 18px 4px;
+      padding: 14px 18px;
+      display: flex; gap: 5px; align-items: center;
+      box-shadow: var(--sombra-suave);
+    }
+
+    .typing-dots span {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--dorado);
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30%            { transform: translateY(-6px); opacity: 1; }
+    }
+
+    @keyframes msgEntrar {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Botón de WhatsApp dentro del chat */
+    .lucien-btn-wa {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      border: none;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      box-shadow: 0 3px 12px rgba(37,211,102,0.4);
+    }
+
+    /* Chips de sugerencias rápidas */
+    .sugerencias-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .chip-sugerencia {
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(201,168,76,0.4);
+      background: var(--crema);
+      color: var(--marron-suave);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .chip-sugerencia:active {
+      background: var(--marron);
+      color: var(--dorado);
+      border-color: var(--marron);
+    }
+
+    /* Área de input del usuario */
+    .lucien-input-area {
+      padding: 12px 14px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid rgba(201,168,76,0.2);
+      background: var(--blanco);
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+
+    .lucien-input {
+      flex: 1;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--marron);
+      background: var(--crema);
+      border: 1.5px solid rgba(201,168,76,0.3);
+      border-radius: 20px;
+      padding: 11px 16px;
+      resize: none;
+      outline: none;
+      max-height: 100px;
+      line-height: 1.5;
+      transition: border-color 0.2s;
+    }
+
+    .lucien-input:focus {
+      border-color: var(--dorado);
+    }
+
+    .lucien-input::placeholder {
+      color: rgba(92,61,46,0.4);
+      font-style: italic;
+    }
+
+    .lucien-send {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      border: none;
+      color: var(--marron);
+      font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(201,168,76,0.35);
+      transition: transform 0.15s;
+    }
+
+    .lucien-send:active { transform: scale(0.9); }
+    .lucien-send:disabled { opacity: 0.5; }
+
+    /* =============================================
+       SECCIÓN ASESORÍA — actualizada para Lucien
+    ============================================= */
+    .asesoria-lucien-intro {
+      background: linear-gradient(160deg, var(--marron), #4a2c1a);
+      padding: 32px 22px 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .asesoria-lucien-intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.12) 0%, transparent 70%);
+    }
+
+    .asesoria-avatar-grande {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 14px;
+      box-shadow: 0 0 30px rgba(201,168,76,0.4);
+      position: relative;
+    }
+
+    .asesoria-lucien-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--dorado);
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .asesoria-lucien-intro p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      max-width: 300px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .btn-abrir-lucien {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--marron);
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      border: none;
+      padding: 14px 32px;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+      position: relative;
+    }
+
+    .asesoria-features {
+      padding: 20px 16px;
+    }
+
+    .asesoria-feat-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px;
+      background: var(--blanco);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      box-shadow: var(--sombra-suave);
+    }
+
+    .asesoria-feat-icono {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crema-oscura), var(--crema));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .asesoria-feat-texto h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      color: var(--marron);
+      margin-bottom: 2px;
+    }
+
+    .asesoria-feat-texto p {
+      font-size: 12px;
+      color: var(--marron-suave);
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+
+
+    /* =============================================
+       FASE 4 — FORMULARIO DE CONTACTO VIP
+    ============================================= */
+
+    .contacto-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,24,16,0.7);
+      z-index: 600;
+      align-items: flex-end;
+      backdrop-filter: blur(4px);
+    }
+    .contacto-overlay.activo { display: flex; }
+
+    .contacto-sheet {
+      background: var(--crema);
+      width: 100%;
+      border-radius: 24px 24px 0 0;
+      border-top: 2px solid var(--dorado);
+      padding: 10px 22px 36px;
+      animation: slideUp 0.35s ease;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    .contacto-handle {
+      width: 40px; height: 4px;
+      background: var(--crema-oscura);
+      border-radius: 2px;
+      margin: 8px auto 18px;
+    }
+
+    .contacto-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .contacto-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--marron);
+    }
+
+    .contacto-subtitulo {
+      font-size: 12px;
+      color: var(--marron-suave);
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+      margin-bottom: 22px;
+    }
+
+    .contacto-cerrar {
+      background: var(--crema-oscura);
+      border: none;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      color: var(--marron);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .form-grupo {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--dorado-oscuro);
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--marron);
+      background: var(--blanco);
+      border: 1.5px solid rgba(201,168,76,0.25);
+      border-radius: 10px;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--dorado);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    }
+
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(92,61,46,0.35);
+      font-style: italic;
+    }
+
+    .form-textarea {
+      resize: none;
+      height: 100px;
+      line-height: 1.6;
+    }
+
+    .form-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: rgba(92,61,46,0.3);
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-family: 'Cinzel', serif;
+    }
+    .form-divider::before, .form-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(201,168,76,0.2);
+    }
+
+    .btn-enviar-contacto {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+      margin-bottom: 12px;
+    }
+
+    .contacto-disclaimer {
+      text-align: center;
+      font-size: 11px;
+      color: rgba(92,61,46,0.45);
+      line-height: 1.6;
+    }
+
+
+    /* =============================================
+       FASE 6 — BANNER DE INSTALACIÓN PWA
+    ============================================= */
+    .pwa-banner {
+      position: fixed;
+      bottom: 80px; left: 12px; right: 12px;
+      z-index: 800;
+      background: linear-gradient(135deg, var(--marron), #4a2c1a);
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(44,24,16,0.4);
+      animation: slideUpBanner 0.5s ease 3s both;
+      transform: translateY(200px);
+    }
+
+    @keyframes slideUpBanner {
+      to { transform: translateY(0); }
+    }
+
+    .pwa-banner-icono {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .pwa-banner-texto { flex: 1; }
+
+    .pwa-banner-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      color: var(--dorado);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .pwa-banner-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+
+    .pwa-banner-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .pwa-btn-instalar {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--marron);
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .pwa-btn-cerrar {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      font-family: 'Lato', sans-serif;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- =============================================
+     PANTALLA DE BIENVENIDA (SPLASH)
+     Se muestra al abrir la app por primera vez
+============================================= -->
+<div id="splash">
+  <div class="splash-content">
+    <div class="splash-ornamento">✦ &nbsp; Boutique Privée &nbsp; ✦</div>
+    <div class="splash-logo">
+      Boutique
+      <span>V I P</span>
+    </div>
+    <div class="splash-linea"></div>
+    <div class="splash-subtitulo">Experiencias íntimas de alta gama</div>
+    <button class="btn-splash" onclick="entrarApp()">
+      Descubrir la Colección &nbsp;→
+    </button>
+  </div>
+</div>
+
+
+<!-- =============================================
+     APP PRINCIPAL — Todo lo que viene después
+============================================= -->
+<div id="app">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-logo">
+      Boutique VIP
+      <span>Luxury Boutique</span>
+    </div>
+    <button class="header-btn-carrito" onclick="mostrarSeccion('catalogo')">
+      🛍️
+      <span class="carrito-badge" id="carrito-badge">0</span>
+    </button>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL (secciones intercambiables) -->
+  <div class="contenido-principal">
+
+    <!-- ==================
+         SECCIÓN: INICIO
+    ================== -->
+    <section class="seccion activa" id="sec-inicio">
+
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-tag">✦ Colección Exclusiva 2025</div>
+        <h2 class="hero-titulo">
+          El arte de<br/>la <em>sensualidad</em><br/>refinada
+        </h2>
+        <p class="hero-subtitulo">Piezas curadas para espíritus exigentes</p>
+        <button class="hero-btn" onclick="mostrarSeccion('catalogo')">
+          Explorar Colección →
+        </button>
+        <div class="hero-ornamento">B</div>
+      </div>
+
+      <!-- Filtros de categoría (scroll horizontal) -->
+      <div class="seccion-titulo">Categorías</div>
+      <div class="categorias-scroll" id="filtros-inicio">
+        <div class="chip-categoria activo" onclick="filtrarCategoria('Todos', this)">Todos</div>
+        <div class="chip-categoria" onclick="filtrarCategoria('Vibradores', this)">Vibradores</div>
+        <div class="chip-categoria" onclick="filtrarCategoria('Dildos', this)">Dildos</div>
+        <div class="chip-categoria" onclick="filtrarCategoria('Anillos', this)">Anillos</div>
+        <div class="chip-categoria" onclick="filtrarCategoria('Plug-ins', this)">Plug-ins</div>
+        <div class="chip-categoria" onclick="filtrarCategoria('Bombas', this)">Bombas</div>
+        <div class="chip-categoria" onclick="filtrarCategoria('Aceites', this)">Aceites</div>
+        <div class="chip-categoria" onclick="filtrarCategoria('Ebooks', this)">Ebooks VIP</div>
+      </div>
+
+      <!-- Grid de productos -->
+      <div class="productos-grid" id="grid-inicio"></div>
+
+    </section>
+
+
+    <!-- ==================
+         SECCIÓN: CATÁLOGO
+    ================== -->
+    <section class="seccion" id="sec-catalogo">
+
+      <div class="catalogo-header">
+        <h2>Colección Completa</h2>
+        <p>Todas nuestras piezas exclusivas</p>
+      </div>
+
+      <!-- Filtros del catálogo -->
+      <div class="categorias-scroll" id="filtros-catalogo" style="margin-top:16px;">
+        <div class="chip-categoria activo" onclick="filtrarCatalogo('Todos', this)">Todos</div>
+        <div class="chip-categoria" onclick="filtrarCatalogo('Vibradores', this)">Vibradores</div>
+        <div class="chip-categoria" onclick="filtrarCatalogo('Dildos', this)">Dildos</div>
+        <div class="chip-categoria" onclick="filtrarCatalogo('Anillos', this)">Anillos</div>
+        <div class="chip-categoria" onclick="filtrarCatalogo('Plug-ins', this)">Plug-ins</div>
+        <div class="chip-categoria" onclick="filtrarCatalogo('Bombas', this)">Bombas</div>
+        <div class="chip-categoria" onclick="filtrarCatalogo('Aceites', this)">Aceites</div>
+        <div class="chip-categoria" onclick="filtrarCatalogo('Ebooks', this)">Ebooks</div>
+      </div>
+
+      <div class="productos-grid" id="grid-catalogo"></div>
+
+    </section>
+
+
+    <!-- ==================
+         SECCIÓN: ASESORÍA — LUCIEN IA
+    ================== -->
+    <section class="seccion" id="sec-asesoria">
+      <div class="asesoria-lucien-intro">
+        <div class="asesoria-avatar-grande">🥂</div>
+        <h2>Lucien</h2>
+        <p>Tu Concierge Privado de Lujo.<br/>Te asesora con elegancia y discreción absoluta.</p>
+        <button class="btn-abrir-lucien" onclick="abrirLucien()">
+          Iniciar Conversación Privada →
+        </button>
+      </div>
+      <div class="asesoria-features">
+        <div class="asesoria-feat-item">
+          <div class="asesoria-feat-icono">🎯</div>
+          <div class="asesoria-feat-texto">
+            <h4>Recomendación Personalizada</h4>
+            <p>Lucien analiza tus preferencias y te sugiere la pieza perfecta.</p>
+          </div>
+        </div>
+        <div class="asesoria-feat-item">
+          <div class="asesoria-feat-icono">💎</div>
+          <div class="asesoria-feat-texto">
+            <h4>Sets VIP Curados</h4>
+            <p>Combinaciones exclusivas diseñadas para elevar tu experiencia.</p>
+          </div>
+        </div>
+        <div class="asesoria-feat-item">
+          <div class="asesoria-feat-icono">🔒</div>
+          <div class="asesoria-feat-texto">
+            <h4>Discreción Total</h4>
+            <p>Tu conversación es completamente privada.</p>
+          </div>
+        </div>
+        <div class="asesoria-feat-item">
+          <div class="asesoria-feat-icono">🚀</div>
+          <div class="asesoria-feat-texto">
+            <h4>Cierre por WhatsApp</h4>
+            <p>Lucien te escolta a nuestro canal privado para finalizar tu compra.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================
+         SECCIÓN: MI CUENTA
+    ================== -->
+    <section class="seccion" id="sec-cuenta">
+      <div class="mi-cuenta-hero">
+        <div class="cuenta-avatar">👑</div>
+        <div class="cuenta-nombre">Cliente VIP</div>
+        <div class="cuenta-tag">✦ Miembro Exclusivo ✦</div>
+      </div>
+
+      <div class="cuenta-menu">
+        <a href="https://wa.me/56930347664" target="_blank" class="cuenta-item">
+          <div class="cuenta-item-icono">📦</div>
+          <div class="cuenta-item-info">
+            <div class="cuenta-item-titulo">Mis Pedidos</div>
+            <div class="cuenta-item-sub">Consulta el estado de tus compras</div>
+          </div>
+          <div class="cuenta-item-flecha">›</div>
+        </a>
+
+        <a href="https://wa.me/56930347664?text=Hola,+quisiera+información+sobre+envíos+discretos." target="_blank" class="cuenta-item">
+          <div class="cuenta-item-icono">🚚</div>
+          <div class="cuenta-item-info">
+            <div class="cuenta-item-titulo">Envíos Discretos</div>
+            <div class="cuenta-item-sub">Packaging sin identificación de tienda</div>
+          </div>
+          <div class="cuenta-item-flecha">›</div>
+        </a>
+
+        <a href="https://wa.me/56930347664?text=Hola,+tengo+una+consulta+sobre+una+compra." target="_blank" class="cuenta-item">
+          <div class="cuenta-item-icono">💎</div>
+          <div class="cuenta-item-info">
+            <div class="cuenta-item-titulo">Servicio VIP</div>
+            <div class="cuenta-item-sub">Atención prioritaria 24/7</div>
+          </div>
+          <div class="cuenta-item-flecha">›</div>
+        </a>
+
+        <div class="cuenta-item" onclick="abrirContacto()">
+          <div class="cuenta-item-icono">✉️</div>
+          <div class="cuenta-item-info">
+            <div class="cuenta-item-titulo">Enviar Consulta</div>
+            <div class="cuenta-item-sub">Formulario de contacto privado</div>
+          </div>
+          <div class="cuenta-item-flecha">›</div>
+        </div>
+
+        <div class="cuenta-item" onclick="abrirAdmin()">
+          <div class="cuenta-item-icono">⚙️</div>
+          <div class="cuenta-item-info">
+            <div class="cuenta-item-titulo">Panel Admin</div>
+            <div class="cuenta-item-sub">Solo para administradores</div>
+          </div>
+          <div class="cuenta-item-flecha">›</div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- fin contenido-principal -->
+
+
+  <!-- =============================================
+       BOTÓN FLOTANTE LUCIEN (abre chat IA)
+  ============================================= -->
+  <div class="lucien-fab-label">Lucien · Asesor VIP</div>
+  <button class="lucien-fab" onclick="abrirLucien()" title="Hablar con Lucien">
+    🥂
+  </button>
+
+  <!-- =============================================
+       VENTANA DE CHAT — LUCIEN IA
+  ============================================= -->
+  <div class="lucien-chat" id="lucien-chat">
+
+    <!-- Header del chat -->
+    <div class="lucien-header">
+      <div class="lucien-avatar">🥂</div>
+      <div class="lucien-header-info">
+        <div class="lucien-nombre">Lucien</div>
+        <div class="lucien-estado">Concierge Privado · En línea</div>
+      </div>
+      <button class="lucien-cerrar" onclick="cerrarLucien()">✕</button>
+    </div>
+
+    <!-- Área de mensajes (se llena dinámicamente) -->
+    <div class="lucien-mensajes" id="lucien-mensajes"></div>
+
+    <!-- Input del usuario -->
+    <div class="lucien-input-area">
+      <textarea
+        class="lucien-input"
+        id="lucien-input"
+        placeholder="Escríbame su consulta…"
+        rows="1"
+        onkeydown="lucienKeyDown(event)"
+        oninput="ajustarAltura(this)"
+      ></textarea>
+      <button class="lucien-send" id="lucien-send" onclick="enviarMensaje()">➤</button>
+    </div>
+
+  </div><!-- fin lucien-chat -->
+
+
+  <!-- =============================================
+       BOTÓN FLOTANTE WHATSAPP (siempre visible)
+  ============================================= -->
+  <a class="fab-wa" 
+     href="https://wa.me/56930347664?text=Hola,+estoy+interesada/o+en+un+producto+de+Boutique+VIP.+¿Pueden+asesorarme?" 
+     target="_blank"
+     title="Asesoría VIP por WhatsApp">
+    💬
+  </a>
+
+
+  <!-- =============================================
+       NAVEGACIÓN INFERIOR (4 secciones)
+  ============================================= -->
+  <nav class="nav-inferior">
+    <button class="nav-item activo" onclick="mostrarSeccion('inicio')" id="nav-inicio">
+      <span class="nav-icono">🏠</span>
+      <span class="nav-label">Inicio</span>
+    </button>
+    <button class="nav-item" onclick="mostrarSeccion('catalogo')" id="nav-catalogo">
+      <span class="nav-icono">🛍️</span>
+      <span class="nav-label">Catálogo</span>
+    </button>
+    <button class="nav-item" onclick="mostrarSeccion('asesoria')" id="nav-asesoria">
+      <span class="nav-icono">💬</span>
+      <span class="nav-label">Asesoría</span>
+    </button>
+    <button class="nav-item" onclick="mostrarSeccion('cuenta')" id="nav-cuenta">
+      <span class="nav-icono">👤</span>
+      <span class="nav-label">Mi Cuenta</span>
+    </button>
+  </nav>
+
+</div><!-- fin #app -->
+
+
+
+<!-- =============================================
+     FASE 4 — FORMULARIO DE CONTACTO VIP
+============================================= -->
+<div class="contacto-overlay" id="contacto-overlay" onclick="cerrarContacto(event)">
+  <div class="contacto-sheet">
+    <div class="contacto-handle"></div>
+    <div class="contacto-header">
+      <div class="contacto-titulo">Consulta VIP</div>
+      <button class="contacto-cerrar" onclick="cerrarContactoDirecto()">✕</button>
+    </div>
+    <div class="contacto-subtitulo">
+      Cuéntenos su consulta y le responderemos con total discreción.
+    </div>
+
+    <div class="form-grupo">
+      <label class="form-label" for="cf-nombre">✦ Nombre</label>
+      <input class="form-input" id="cf-nombre" type="text"
+             placeholder="Su nombre completo" autocomplete="name" />
+    </div>
+
+    <div class="form-grupo">
+      <label class="form-label" for="cf-email">✦ Correo electrónico</label>
+      <input class="form-input" id="cf-email" type="email"
+             placeholder="correo@ejemplo.com" autocomplete="email" />
+    </div>
+
+    <div class="form-grupo">
+      <label class="form-label" for="cf-consulta">✦ Su consulta</label>
+      <textarea class="form-textarea" id="cf-consulta"
+                placeholder="Cuéntenos qué está buscando…"></textarea>
+    </div>
+
+    <div class="form-divider">o envíenos directo</div>
+
+    <button class="btn-enviar-contacto" onclick="enviarContacto()">
+      <span>💬</span>
+      <span>Enviar por WhatsApp</span>
+    </button>
+
+    <div class="contacto-disclaimer">
+      🔒 Su consulta es completamente privada y confidencial.
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     MODAL — Detalle de producto
+============================================= -->
+<div class="modal-overlay" id="modal-producto" onclick="cerrarModal(event)">
+  <div class="modal-sheet" style="position:relative;">
+    <button class="modal-cerrar" onclick="cerrarModalDirecto()">✕</button>
+    <div class="modal-handle"></div>
+    <div class="modal-categoria" id="modal-cat"></div>
+    <div class="modal-nombre" id="modal-nombre"></div>
+    <div class="modal-precio" id="modal-precio"></div>
+    <div class="modal-descripcion" id="modal-desc"></div>
+    <div class="modal-caracteristicas">
+      <h4>Características exclusivas</h4>
+      <div id="modal-caracts"></div>
+    </div>
+    <button class="modal-btn-wa" id="modal-btn-wa">
+      <span>💬</span>
+      <span>Adquirir por WhatsApp</span>
+    </button>
+  </div>
+</div>
+
+
+<!-- =============================================
+     JAVASCRIPT — Toda la lógica de la app
+============================================= -->
+<script>
+
+// =============================================
+// BASE DE DATOS DE PRODUCTOS
+// Aquí puedes agregar, editar o quitar productos
+// =============================================
+const PRODUCTOS = [
+
+  // --- VIBRADORES ---
+  {
+    id: 1, nombre: "Vibrador Serenity Pro",
+    categoria: "Vibradores",
+    precio: "$49.990",
+    descripcion: "Silicona de grado médico con 10 modos de vibración. Diseño ergonómico inspirado en la joyería escandinava. Impermeable y recargable por USB.",
+    badge: "exclusivo",
+    icono: "✨",
+    caracteristicas: ["Silicona grado médico 100%", "10 patrones de vibración", "Impermeable IPX7", "Carga USB magnética", "Silencioso: 45 dB"]
+  },
+  {
+    id: 2, nombre: "Rose Collection Clásico",
+    categoria: "Vibradores",
+    precio: "$34.990",
+    descripcion: "Estimulador de doble función en color champagne dorado. Perfecto para quienes buscan su primera pieza de alta gama.",
+    badge: "popular",
+    icono: "🌹",
+    caracteristicas: ["Doble motor", "Cuerpo en oro rosado", "7 intensidades", "Estuche de terciopelo incluido"]
+  },
+  {
+    id: 3, nombre: "Noir Elegance Luxe",
+    categoria: "Vibradores",
+    precio: "$64.990",
+    descripcion: "La pieza más premium de nuestra colección. Motor Vortex de alto rendimiento, silicona negra satinada y packaging de lujo francés.",
+    badge: "exclusivo",
+    icono: "🖤",
+    caracteristicas: ["Motor Vortex™", "15 patrones únicos", "App Bluetooth compatible", "Packaging premium"]
+  },
+
+  // --- DILDOS ---
+  {
+    id: 4, nombre: "Artisano Marble Edition",
+    categoria: "Dildos",
+    precio: "$44.990",
+    descripcion: "Esculpido a mano con acabado marmolado en crema y dorado. Una pieza de arte funcional para tu colección íntima.",
+    badge: "exclusivo",
+    icono: "🏛️",
+    caracteristicas: ["Elaborado artesanalmente", "Acabado marmolado premium", "Silicona bidensidad", "Certificado sin ftalatos"]
+  },
+  {
+    id: 5, nombre: "Velvet Touch Classic",
+    categoria: "Dildos",
+    precio: "$29.990",
+    descripcion: "Superficie aterciopelada ultra suave, con base compatible con arnés. Disponible en tonos naturales o dorado champagne.",
+    badge: null,
+    icono: "🎭",
+    caracteristicas: ["Base compatible arnés", "Tonos piel natural", "Silicona platino", "Fácil limpieza"]
+  },
+  {
+    id: 6, nombre: "Curve Master Prestige",
+    categoria: "Dildos",
+    precio: "$52.990",
+    descripcion: "Curvatura anatómica diseñada por especialistas en bienestar íntimo. Estimulación precisa del punto G con cada movimiento.",
+    badge: "popular",
+    icono: "💫",
+    caracteristicas: ["Curvatura anatómica", "Punto G precisión", "Apto para cuerpos con útero", "Silicona flexible premium"]
+  },
+
+  // --- ANILLOS VIBRADORES ---
+  {
+    id: 7, nombre: "Duo Ring Gold Edition",
+    categoria: "Anillos",
+    precio: "$24.990",
+    descripcion: "Anillo de pareja con vibración dual. Acabado en dorado con piedra de cristal Swarovski. El regalo perfecto para celebraciones íntimas.",
+    badge: "popular",
+    icono: "💍",
+    caracteristicas: ["Vibración dual", "Cristal Swarovski genuino", "Silicona elástica premium", "Resistente al agua"]
+  },
+  {
+    id: 8, nombre: "Pulse Control Remote",
+    categoria: "Anillos",
+    precio: "$38.990",
+    descripcion: "Control remoto hasta 10 metros. Ideal para juegos de complicidad entre parejas. Discreción absoluta garantizada.",
+    badge: "exclusivo",
+    icono: "🎮",
+    caracteristicas: ["Control remoto 10m", "10 modos de vibración", "Silencioso garantizado", "Batería 2 horas"]
+  },
+  {
+    id: 9, nombre: "Sensory Ring Classic",
+    categoria: "Anillos",
+    precio: "$18.990",
+    descripcion: "El clásico reinventado con materiales premium. Para iniciarse en la experiencia del anillo vibrador con calidad boutique.",
+    badge: null,
+    icono: "⭕",
+    caracteristicas: ["Material hipoalergénico", "3 velocidades", "Talla única elástica", "Incluye pilas"]
+  },
+
+  // --- PLUG-INS ---
+  {
+    id: 10, nombre: "Crystal Base Jewel",
+    categoria: "Plug-ins",
+    precio: "$22.990",
+    descripcion: "Plug anal con base de cristal en rosa, azul o dorado. La pieza más solicitada de nuestra colección. Elegancia donde menos se espera.",
+    badge: "popular",
+    icono: "💎",
+    caracteristicas: ["Base cristal coloreada", "Silicona lisa premium", "3 tamaños disponibles", "Set de limpieza incluido"]
+  },
+  {
+    id: 11, nombre: "Noir Plug Luxe Set",
+    categoria: "Plug-ins",
+    precio: "$45.990",
+    descripcion: "Set de 3 plugs en silicona negra mate con detalles dorados. Entrenamiento progresivo con estética de boutique parisina.",
+    badge: "exclusivo",
+    icono: "🔮",
+    caracteristicas: ["Set de 3 piezas", "Silicona negra mate", "Base dorada premium", "Estuche de cuero vegano"]
+  },
+  {
+    id: 12, nombre: "Vibro Plug Wireless",
+    categoria: "Plug-ins",
+    precio: "$56.990",
+    descripcion: "Plug con vibración interna controlado vía app. Para quienes buscan la innovación tecnológica al servicio del placer.",
+    badge: "exclusivo",
+    icono: "📡",
+    caracteristicas: ["Control por app", "Vibración interna", "Carga inalámbrica", "Silencioso 38 dB"]
+  },
+
+  // --- BOMBAS DE VACÍO ---
+  {
+    id: 13, nombre: "Suction Pro Deluxe",
+    categoria: "Bombas",
+    precio: "$42.990",
+    descripcion: "Bomba de vacío con manómetro de precisión. Sistema de seguridad automático. Diseño clínico con acabado premium en blanco perla.",
+    badge: "popular",
+    icono: "🔬",
+    caracteristicas: ["Manómetro de precisión", "Sistema de seguridad", "3 copas intercambiables", "Válvula de alivio rápido"]
+  },
+  {
+    id: 14, nombre: "Rose Pump Luxe",
+    categoria: "Bombas",
+    precio: "$35.990",
+    descripcion: "Pensada para el placer clitoral. Diseño en rosa champagne con succión suave y regulable. La más vendida de su categoría.",
+    badge: null,
+    icono: "🌸",
+    caracteristicas: ["Succión regulable", "Diseño anatómico femenino", "Material médico", "Fácil de usar"]
+  },
+  {
+    id: 15, nombre: "Power Pump Elite",
+    categoria: "Bombas",
+    precio: "$58.990",
+    descripcion: "Máxima potencia con compresor eléctrico silencioso. Para usuarios avanzados que buscan la experiencia premium definitiva.",
+    badge: "exclusivo",
+    icono: "⚡",
+    caracteristicas: ["Compresor eléctrico", "5 niveles de succión", "Silencioso 40 dB", "Cable USB de carga"]
+  },
+
+  // --- ACEITES AFRODISÍACOS ---
+  {
+    id: 16, nombre: "Huile d'Or — Aceite Sensitivo",
+    categoria: "Aceites",
+    precio: "$18.990",
+    descripcion: "Aceite de masaje con efecto calor leve y aroma de jazmín y sándalo. Base de aceite de jojoba certificado. Comestible y vegano.",
+    badge: "popular",
+    icono: "🫧",
+    caracteristicas: ["Base de jojoba orgánico", "Aroma jazmín y sándalo", "Efecto calor leve", "Comestible y vegano"]
+  },
+  {
+    id: 17, nombre: "Aphrodite Elixir Premium",
+    categoria: "Aceites",
+    precio: "$26.990",
+    descripcion: "Fórmula exclusiva con feromonas botánicas, extracto de damiana y aceite de argán. El favorito de las parejas VIP.",
+    badge: "exclusivo",
+    icono: "🌿",
+    caracteristicas: ["Feromonas botánicas", "Extracto de damiana", "Aceite de argán puro", "Sin parabenos"]
+  },
+  {
+    id: 18, nombre: "Noir Massage Ritual",
+    categoria: "Aceites",
+    precio: "$32.990",
+    descripcion: "Set ritual completo: aceite, vela de masaje y aceite lubricante compatibles entre sí. Para una noche diseñada desde el primer momento.",
+    badge: "exclusivo",
+    icono: "🕯️",
+    caracteristicas: ["Set de 3 productos", "Vela de masaje incluida", "Compatible con preservativos", "Caja de regalo"]
+  },
+
+  // --- EBOOKS VIP ---
+  {
+    id: 19, nombre: "El Grimorio de la Hora Cero",
+    categoria: "Ebooks",
+    precio: "$9.990",
+    descripcion: "Un viaje místico por la sexualidad consciente, los rituales de conexión y el despertar sensorial profundo. Descarga inmediata.",
+    badge: "popular",
+    icono: "📖",
+    caracteristicas: ["120 páginas premium", "Ejercicios prácticos", "Rituales guiados", "Descarga PDF instantánea"]
+  },
+  {
+    id: 20, nombre: "Guía del Placer Femenino",
+    categoria: "Ebooks",
+    precio: "$7.990",
+    descripcion: "Manual íntimo de autoconocimiento corporal escrito por especialistas. Ilustraciones elegantes y lenguaje sofisticado.",
+    badge: null,
+    icono: "🌺",
+    caracteristicas: ["Redactado por especialistas", "Ilustraciones exclusivas", "Enfoque holístico", "Compatible con todos los dispositivos"]
+  },
+  {
+    id: 21, nombre: "Juegos de Pareja VIP — 50 Rituales",
+    categoria: "Ebooks",
+    precio: "$12.990",
+    descripcion: "Cincuenta rituales de conexión íntima para parejas. Desde técnicas de masaje hasta juegos de roles sofisticados.",
+    badge: "exclusivo",
+    icono: "💑",
+    caracteristicas: ["50 rituales detallados", "Nivel principiante a avanzado", "Enfoque en conexión emocional", "Versión imprimible incluida"]
+  }
+
+];
+
+// =============================================
+// FUNCIÓN: Generar HTML de una card de producto
+// =============================================
+function crearCardProducto(prod) {
+  const badgeHTML = prod.badge
+    ? `<div class="badge badge-${prod.badge}">${prod.badge === 'exclusivo' ? '✦ Exclusivo' : '⭐ Más vendido'}</div>`
+    : '';
+
+  const imagenHTML = prod.imagen
+    ? `<div style="position:relative;">
+        ${badgeHTML}
+        <img src="${prod.imagen}" 
+             alt="${prod.nombre}"
+             style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#F5E8DC;"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="card-imagen-placeholder" style="display:none;">
+          ${badgeHTML}
+          <div class="icono-prod">${prod.icono}</div>
+          <div class="cat-label">${prod.categoria}</div>
+        </div>
+       </div>`
+    : `<div class="card-imagen-placeholder">
+        ${badgeHTML}
+        <div class="icono-prod">${prod.icono}</div>
+        <div class="cat-label">${prod.categoria}</div>
+       </div>`;
+
+  return `
+    <div class="card-producto" onclick="abrirModal(${prod.id})">
+      ${imagenHTML}
+      <div class="card-info">
+        <div class="card-categoria-tag">${prod.categoria}</div>
+        <div class="card-nombre">${prod.nombre}</div>
+        <div class="card-precio">${prod.precio} <span>CLP</span></div>
+        <button class="btn-adquirir" onclick="abrirWA(event, '${prod.nombre}')">
+          💬 Adquirir
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// =============================================
+// FUNCIÓN: Renderizar grids de productos
+// =============================================
+function renderizarGrids(productos, contenedorId) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return;
+  contenedor.innerHTML = productos.map(crearCardProducto).join('');
+}
+
+// =============================================
+// FUNCIÓN: Filtrar por categoría (sección inicio)
+// =============================================
+function filtrarCategoria(cat, elementoClicado) {
+  // Actualizar chips activos
+  document.querySelectorAll('#filtros-inicio .chip-categoria').forEach(c => c.classList.remove('activo'));
+  elementoClicado.classList.add('activo');
+
+  // Filtrar y renderizar
+  const filtrados = cat === 'Todos' ? PRODUCTOS : PRODUCTOS.filter(p => p.categoria === cat);
+  renderizarGrids(filtrados, 'grid-inicio');
+}
+
+// =============================================
+// FUNCIÓN: Filtrar por categoría (catálogo)
+// =============================================
+function filtrarCatalogo(cat, elementoClicado) {
+  document.querySelectorAll('#filtros-catalogo .chip-categoria').forEach(c => c.classList.remove('activo'));
+  elementoClicado.classList.add('activo');
+  const filtrados = cat === 'Todos' ? PRODUCTOS : PRODUCTOS.filter(p => p.categoria === cat);
+  renderizarGrids(filtrados, 'grid-catalogo');
+}
+
+// =============================================
+// FUNCIÓN: Abrir WhatsApp con producto específico
+// =============================================
+function abrirWA(evento, nombreProducto) {
+  evento.stopPropagation(); // Evita abrir el modal también
+  const texto = encodeURIComponent(
+    `Hola, estoy interesada/o en "${nombreProducto}". ¿Podrían asesorarme con los detalles de entrega discreta?`
+  );
+  window.open(`https://wa.me/56930347664?text=${texto}`, '_blank');
+}
+
+// =============================================
+// FUNCIÓN: Abrir modal de detalle de producto
+// =============================================
+function abrirModal(idProducto) {
+  const prod = PRODUCTOS.find(p => p.id === idProducto);
+  if (!prod) return;
+
+  // Mostrar imagen en modal si existe
+  const modalSheet = document.querySelector('.modal-sheet');
+  let imgExistente = document.getElementById('modal-imagen');
+  if (imgExistente) imgExistente.remove();
+  if (prod.imagen) {
+    const imgEl = document.createElement('img');
+    imgEl.id = 'modal-imagen';
+    imgEl.src = prod.imagen;
+    imgEl.alt = prod.nombre;
+    imgEl.style.cssText = 'width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;';
+    imgEl.onerror = () => imgEl.remove();
+    modalSheet.insertBefore(imgEl, modalSheet.children[2]);
+  }
+
+  document.getElementById('modal-cat').textContent    = prod.categoria;
+  document.getElementById('modal-nombre').textContent = prod.nombre;
+  document.getElementById('modal-precio').textContent = prod.precio + ' CLP';
+  document.getElementById('modal-desc').textContent   = prod.descripcion;
+
+  // Renderizar características
+  document.getElementById('modal-caracts').innerHTML = prod.caracteristicas
+    .map(c => `<div class="caract-item">${c}</div>`)
+    .join('');
+
+  // Configurar botón de WhatsApp del modal
+  const texto = encodeURIComponent(
+    `Hola, estoy interesada/o en "${prod.nombre}" (${prod.precio} CLP). ¿Pueden asesorarme con la entrega discreta?`
+  );
+  document.getElementById('modal-btn-wa').onclick = () =>
+    window.open(`https://wa.me/56930347664?text=${texto}`, '_blank');
+
+  document.getElementById('modal-producto').classList.add('activo');
+  document.body.style.overflow = 'hidden';
+}
+
+// =============================================
+// FUNCIÓN: Cerrar modal (click fuera)
+// =============================================
+function cerrarModal(evento) {
+  if (evento.target === evento.currentTarget) {
+    cerrarModalDirecto();
+  }
+}
+
+function cerrarModalDirecto() {
+  document.getElementById('modal-producto').classList.remove('activo');
+  document.body.style.overflow = '';
+}
+
+// =============================================
+// FUNCIÓN: Navegar entre secciones
+// =============================================
+function mostrarSeccion(nombre) {
+  // Ocultar todas las secciones
+  document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('activo'));
+
+  // Mostrar la sección correcta
+  document.getElementById(`sec-${nombre}`).classList.add('activa');
+  document.getElementById(`nav-${nombre}`).classList.add('activo');
+
+  // Scroll al tope de la sección
+  document.querySelector('.contenido-principal').scrollTo(0, 0);
+}
+
+// =============================================
+// FUNCIÓN: Cerrar splash y mostrar app
+// =============================================
+function entrarApp() {
+  const splash = document.getElementById('splash');
+  const app    = document.getElementById('app');
+
+  splash.classList.add('ocultar');
+  setTimeout(() => {
+    splash.style.display = 'none';
+    app.classList.add('visible');
+  }, 600);
+}
+
+// =============================================
+// INICIALIZACIÓN: Al cargar la página
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  // Cargar productos desde localStorage (o usar base si es la primera vez)
+  const prodsActivos = cargarProductosAdmin().filter(p => p.activo !== false);
+  renderizarGrids(prodsActivos, 'grid-inicio');
+  renderizarGrids(prodsActivos, 'grid-catalogo');
+  // Preparar catálogo dinámico para Lucien desde el inicio
+  actualizarLucienConstock(cargarProductosAdmin());
+});
+
+// =============================================
+// LUCIEN — ASISTENTE IA (Fase 3)
+// =============================================
+
+let historialLucien = [];
+let lucienAbierto = false;
+let lucienBienvenidaMostrada = false;
+
+const LUCIEN_SYSTEM = `Eres "Lucien", el Concierge de Lujo y Asesor Senior de Bienestar Íntimo de Boutique VIP, una boutique íntima de alta gama online en Chile.
+
+PERSONALIDAD Y TONO:
+- Extremadamente elegante, cálido y cercano. Nunca vulgar.
+- Tratas los productos como "piezas de ingeniería para el placer" o "joyería íntima".
+- Hablas como un sommelier de alto nivel: con detalle, pasión y total respeto.
+- Usas el nombre del cliente si te lo proporciona.
+- Siempre en español.
+
+CATÁLOGO DISPONIBLE:
+Vibradores: Serenity Pro ($49.990), Rose Collection Clásico ($34.990), Noir Elegance Luxe ($64.990)
+Dildos: Artisano Marble Edition ($44.990), Velvet Touch Classic ($29.990), Curve Master Prestige ($52.990)
+Anillos: Duo Ring Gold Edition ($24.990), Pulse Control Remote ($38.990), Sensory Ring Classic ($18.990)
+Plug-ins: Crystal Base Jewel ($22.990), Noir Plug Luxe Set ($45.990), Vibro Plug Wireless ($56.990)
+Bombas de Vacío: Suction Pro Deluxe ($42.990), Rose Pump Luxe ($35.990), Power Pump Elite ($58.990)
+Aceites: Huile d Or Sensitivo ($18.990), Aphrodite Elixir Premium ($26.990), Noir Massage Ritual ($32.990)
+Ebooks VIP: El Grimorio de la Hora Cero ($9.990), Guía del Placer Femenino ($7.990), Juegos de Pareja VIP ($12.990)
+
+FUNCIONES CLAVE:
+1. Recomendar productos según lo que el cliente describe.
+2. Sugerir Sets VIP complementarios (ej: aceite + vibrador).
+3. Cuando el cliente quiera comprar o haya intención clara de adquirir un producto específico, incluye en tu respuesta AMBOS tags juntos:
+   - [MOSTRAR_BOTON_WA]
+   - [PRODUCTO:nombre exacto del producto recomendado]
+   Ejemplo: "...le escoltaré a nuestra línea privada. [MOSTRAR_BOTON_WA][PRODUCTO:Vibrador Serenity Pro]"
+   Si recomienda un Set VIP con varios productos, incluye el principal: [PRODUCTO:Noir Elegance Luxe + Huile d Or Sensitivo]
+
+RESTRICCIONES:
+- Respuestas CORTAS: máximo 3 oraciones.
+- NUNCA uses lenguaje explícito, vulgar o crudo.
+- Si el cliente duda, presenta el producto como una inversión en su bienestar.
+- Mantén siempre el misterio y la exclusividad del trato.
+- Precios siempre en pesos chilenos (CLP).`;
+
+function abrirLucien() {
+  const chat = document.getElementById('lucien-chat');
+  chat.classList.add('abierto');
+  lucienAbierto = true;
+  if (!lucienBienvenidaMostrada) {
+    lucienBienvenidaMostrada = true;
+    setTimeout(() => {
+      agregarMensajeLucien(
+        '✦ Bienvenida/o a Boutique VIP. Soy Lucien, su Concierge Privado. ¿En qué puedo guiarle hoy? ¿Busca algo para usted o como un obsequio especial?',
+        true
+      );
+    }, 400);
+  }
+  setTimeout(() => {
+    document.getElementById('lucien-input').focus();
+    scrollMensajes();
+  }, 450);
+}
+
+function cerrarLucien() {
+  document.getElementById('lucien-chat').classList.remove('abierto');
+  lucienAbierto = false;
+}
+
+function agregarMensajeLucien(texto, conSugerencias = false, mostrarBotonWA = false) {
+  const contenedor = document.getElementById('lucien-mensajes');
+
+  // Extraer nombre del producto si Lucien lo incluyó
+  let productoRecomendado = '';
+  const matchProducto = texto.match(/\[PRODUCTO:([^\]]+)\]/);
+  if (matchProducto) productoRecomendado = matchProducto[1].trim();
+
+  // Limpiar TODOS los tags internos antes de mostrar el texto
+  const textoLimpio = texto
+    .replace('[MOSTRAR_BOTON_WA]', '')
+    .replace(/\[PRODUCTO:[^\]]*\]/, '')
+    .trim();
+
+  let sugerenciasHTML = '';
+  if (conSugerencias) {
+    sugerenciasHTML = `
+      <div class="sugerencias-wrap">
+        <div class="chip-sugerencia" onclick="enviarRapido('Busco algo para mi')">Para mí</div>
+        <div class="chip-sugerencia" onclick="enviarRapido('Es un regalo para mi pareja')">Para mi pareja</div>
+        <div class="chip-sugerencia" onclick="enviarRapido('Ver los mas vendidos')">Más vendidos</div>
+        <div class="chip-sugerencia" onclick="enviarRapido('Cual es el mas economico')">Económicos</div>
+      </div>`;
+  }
+
+  let botonWAHTML = '';
+  if (mostrarBotonWA) {
+    // Construir mensaje WA con el producto específico recomendado por Lucien
+    const msgWA = productoRecomendado
+      ? `Hola, Lucien me recomendó "${productoRecomendado}" y deseo adquirirlo. ¿Pueden indicarme los detalles de entrega discreta?`
+      : `Hola, Lucien me asesoró y estoy listo/a para finalizar mi compra. ¿Pueden ayudarme con los detalles de entrega?`;
+    const linkWA = 'https://wa.me/56930347664?text=' + encodeURIComponent(msgWA);
+
+    botonWAHTML = `
+      <button class="lucien-btn-wa" onclick="window.open('${linkWA}', '_blank')">
+        <span>💬</span>
+        <span>${productoRecomendado ? '✦ Adquirir ' + productoRecomendado : 'Contactar a mi Asesor Personal'}</span>
+      </button>`;
+  }
+
+  const div = document.createElement('div');
+  div.className = 'msg-lucien';
+  div.innerHTML = `
+    <div class="msg-lucien-avatar">🥂</div>
+    <div class="msg-lucien-burbuja">
+      <div class="msg-lucien-nombre">Lucien · Concierge VIP</div>
+      <p>${textoLimpio}</p>
+      ${sugerenciasHTML}
+      ${botonWAHTML}
+    </div>`;
+  contenedor.appendChild(div);
+  scrollMensajes();
+}
+
+function agregarMensajeUsuario(texto) {
+  const contenedor = document.getElementById('lucien-mensajes');
+  const div = document.createElement('div');
+  div.className = 'msg-usuario';
+  div.innerHTML = `<div class="msg-usuario-burbuja"><p>${texto}</p></div>`;
+  contenedor.appendChild(div);
+  scrollMensajes();
+}
+
+function mostrarTyping() {
+  const contenedor = document.getElementById('lucien-mensajes');
+  const div = document.createElement('div');
+  div.className = 'msg-typing';
+  div.id = 'lucien-typing';
+  div.innerHTML = `
+    <div class="msg-lucien-avatar">🥂</div>
+    <div class="typing-dots"><span></span><span></span><span></span></div>`;
+  contenedor.appendChild(div);
+  scrollMensajes();
+}
+
+function quitarTyping() {
+  const t = document.getElementById('lucien-typing');
+  if (t) t.remove();
+}
+
+function scrollMensajes() {
+  const c = document.getElementById('lucien-mensajes');
+  setTimeout(() => c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }), 50);
+}
+
+function ajustarAltura(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function lucienKeyDown(evento) {
+  if (evento.key === 'Enter' && !evento.shiftKey) {
+    evento.preventDefault();
+    enviarMensaje();
+  }
+}
+
+function enviarRapido(texto) {
+  document.getElementById('lucien-input').value = texto;
+  enviarMensaje();
+}
+
+async function enviarMensaje() {
+  const input   = document.getElementById('lucien-input');
+  const btnSend = document.getElementById('lucien-send');
+  const texto   = input.value.trim();
+  if (!texto) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+
+  agregarMensajeUsuario(texto);
+  historialLucien.push({ role: 'user', content: texto });
+
+  btnSend.disabled = true;
+  mostrarTyping();
+
+  try {
+    // Lucien usa catálogo dinámico si el admin ha actualizado el stock
+    const systemActual = window.LUCIEN_CATALOG_OVERRIDE
+      ? LUCIEN_SYSTEM.replace(
+          /CATÁLOGO DISPONIBLE:[\s\S]*?FUNCIONES CLAVE/,
+          'CATÁLOGO DISPONIBLE:\n' + window.LUCIEN_CATALOG_OVERRIDE + '\n\nFUNCIONES CLAVE'
+        )
+      : LUCIEN_SYSTEM;
+
+    const respuesta = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemActual,
+        messages: historialLucien
+      })
+    });
+
+    const datos = await respuesta.json();
+    const textoRespuesta = datos.content
+      .filter(b => b.type === 'text')
+      .map(b => b.text)
+      .join('');
+
+    historialLucien.push({ role: 'assistant', content: textoRespuesta });
+    const mostrarWA = textoRespuesta.includes('[MOSTRAR_BOTON_WA]');
+
+    quitarTyping();
+    agregarMensajeLucien(textoRespuesta, false, mostrarWA);
+
+    // Guardar último producto recomendado para referencia
+    const matchProd = textoRespuesta.match(/\[PRODUCTO:([^\]]+)\]/);
+    if (matchProd) window.ultimoProductoLucien = matchProd[1].trim();
+
+  } catch (error) {
+    quitarTyping();
+    agregarMensajeLucien(
+      'Permítame un momento, estoy consultando con nuestro equipo especializado. ¿Podría contactarnos directamente por nuestra línea privada?',
+      false,
+      true
+    );
+    console.error('Error Lucien API:', error);
+  }
+
+  btnSend.disabled = false;
+}
+
+
+// =============================================
+// FASE 4 — FORMULARIO DE CONTACTO
+// =============================================
+
+function abrirContacto() {
+  document.getElementById('contacto-overlay').classList.add('activo');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarContacto(e) {
+  if (e.target === e.currentTarget) cerrarContactoDirecto();
+}
+
+function cerrarContactoDirecto() {
+  document.getElementById('contacto-overlay').classList.remove('activo');
+  document.body.style.overflow = '';
+}
+
+function enviarContacto() {
+  const nombre  = document.getElementById('cf-nombre').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const consulta = document.getElementById('cf-consulta').value.trim();
+
+  if (!nombre && !consulta) {
+    alert('Por favor, completa al menos tu nombre y consulta.');
+    return;
+  }
+
+  const partes = [];
+  if (nombre)  partes.push(`👤 Nombre: ${nombre}`);
+  if (email)   partes.push(`📧 Email: ${email}`);
+  if (consulta) partes.push(`💬 Consulta: ${consulta}`);
+
+  const texto = encodeURIComponent(
+    'Hola, les escribo desde la app de Boutique VIP:\n\n' + partes.join('\n')
+  );
+
+  window.open(`https://wa.me/56930347664?text=${texto}`, '_blank');
+  cerrarContactoDirecto();
+}
+
+// =============================================
+// FASE 5 — PANEL ADMINISTRATIVO
+// Se abre como overlay en la misma página
+// =============================================
+
+const ADMIN_PASS = 'luxetoy2024';
+
+function abrirAdmin() {
+  const pass = prompt('🔐 Contraseña de administrador:');
+  if (pass === null) return;
+  if (pass !== ADMIN_PASS) {
+    alert('Contraseña incorrecta.');
+    return;
+  }
+  mostrarPanelAdmin();
+}
+
+function mostrarPanelAdmin() {
+  // Si ya existe el overlay, solo mostrarlo
+  let overlay = document.getElementById('admin-overlay');
+  if (!overlay) {
+    overlay = crearAdminOverlay();
+    document.body.appendChild(overlay);
+  }
+  overlay.classList.add('activo');
+  document.body.style.overflow = 'hidden';
+  renderizarTablaAdmin();
+}
+
+function cerrarAdmin() {
+  document.getElementById('admin-overlay').classList.remove('activo');
+  document.body.style.overflow = '';
+}
+
+// ─── Crear el HTML del panel admin dinámicamente ─────────────────────────
+function crearAdminOverlay() {
+  const div = document.createElement('div');
+  div.id = 'admin-overlay';
+  div.style.cssText = `
+    display:none; position:fixed; inset:0; background:#1a0f08;
+    z-index:900; flex-direction:column; overflow:hidden;
+  `;
+  div.classList.add('activo');  // se quita al cerrar
+
+  // Aplicar display flex cuando activo
+  div.innerHTML = `
+    <style>
+      #admin-overlay { display:none; }
+      #admin-overlay.activo { display:flex !important; }
+
+      .adm-header {
+        background: linear-gradient(135deg, #2C1810, #4a2c1a);
+        padding: 16px 18px;
+        display: flex; align-items: center; justify-content: space-between;
+        border-bottom: 1px solid rgba(201,168,76,0.25);
+        flex-shrink: 0;
+      }
+      .adm-titulo {
+        font-family: 'Playfair Display', serif;
+        font-size: 18px; color: #C9A84C; font-weight:700;
+      }
+      .adm-subtitulo {
+        font-family: 'Cinzel', serif;
+        font-size: 8px; letter-spacing:2px;
+        color: rgba(201,168,76,0.5); text-transform:uppercase;
+      }
+      .adm-cerrar-btn {
+        background: rgba(255,255,255,0.08); border:1px solid rgba(201,168,76,0.2);
+        color: #C9A84C; width:36px; height:36px; border-radius:50%;
+        font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      }
+      .adm-tabs {
+        display:flex; background:#120a04; border-bottom:1px solid rgba(201,168,76,0.15);
+        flex-shrink:0;
+      }
+      .adm-tab {
+        flex:1; padding:12px; font-family:'Cinzel',serif; font-size:9px;
+        letter-spacing:2px; text-transform:uppercase; color:rgba(201,168,76,0.5);
+        background:none; border:none; cursor:pointer; border-bottom:2px solid transparent;
+        transition: all 0.2s;
+      }
+      .adm-tab.activo { color:#C9A84C; border-bottom-color:#C9A84C; }
+
+      .adm-cuerpo { flex:1; overflow-y:auto; padding:16px; background:#FDF6F0; }
+
+      /* Formulario agregar producto */
+      .adm-form-titulo {
+        font-family:'Playfair Display',serif; font-size:16px;
+        color:#2C1810; margin-bottom:14px; font-weight:600;
+      }
+      .adm-label {
+        font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px;
+        text-transform:uppercase; color:#9E7A2A; display:block; margin-bottom:5px;
+      }
+      .adm-input, .adm-select, .adm-textarea {
+        width:100%; font-family:'Lato',sans-serif; font-size:13px;
+        color:#2C1810; background:#fff; border:1.5px solid rgba(201,168,76,0.3);
+        border-radius:8px; padding:10px 12px; outline:none; margin-bottom:12px;
+        transition: border-color 0.2s;
+      }
+      .adm-input:focus, .adm-select:focus, .adm-textarea:focus {
+        border-color:#C9A84C;
+      }
+      .adm-textarea { resize:none; height:80px; }
+      .adm-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+      .adm-btn-guardar {
+        width:100%; background:linear-gradient(135deg,#C9A84C,#E8C96B);
+        color:#2C1810; border:none; padding:14px; border-radius:10px;
+        font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px;
+        text-transform:uppercase; cursor:pointer; margin-bottom:20px;
+        font-weight:600;
+      }
+      .adm-badge-ok { color:#16a34a; font-size:12px; }
+      .adm-badge-off { color:#dc2626; font-size:12px; }
+
+      /* Tabla de productos */
+      .adm-prod-card {
+        background:#fff; border-radius:12px; padding:14px;
+        margin-bottom:10px; box-shadow:0 2px 8px rgba(44,24,16,0.07);
+        border-left:3px solid #C9A84C;
+      }
+      .adm-prod-card.inactivo { border-left-color:#ccc; opacity:0.65; }
+      .adm-prod-nombre { font-family:'Playfair Display',serif; font-size:14px; color:#2C1810; font-weight:600; }
+      .adm-prod-cat { font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:#9E7A2A; }
+      .adm-prod-precio-wrap { display:flex; align-items:center; gap:8px; margin:8px 0; }
+      .adm-precio-input {
+        font-family:'Lato',serif; font-size:14px; color:#9E7A2A; font-weight:700;
+        border:none; border-bottom:1.5px dashed rgba(201,168,76,0.5); background:transparent;
+        width:120px; outline:none; padding:2px 4px;
+      }
+      .adm-precio-input:focus { border-bottom-color:#C9A84C; }
+      .adm-prod-acciones { display:flex; gap:8px; margin-top:10px; }
+      .adm-btn-toggle {
+        flex:1; padding:8px; border-radius:8px; border:1px solid rgba(201,168,76,0.3);
+        font-family:'Cinzel',serif; font-size:8px; letter-spacing:1.5px;
+        text-transform:uppercase; cursor:pointer; background:#FDF6F0; color:#5C3D2E;
+      }
+      .adm-btn-eliminar {
+        padding:8px 14px; border-radius:8px; border:1px solid rgba(220,38,38,0.3);
+        font-family:'Cinzel',serif; font-size:8px; letter-spacing:1.5px;
+        text-transform:uppercase; cursor:pointer; background:#fff5f5; color:#dc2626;
+      }
+      .adm-btn-guardar-precio {
+        padding:8px 14px; border-radius:8px; border:none;
+        background:linear-gradient(135deg,#C9A84C,#E8C96B);
+        font-family:'Cinzel',serif; font-size:8px; letter-spacing:1.5px;
+        text-transform:uppercase; cursor:pointer; color:#2C1810;
+      }
+      .adm-empty {
+        text-align:center; padding:40px 20px;
+        font-family:'Playfair Display',serif; color:#5C3D2E; opacity:0.5;
+      }
+      .adm-stats {
+        display:grid; grid-template-columns:1fr 1fr 1fr;
+        gap:10px; margin-bottom:16px;
+      }
+      .adm-stat-card {
+        background:#fff; border-radius:10px; padding:14px 10px; text-align:center;
+        box-shadow:0 2px 8px rgba(44,24,16,0.07);
+      }
+      .adm-stat-num { font-family:'Playfair Display',serif; font-size:22px; color:#C9A84C; font-weight:700; }
+      .adm-stat-label { font-family:'Cinzel',serif; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:#5C3D2E; opacity:0.6; }
+  
+    /* =============================================
+       FASE 6 — BANNER DE INSTALACIÓN PWA
+    ============================================= */
+    .pwa-banner {
+      position: fixed;
+      bottom: 80px; left: 12px; right: 12px;
+      z-index: 800;
+      background: linear-gradient(135deg, var(--marron), #4a2c1a);
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(44,24,16,0.4);
+      animation: slideUpBanner 0.5s ease 3s both;
+      transform: translateY(200px);
+    }
+
+    @keyframes slideUpBanner {
+      to { transform: translateY(0); }
+    }
+
+    .pwa-banner-icono {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .pwa-banner-texto { flex: 1; }
+
+    .pwa-banner-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      color: var(--dorado);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .pwa-banner-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+
+    .pwa-banner-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .pwa-btn-instalar {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--marron);
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .pwa-btn-cerrar {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      font-family: 'Lato', sans-serif;
+    }
+
+  </style>
+
+    <div class="adm-header">
+      <div>
+        <div class="adm-titulo">⚙️ Panel Admin</div>
+        <div class="adm-subtitulo">Boutique VIP · Control de Stock</div>
+      </div>
+      <button class="adm-cerrar-btn" onclick="cerrarAdmin()">✕</button>
+    </div>
+
+    <div class="adm-tabs">
+      <button class="adm-tab activo" onclick="cambiarTabAdmin('stock', this)">📦 Productos</button>
+      <button class="adm-tab" onclick="cambiarTabAdmin('agregar', this)">➕ Agregar</button>
+    </div>
+
+    <div class="adm-cuerpo">
+
+      <!-- TAB: STOCK (lista de productos) -->
+      <div id="adm-tab-stock">
+        <div class="adm-stats" id="adm-stats"></div>
+        <div id="adm-lista-productos"></div>
+      </div>
+
+      <!-- TAB: AGREGAR PRODUCTO -->
+      <div id="adm-tab-agregar" style="display:none;">
+        <div class="adm-form-titulo">✦ Nuevo Producto</div>
+
+        <label class="adm-label">Nombre del producto</label>
+        <input class="adm-input" id="adm-new-nombre" placeholder="Ej: Vibrador Rose Gold Luxe" />
+
+        <label class="adm-label">Categoría</label>
+        <select class="adm-select" id="adm-new-cat">
+          <option>Vibradores</option>
+          <option>Dildos</option>
+          <option>Anillos</option>
+          <option>Plug-ins</option>
+          <option>Bombas</option>
+          <option>Aceites</option>
+          <option>Ebooks</option>
+        </select>
+
+        <div class="adm-row">
+          <div>
+            <label class="adm-label">Precio (ej: $49.990)</label>
+            <input class="adm-input" id="adm-new-precio" placeholder="$49.990" />
+          </div>
+          <div>
+            <label class="adm-label">Ícono (emoji)</label>
+            <input class="adm-input" id="adm-new-icono" placeholder="✨" maxlength="4" />
+          </div>
+        </div>
+
+        <label class="adm-label">Foto del producto</label>
+        <div id="adm-imagen-preview" style="
+          width:100%; aspect-ratio:1/1; max-height:180px;
+          border:2px dashed rgba(201,168,76,0.4); border-radius:12px;
+          display:flex; flex-direction:column; align-items:center; justify-content:center;
+          background:#fff; cursor:pointer; margin-bottom:12px; overflow:hidden;
+          position:relative;" onclick="document.getElementById('adm-file-input').click()">
+          <div id="adm-preview-placeholder" style="text-align:center; padding:20px;">
+            <div style="font-size:36px; margin-bottom:8px;">📷</div>
+            <div style="font-family:'Cinzel',serif; font-size:9px; letter-spacing:2px;
+                        text-transform:uppercase; color:#9E7A2A;">
+              Tocar para elegir foto
+            </div>
+            <div style="font-size:11px; color:#ccc; margin-top:4px;">
+              Desde tu celular o computador
+            </div>
+          </div>
+          <img id="adm-preview-img" style="display:none; width:100%; height:100%; object-fit:cover;" />
+        </div>
+        <input type="file" id="adm-file-input" accept="image/*"
+               style="display:none;" onchange="cargarImagenAdmin(this)" />
+        <input type="hidden" id="adm-new-imagen" />
+
+        <label class="adm-label">Descripción corta</label>
+        <textarea class="adm-textarea" id="adm-new-desc" placeholder="Describa el producto con elegancia…"></textarea>
+
+        <label class="adm-label">Características (una por línea)</label>
+        <textarea class="adm-textarea" id="adm-new-caracts" placeholder="Silicona grado médico&#10;Impermeable IPX7&#10;Carga USB"></textarea>
+
+        <label class="adm-label">Badge</label>
+        <select class="adm-select" id="adm-new-badge">
+          <option value="">Sin badge</option>
+          <option value="exclusivo">✦ Exclusivo</option>
+          <option value="popular">⭐ Más vendido</option>
+        </select>
+
+        <button class="adm-btn-guardar" onclick="guardarNuevoProducto()">
+          ✦ Agregar al Catálogo
+        </button>
+      </div>
+
+    </div>
+  `;
+  return div;
+}
+
+// ─── Cambiar tab del admin ─────────────────────────────────────────────────
+function cambiarTabAdmin(tab, btn) {
+  document.querySelectorAll('.adm-tab').forEach(t => t.classList.remove('activo'));
+  btn.classList.add('activo');
+  document.getElementById('adm-tab-stock').style.display   = tab === 'stock'   ? 'block' : 'none';
+  document.getElementById('adm-tab-agregar').style.display = tab === 'agregar' ? 'block' : 'none';
+  if (tab === 'stock') renderizarTablaAdmin();
+}
+
+// ─── Cargar productos desde localStorage (o usar PRODUCTOS base) ───────────
+function cargarProductosAdmin() {
+  const guardados = localStorage.getItem('boutique_productos');
+  if (guardados) {
+    try { return JSON.parse(guardados); } catch(e) {}
+  }
+  // Primera vez: guardar los productos base en localStorage
+  localStorage.setItem('boutique_productos', JSON.stringify(PRODUCTOS));
+  return PRODUCTOS;
+}
+
+function guardarProductosLS(prods) {
+  localStorage.setItem('boutique_productos', JSON.stringify(prods));
+  // Actualizar el catálogo visible sin recargar
+  renderizarGrids(prods.filter(p => p.activo !== false), 'grid-inicio');
+  renderizarGrids(prods.filter(p => p.activo !== false), 'grid-catalogo');
+  // Actualizar system prompt de Lucien dinámicamente
+  actualizarLucienConstock(prods);
+}
+
+// ─── Renderizar lista de productos en admin ────────────────────────────────
+function renderizarTablaAdmin() {
+  const prods = cargarProductosAdmin();
+  const activos   = prods.filter(p => p.activo !== false).length;
+  const inactivos = prods.length - activos;
+
+  // Stats
+  document.getElementById('adm-stats').innerHTML = `
+    <div class="adm-stat-card">
+      <div class="adm-stat-num">${prods.length}</div>
+      <div class="adm-stat-label">Total</div>
+    </div>
+    <div class="adm-stat-card">
+      <div class="adm-stat-num" style="color:#16a34a">${activos}</div>
+      <div class="adm-stat-label">Activos</div>
+    </div>
+    <div class="adm-stat-card">
+      <div class="adm-stat-num" style="color:#dc2626">${inactivos}</div>
+      <div class="adm-stat-label">Ocultos</div>
+    </div>`;
+
+  if (prods.length === 0) {
+    document.getElementById('adm-lista-productos').innerHTML =
+      '<div class="adm-empty">Sin productos aún.<br/>Usa la pestaña ➕ Agregar.</div>';
+    return;
+  }
+
+  document.getElementById('adm-lista-productos').innerHTML = prods.map((p, i) => {
+    const inactivo = p.activo === false;
+    return `
+      <div class="adm-prod-card ${inactivo ? 'inactivo' : ''}" id="adm-card-${i}">
+        <div class="adm-prod-cat">${p.categoria}</div>
+        <div class="adm-prod-nombre">${p.icono || '✦'} ${p.nombre}</div>
+        <div class="adm-prod-precio-wrap">
+          <input class="adm-precio-input" id="precio-input-${i}"
+                 value="${p.precio}" />
+          <button class="adm-btn-guardar-precio" onclick="guardarPrecio(${i})">Guardar</button>
+          <span>${inactivo ? '<span class="adm-badge-off">● Oculto</span>' : '<span class="adm-badge-ok">● Activo</span>'}</span>
+        </div>
+        <div class="adm-prod-acciones">
+          <button class="adm-btn-toggle" onclick="toggleProducto(${i})">
+            ${inactivo ? '👁️ Activar' : '🙈 Ocultar'}
+          </button>
+          <button class="adm-btn-eliminar" onclick="eliminarProducto(${i})">🗑️ Eliminar</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ─── Guardar precio editado ────────────────────────────────────────────────
+function guardarPrecio(idx) {
+  const prods = cargarProductosAdmin();
+  const nuevoPrecio = document.getElementById(`precio-input-${idx}`).value.trim();
+  if (!nuevoPrecio) return;
+  prods[idx].precio = nuevoPrecio;
+  guardarProductosLS(prods);
+  renderizarTablaAdmin();
+  mostrarToast('✅ Precio actualizado');
+}
+
+// ─── Activar / Ocultar producto ────────────────────────────────────────────
+function toggleProducto(idx) {
+  const prods = cargarProductosAdmin();
+  prods[idx].activo = prods[idx].activo === false ? true : false;
+  guardarProductosLS(prods);
+  renderizarTablaAdmin();
+  mostrarToast(prods[idx].activo === false ? '🙈 Producto ocultado' : '✅ Producto activado');
+}
+
+// ─── Eliminar producto ─────────────────────────────────────────────────────
+function eliminarProducto(idx) {
+  const prods = cargarProductosAdmin();
+  const nombre = prods[idx].nombre;
+  if (!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
+  prods.splice(idx, 1);
+  guardarProductosLS(prods);
+  renderizarTablaAdmin();
+  mostrarToast('🗑️ Producto eliminado');
+}
+
+// ─── Guardar nuevo producto ────────────────────────────────────────────────
+function guardarNuevoProducto() {
+  const nombre  = document.getElementById('adm-new-nombre').value.trim();
+  const cat     = document.getElementById('adm-new-cat').value;
+  const precio  = document.getElementById('adm-new-precio').value.trim();
+  const icono   = document.getElementById('adm-new-icono').value.trim() || '✦';
+  const imagen  = document.getElementById('adm-new-imagen').value.trim();
+  const desc    = document.getElementById('adm-new-desc').value.trim();
+  const caracts = document.getElementById('adm-new-caracts').value.trim()
+                    .split('\n').filter(l => l.trim());
+  const badge   = document.getElementById('adm-new-badge').value;
+
+  if (!nombre || !precio) {
+    alert('El nombre y el precio son obligatorios.');
+    return;
+  }
+
+  const prods = cargarProductosAdmin();
+  const nuevoId = Math.max(...prods.map(p => p.id), 0) + 1;
+
+  const nuevoProd = {
+    id: nuevoId, nombre, categoria: cat, precio,
+    descripcion: desc || 'Pieza exclusiva de Boutique VIP.',
+    badge: badge || null, icono, imagen: imagen || null,
+    caracteristicas: caracts.length ? caracts : ['Calidad premium garantizada'],
+    activo: true
+  };
+
+  prods.push(nuevoProd);
+  guardarProductosLS(prods);
+
+  // Limpiar formulario
+  ['adm-new-nombre','adm-new-precio','adm-new-icono','adm-new-imagen',
+   'adm-new-desc','adm-new-caracts'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('adm-new-badge').value = '';
+  limpiarPreviewImagen();
+
+  mostrarToast('✅ Producto agregado al catálogo');
+
+  // Ir a pestaña de stock
+  document.querySelectorAll('.adm-tab')[0].click();
+}
+
+// ─── Toast de confirmación ─────────────────────────────────────────────────
+function mostrarToast(msg) {
+  let toast = document.getElementById('adm-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'adm-toast';
+    toast.style.cssText = `
+      position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+      background:#2C1810; color:#C9A84C; font-family:'Cinzel',serif;
+      font-size:11px; letter-spacing:1.5px; padding:10px 22px;
+      border-radius:20px; border:1px solid rgba(201,168,76,0.3);
+      z-index:9999; opacity:0; transition:opacity 0.3s;
+      white-space:nowrap;`;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+}
+
+// ─── Lucien lee el stock dinámico del localStorage ─────────────────────────
+function actualizarLucienConstock(prods) {
+  const activos = prods.filter(p => p.activo !== false);
+  const porCategoria = {};
+  activos.forEach(p => {
+    if (!porCategoria[p.categoria]) porCategoria[p.categoria] = [];
+    porCategoria[p.categoria].push(`${p.nombre} (${p.precio})`);
+  });
+
+  const catalogoTexto = Object.entries(porCategoria)
+    .map(([cat, items]) => `${cat}: ${items.join(', ')}`)
+    .join('\n');
+
+  // Reemplazar sección de catálogo en LUCIEN_SYSTEM dinámicamente
+  window.LUCIEN_SYSTEM_BASE = window.LUCIEN_SYSTEM_BASE || LUCIEN_SYSTEM;
+  window.LUCIEN_CATALOG_OVERRIDE = catalogoTexto;
+}
+
+// Override de LUCIEN_SYSTEM para leer catálogo dinámico
+// (se inyecta al hacer fetch, ver enviarMensaje())
+
+
+// =============================================
+// FASE 6 — PWA: SERVICE WORKER + INSTALACIÓN
+// =============================================
+
+// Registrar el Service Worker (hace la app funcionar offline)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
+      .catch(err => console.log('⚠️ SW error:', err));
+  });
+}
+
+// Capturar el evento de instalación del navegador
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Mostrar banner de instalación después de 4 segundos
+  setTimeout(() => {
+    const banner = document.getElementById('pwa-banner');
+    if (banner && !localStorage.getItem('pwa-descartado')) {
+      banner.style.display = 'flex';
+    }
+  }, 4000);
+});
+
+// Botón "Instalar" en el banner
+document.getElementById('pwa-btn-instalar')?.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    cerrarBannerPWA();
+    mostrarToast('✅ ¡Boutique VIP instalada!');
+  }
+  deferredPrompt = null;
+});
+
+function cerrarBannerPWA() {
+  const banner = document.getElementById('pwa-banner');
+  if (banner) banner.style.display = 'none';
+  localStorage.setItem('pwa-descartado', '1');
+}
+
+// Cuando ya está instalada como app
+window.addEventListener('appinstalled', () => {
+  mostrarToast('✦ Boutique VIP instalada con éxito');
+  deferredPrompt = null;
+});
+
+
+</script>
+
+
+<!-- =============================================
+     FASE 6 — BANNER PWA (instalar en celular)
+============================================= -->
+<div class="pwa-banner" id="pwa-banner" style="display:none;">
+  <div class="pwa-banner-icono">📲</div>
+  <div class="pwa-banner-texto">
+    <div class="pwa-banner-titulo">Instalar Boutique VIP</div>
+    <div class="pwa-banner-sub">Agrégala a tu pantalla de inicio como una app</div>
+  </div>
+  <div class="pwa-banner-btns">
+    <button class="pwa-btn-instalar" id="pwa-btn-instalar">Instalar</button>
+    <button class="pwa-btn-cerrar" onclick="cerrarBannerPWA()">Ahora no</button>
+  </div>
+</div>
+
+
+<script>
+// =============================================
+// REGISTRO DEL SERVICE WORKER (Fase 6)
+// Hace que la app funcione offline e instalable
+// =============================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('[PWA] Service Worker registrado ✅', reg.scope))
+      .catch(err => console.log('[PWA] Error SW:', err));
+  });
+}
+
+// =============================================
+// BANNER DE INSTALACIÓN
+// Aparece automáticamente en Android (Chrome)
+// En iPhone mostramos instrucción manual
+// =============================================
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  mostrarBannerInstalar();
+});
+
+function mostrarBannerInstalar() {
+  // Crear banner solo si no existe
+  if (document.getElementById('banner-instalar')) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'banner-instalar';
+  banner.style.cssText = `
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9998;
+    background: linear-gradient(135deg, #2C1810, #4a2c1a);
+    border-bottom: 1px solid rgba(201,168,76,0.4);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    animation: slideDownBanner 0.4s ease;
+    box-shadow: 0 4px 20px rgba(44,24,16,0.4);
+  `;
+  banner.innerHTML = `
+    <style>
+      @keyframes slideDownBanner {
+        from { transform: translateY(-100%); }
+        to   { transform: translateY(0); }
+      }
+    </style>
+    <span style="font-size:24px;">🥂</span>
+    <div style="flex:1;">
+      <div style="font-family:'Playfair Display',serif; color:#C9A84C; font-size:13px; font-weight:600;">
+        Instalar Boutique VIP
+      </div>
+      <div style="font-family:'Lato',sans-serif; color:rgba(255,255,255,0.6); font-size:11px;">
+        Accede rápido desde tu pantalla de inicio
+      </div>
+    </div>
+    <button onclick="instalarApp()" style="
+      background: linear-gradient(135deg,#C9A84C,#E8C96B);
+      color:#2C1810; border:none; padding:8px 16px; border-radius:6px;
+      font-family:'Cinzel',serif; font-size:9px; letter-spacing:1.5px;
+      text-transform:uppercase; cursor:pointer; font-weight:600;
+    ">Instalar</button>
+    <button onclick="cerrarBanner()" style="
+      background:none; border:none; color:rgba(255,255,255,0.4);
+      font-size:20px; cursor:pointer; padding:0 4px; line-height:1;
+    ">✕</button>
+  `;
+  document.body.prepend(banner);
+}
+
+function instalarApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(result => {
+    if (result.outcome === 'accepted') {
+      cerrarBanner();
+      mostrarToast('✅ ¡App instalada con éxito!');
+    }
+    deferredPrompt = null;
+  });
+}
+
+function cerrarBanner() {
+  const b = document.getElementById('banner-instalar');
+  if (b) b.remove();
+}
+
+// ─── iPhone: detectar si están en Safari y no en modo app ─────────────────
+const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const esModoApp = window.navigator.standalone === true;
+
+if (esIOS && !esModoApp) {
+  // Mostrar instrucción manual para iPhone después de 3 segundos
+  setTimeout(() => {
+    if (document.getElementById('banner-instalar')) return; // ya hay uno
+    const banner = document.createElement('div');
+    banner.id = 'banner-instalar';
+    banner.style.cssText = `
+      position: fixed; bottom: 80px; left: 12px; right: 12px; z-index: 9998;
+      background: linear-gradient(135deg, #2C1810, #4a2c1a);
+      border: 1px solid rgba(201,168,76,0.4); border-radius: 14px;
+      padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;
+      box-shadow: 0 8px 32px rgba(44,24,16,0.5);
+      animation: slideUpBanner 0.4s ease;
+    `;
+    banner.innerHTML = `
+      <style>
+        @keyframes slideUpBanner {
+          from { transform: translateY(20px); opacity:0; }
+          to   { transform: translateY(0); opacity:1; }
+        }
+      </style>
+      <span style="font-size:22px; flex-shrink:0;">📲</span>
+      <div style="flex:1;">
+        <div style="font-family:'Playfair Display',serif; color:#C9A84C; font-size:13px; font-weight:600; margin-bottom:4px;">
+          Instalar en iPhone
+        </div>
+        <div style="font-family:'Lato',sans-serif; color:rgba(255,255,255,0.65); font-size:12px; line-height:1.5;">
+          Toca <strong style="color:#C9A84C;">Compartir</strong> (el ícono cuadrado con flecha ↑)<br/>
+          luego <strong style="color:#C9A84C;">"Agregar a pantalla de inicio"</strong>
+        </div>
+      </div>
+      <button onclick="cerrarBanner()" style="
+        background:none; border:none; color:rgba(255,255,255,0.4);
+        font-size:20px; cursor:pointer; flex-shrink:0; line-height:1;
+      ">✕</button>
+    `;
+    document.body.appendChild(banner);
+
+    // Se cierra solo en 8 segundos
+    setTimeout(cerrarBanner, 8000);
+  }, 3000);
+}
+// =============================================
+// SUBIR IMAGEN DESDE EL DISPOSITIVO
+// Convierte la foto a base64 y la guarda local
+// =============================================
+function cargarImagenAdmin(input) {
+  const archivo = input.files[0];
+  if (!archivo) return;
+
+  // Verificar que sea imagen
+  if (!archivo.type.startsWith('image/')) {
+    alert('Por favor selecciona una imagen.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+
+    // Mostrar preview
+    const img = document.getElementById('adm-preview-img');
+    const placeholder = document.getElementById('adm-preview-placeholder');
+    img.src = base64;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+
+    // Guardar en el campo oculto
+    document.getElementById('adm-new-imagen').value = base64;
+  };
+  reader.readAsDataURL(archivo);
+}
+
+// Limpiar preview al cambiar de tab o guardar
+function limpiarPreviewImagen() {
+  const img = document.getElementById('adm-preview-img');
+  const placeholder = document.getElementById('adm-preview-placeholder');
+  if (img) { img.src = ''; img.style.display = 'none'; }
+  if (placeholder) placeholder.style.display = 'block';
+  const campo = document.getElementById('adm-new-imagen');
+  if (campo) campo.value = '';
+  const input = document.getElementById('adm-file-input');
+  if (input) input.value = '';
+}
+
+
+</script>
+
+</body>
+</html>
