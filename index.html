@@ -3252,11 +3252,28 @@ window.addEventListener('appinstalled', () => {
 // Hace que la app funcione offline e instalable
 // =============================================
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('[PWA] Service Worker registrado ✅', reg.scope))
-      .catch(err => console.log('[PWA] Error SW:', err));
-  });
+  // Service Worker inline — no depende de archivo externo
+  const swCode = `
+    const CACHE = 'boutique-vip-v1';
+    const ARCHIVOS = ['./'];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARCHIVOS).catch(()=>{})));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      if (e.request.url.includes('api.anthropic.com') || e.request.url.includes('wa.me')) return;
+      e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)).catch(() => caches.match('./')));
+    });
+  `;
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl)
+    .then(reg => console.log('[PWA] SW registrado ✅'))
+    .catch(err => console.log('[PWA] SW no disponible:', err));
 }
 
 // =============================================
@@ -3264,7 +3281,7 @@ if ('serviceWorker' in navigator) {
 // Aparece automáticamente en Android (Chrome)
 // En iPhone mostramos instrucción manual
 // =============================================
-let deferredPrompt = null;
+deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
