@@ -2252,8 +2252,9 @@ function filtrarCategoria(cat, elementoClicado) {
   document.querySelectorAll('#filtros-inicio .chip-categoria').forEach(c => c.classList.remove('activo'));
   elementoClicado.classList.add('activo');
 
-  // Filtrar y renderizar
-  const filtrados = cat === 'Todos' ? PRODUCTOS : PRODUCTOS.filter(p => p.categoria === cat);
+  // Filtrar y renderizar - USAR cargarProductosAdmin() para leer del localStorage
+  const prods = cargarProductosAdmin();
+  const filtrados = cat === 'Todos' ? prods : prods.filter(p => p.categoria === cat);
   renderizarGrids(filtrados, 'grid-inicio');
 }
 
@@ -2263,7 +2264,9 @@ function filtrarCategoria(cat, elementoClicado) {
 function filtrarCatalogo(cat, elementoClicado) {
   document.querySelectorAll('#filtros-catalogo .chip-categoria').forEach(c => c.classList.remove('activo'));
   elementoClicado.classList.add('activo');
-  const filtrados = cat === 'Todos' ? PRODUCTOS : PRODUCTOS.filter(p => p.categoria === cat);
+  // Filtrar y renderizar - USAR cargarProductosAdmin() para leer del localStorage
+  const prods = cargarProductosAdmin();
+  const filtrados = cat === 'Todos' ? prods : prods.filter(p => p.categoria === cat);
   renderizarGrids(filtrados, 'grid-catalogo');
 }
 
@@ -2282,7 +2285,9 @@ function abrirWA(evento, nombreProducto) {
 // FUNCIÓN: Abrir modal de detalle de producto
 // =============================================
 function abrirModal(idProducto) {
-  const prod = PRODUCTOS.find(p => p.id === idProducto);
+  // USAR cargarProductosAdmin() para leer del localStorage
+  const prods = cargarProductosAdmin();
+  const prod = prods.find(p => p.id === idProducto);
   if (!prod) return;
 
   // Mostrar imagen en modal si existe
@@ -2568,16 +2573,20 @@ async function enviarMensaje() {
         )
       : LUCIEN_SYSTEM;
 
-    const respuesta = await fetch('https://api.anthropic.com/v1/messages', {
+    // LLAMAR AL BACKEND (en lugar de la API directa por seguridad)
+    const respuesta = await fetch('/api/lucien', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
         system: systemActual,
         messages: historialLucien
       })
     });
+    
+    // Si el backend no está disponible, mostrar mensaje de error
+    if (!respuesta.ok) {
+      throw new Error(`Error del servidor: ${respuesta.status}`);
+    }
 
     const datos = await respuesta.json();
     const textoRespuesta = datos.content
