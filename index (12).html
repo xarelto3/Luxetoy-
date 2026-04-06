@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LuxeToy · Boutique VIP</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080808;--bg2:#0e0e0e;--bg3:#141414;--border:#1e1e1e;--border2:#2a2622;--gold:#c4a046;--goldD:#8a6d2e;--goldL:#f0d080;--cream:#f5e9cc;--text:#e8dfc8;--muted:#6b6050;--success:#3a7a4a;--error:#8b2020;}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Raleway',sans-serif}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0d0d0d}::-webkit-scrollbar-thumb{background:var(--goldD);border-radius:2px}
+button,input,textarea,select{font-family:'Raleway',sans-serif;outline:none}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fade-up{animation:fadeUp 0.5s cubic-bezier(.22,.68,0,1.2) both}
+.fade-in{animation:fadeIn 0.3s ease both}
+.gold-text{background:linear-gradient(90deg,var(--gold),var(--goldL),var(--gold),#9a7a30,var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;font-style:italic;}
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-box{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;position:relative;}
+.logo-box::before{content:'';position:absolute;inset:-4px;border:1px solid var(--goldD);opacity:0.4}
+.logo-lt{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);font-weight:600}
+.logo-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);font-weight:600;letter-spacing:0.15em;line-height:1}
+.logo-sub{font-size:9px;color:var(--goldD);letter-spacing:0.3em;line-height:1;margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-link{background:none;border:none;cursor:pointer;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:4px 0;position:relative;transition:color 0.2s;}
+.nav-link::after{content:'';position:absolute;bottom:-3px;left:50%;right:50%;height:1px;background:var(--gold);transition:left 0.25s,right 0.25s}
+.nav-link:hover,.nav-link.active{color:var(--gold)}.nav-link:hover::after,.nav-link.active::after{left:0;right:0}
+#cart-btn{background:transparent;border:1px solid var(--border);width:38px;height:38px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s;}
+#cart-btn:hover,#cart-btn.active{border-color:var(--gold);background:rgba(196,160,70,0.08)}
+#cart-count{position:absolute;top:-7px;right:-7px;background:var(--gold);color:var(--bg);width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:700;display:none;align-items:center;justify-content:center;}
+.gold-line{height:1px;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold) 70%,transparent);opacity:0.35}
+.view{display:none}.view.active{display:block}
+#hero{min-height:88vh;background:radial-gradient(ellipse 70% 50% at 50% 40%,#1a1208,var(--bg) 70%),repeating-linear-gradient(0deg,transparent,transparent 39px,#0f0f0f 39px,#0f0f0f 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,#0f0f0f 39px,#0f0f0f 40px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;position:relative;overflow:hidden;}
+.hero-ring{position:absolute;border-radius:50%;pointer-events:none;border:1px solid rgba(196,160,70,0.05);top:50%;left:50%;transform:translate(-50%,-50%);}
+.btn{border:none;cursor:pointer;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:12px 28px;transition:all 0.2s;}
+.btn:active{transform:scale(0.97)}.btn-gold{background:var(--gold);color:var(--bg)}.btn-gold:hover{background:var(--goldL)}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--gold)}.btn-outline:hover{border-color:var(--gold)}
+.btn-sm{padding:7px 16px;font-size:9px}.btn-full{width:100%}
+#stats{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:22px 0;display:flex;justify-content:center;gap:clamp(24px,6vw,64px);flex-wrap:wrap;}
+.section-head{text-align:center;margin-bottom:44px}.section-sup{font-size:9px;color:var(--goldD);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:10px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--cream);font-weight:300}.section-line{width:36px;height:1px;background:var(--gold);margin:14px auto 0}
+.cat-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 18px;cursor:pointer;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;transition:all 0.2s;}
+.cat-btn:hover,.cat-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(196,160,70,0.08)}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;max-width:1180px;margin:0 auto;padding:0 24px 60px;}
+.pcard{background:var(--bg2);border:1px solid var(--border);cursor:pointer;display:flex;flex-direction:column;overflow:hidden;transition:transform 0.3s cubic-bezier(.22,.68,0,1.2),box-shadow 0.3s ease;}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.7),0 0 25px rgba(196,160,70,.08)}
+.pcard-img{height:160px;background:linear-gradient(135deg,#0e0e0e,#1a1510);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;font-size:52px;}
+.pcard-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.92}
+.pcard-top{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.pcard-badges{position:absolute;top:9px;left:9px;display:flex;gap:4px;flex-wrap:wrap;z-index:2}
+.badge{font-size:8px;font-weight:500;letter-spacing:0.2em;padding:2px 7px;text-transform:uppercase}
+.badge-gold{border:1px solid var(--gold);color:var(--gold)}.badge-gray{border:1px solid var(--border2);color:var(--muted)}
+.pcard-body{padding:14px 16px 16px;flex-grow:1;display:flex;flex-direction:column;gap:8px}
+.pcard-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);font-weight:600;line-height:1.2}
+.pcard-sub{font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
+.pcard-add{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:9px;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;width:100%;transition:all 0.3s;}
+.pcard-add:hover{background:rgba(196,160,70,0.1)}.pcard-add.added{background:rgba(196,160,70,0.15);border-color:var(--goldD);color:var(--goldD)}
+.search-wrap{max-width:340px;margin:0 auto;position:relative}
+.search-wrap span{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px}
+.search-input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:9px 12px 9px 34px;font-size:11px;transition:border-color 0.2s;}
+.search-input:focus{border-color:var(--goldD)}
+#filter-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:28px;position:sticky;top:62px;z-index:10;}
+.detail-back{background:none;border:none;cursor:pointer;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:32px;display:block;transition:color 0.2s;}
+.detail-back:hover{color:var(--gold)}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:40px;align-items:start}
+.detail-img{border:1px solid var(--border);overflow:hidden;position:relative;height:340px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0e0e0e,#1a1510);font-size:80px;}
+.detail-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.qty-box{display:flex;border:1px solid var(--border)}
+.qty-btn{width:32px;height:32px;background:transparent;border:none;color:var(--gold);font-size:16px;cursor:pointer}
+.qty-n{width:40px;text-align:center;line-height:32px;font-size:13px;color:var(--cream)}
+.detail-add{width:100%;padding:13px;background:var(--gold);border:none;color:var(--bg);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all 0.3s;margin-bottom:14px;}
+.detail-add:hover{background:var(--goldL)}.detail-add.added{background:var(--goldD)}
+.cart-item{background:var(--bg2);border:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:2px;}
+.cart-thumb{width:52px;height:52px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;position:relative;}
+.cart-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cart-summary{background:var(--bg2);border:1px solid var(--border);padding:22px;max-width:340px;margin-left:auto;margin-top:20px;}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.gold-divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-bottom:14px}
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
+.form-label{font-size:9px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase}
+.form-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 12px;font-size:12px;transition:border-color 0.2s;width:100%;}
+.form-input:focus{border-color:var(--goldD)}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.pay-methods{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+@media(max-width:500px){.pay-methods{grid-template-columns:repeat(2,1fr)}}
+.pay-method{padding:10px 4px;text-align:center;background:transparent;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;}
+.pay-method:hover,.pay-method.active{border-color:var(--gold);background:rgba(196,160,70,0.08)}
+.pay-icon{font-size:18px;margin-bottom:3px;display:block}.pay-label{font-size:8px;color:var(--muted);letter-spacing:0.1em}
+.pay-method.active .pay-label{color:var(--gold)}
+.transfer-box{background:var(--bg2);border:1px solid var(--border);padding:18px}
+.checkout-grid{display:grid;grid-template-columns:1fr minmax(220px,290px);gap:24px;align-items:start}
+@media(max-width:640px){.checkout-grid{grid-template-columns:1fr}}
+.step-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all 0.3s;}
+.step-circle.active{border:1px solid var(--gold);background:rgba(196,160,70,0.1);color:var(--gold)}
+.step-circle.inactive{border:1px solid var(--border);color:var(--muted)}
+.spinner{animation:spin 0.8s linear infinite;border:2px solid rgba(196,160,70,0.2);border-top-color:var(--gold);border-radius:50%;width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:7px}
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:200;width:54px;height:54px;border-radius:50%;background:#25D366;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(37,211,102,0.4);transition:transform 0.2s;animation:pulse 2s infinite;}
+.wa-float:hover{transform:scale(1.1)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--gold);color:var(--cream);padding:10px 20px;font-size:11px;letter-spacing:0.1em;z-index:500;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1}
+.guarantees{background:linear-gradient(90deg,var(--bg),#120f08 50%,var(--bg));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 24px;}
+.guarantees-grid{max-width:820px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:24px;text-align:center}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:32px;align-items:start}
+.contact-form{background:var(--bg2);border:1px solid var(--border);padding:26px;display:flex;flex-direction:column;gap:13px}
+#footer{border-top:1px solid var(--border);background:var(--bg2);padding:32px 24px;text-align:center}
+.footer-links{margin-top:10px;display:flex;justify-content:center;gap:16px;font-size:8px;color:var(--goldD);letter-spacing:0.15em}
+.footer-links span{cursor:pointer;transition:color 0.2s}.footer-links span:hover{color:var(--gold)}
+.mp-box{background:linear-gradient(135deg,#1a1800,#0e0e0a);border:1px solid #4a3e00;padding:18px;margin-bottom:13px}
+.mp-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.mp-opt{padding:14px 10px;text-align:center;background:transparent;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;}
+.mp-opt:hover,.mp-opt.active{border-color:#c8b800;background:rgba(255,230,0,0.04)}
+
+/* ═══════ ADMIN STYLES ═══════ */
+.admin-overlay{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column;overflow-y:auto;}
+.admin-overlay.open{display:flex;}
+.admin-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.admin-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
+.admin-tab{padding:11px 20px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;background:transparent;border:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;}
+.admin-tab:hover,.admin-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.admin-body{flex:1;max-width:1060px;margin:0 auto;padding:24px;width:100%;}
+.admin-table-head{display:grid;grid-template-columns:46px 1fr 110px 80px 66px 66px 130px;gap:8px;padding:7px 12px;background:var(--bg3);border:1px solid var(--border);margin-bottom:2px;}
+.admin-row{display:grid;grid-template-columns:46px 1fr 110px 80px 66px 66px 130px;gap:8px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:2px;align-items:center;transition:opacity 0.2s;}
+.admin-row.inactive{opacity:0.5;}
+.tog-btn{padding:3px 8px;font-size:8px;letter-spacing:0.1em;cursor:pointer;border:none;transition:all 0.2s;}
+.tog-on{background:rgba(58,122,74,0.15);border:1px solid var(--success)!important;color:var(--success);}
+.tog-off{background:rgba(139,32,32,0.1);border:1px solid var(--error)!important;color:var(--error);}
+.tog-vip-on{background:rgba(196,160,70,0.12);border:1px solid var(--gold)!important;color:var(--gold);}
+.tog-vip-off{background:transparent;border:1px solid var(--border)!important;color:var(--muted);}
+.stat-card{background:var(--bg2);border:1px solid var(--border);padding:18px 20px;}
+.admin-modal{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:600;display:none;align-items:center;justify-content:center;padding:20px;}
+.admin-modal.open{display:flex;}
+.admin-modal-box{background:var(--bg2);border:1px solid var(--border);padding:28px 26px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;animation:fadeUp 0.3s cubic-bezier(.22,.68,0,1.2);}
+.emoji-pick{display:flex;gap:5px;flex-wrap:wrap;}
+.emoji-btn{font-size:18px;width:36px;height:36px;background:transparent;border:1px solid var(--border);cursor:pointer;transition:all 0.15s;}
+.emoji-btn:hover,.emoji-btn.sel{background:rgba(196,160,70,0.12);border-color:var(--gold);}
+.img-drop{border:2px dashed var(--border2);padding:20px 16px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.img-drop:hover,.img-drop.drag{border-color:var(--gold);background:rgba(196,160,70,0.04);}
+.img-preview-box{width:110px;height:110px;border:2px solid var(--border);overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+.img-preview-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.cat-row{background:var(--bg2);border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:2px;}
+.pin-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg);}
+.pin-box{background:var(--bg2);border:1px solid var(--border);padding:40px 36px;width:100%;max-width:320px;text-align:center;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo" onclick="showView('home')">
+    <div class="logo-box"><span class="logo-lt">LT</span></div>
+    <div><div class="logo-name">LUXETOY</div><div class="logo-sub">VIP BOUTIQUE</div></div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showView('home')">Inicio</button>
+    <button class="nav-link" onclick="showView('catalog')">Colección</button>
+    <button class="nav-link" onclick="showView('contact')">Contacto</button>
+    <button id="cart-btn" onclick="showView('cart')">🛒<span id="cart-count">0</span></button>
+    <button onclick="openAdmin()" title="Admin" style="background:transparent;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;margin-left:4px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">⚙</button>
+  </div>
+</nav>
+<div class="gold-line"></div>
+<div id="toast"></div>
+<a href="https://wa.me/56930347664" target="_blank"><button class="wa-float">💬</button></a>
+
+<!-- HOME -->
+<div id="home-view" class="view active">
+  <div id="hero">
+    <div class="hero-ring" style="width:280px;height:280px"></div>
+    <div class="hero-ring" style="width:440px;height:440px;border-color:rgba(196,160,70,0.03)"></div>
+    <div class="hero-ring" style="width:600px;height:600px;border-color:rgba(196,160,70,0.015)"></div>
+    <div class="fade-up">
+      <div style="font-size:9px;color:var(--goldD);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:18px">Boutique íntima de lujo · Chile</div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(42px,8vw,82px);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:8px">Descubre el<br><span class="gold-text">Placer de Élite</span></h1>
+      <p style="font-size:13px;color:var(--muted);max-width:440px;margin:18px auto 30px;line-height:1.8">Selección curada de productos íntimos premium. Discreción absoluta · Envío express · Experiencia VIP garantizada.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="showView('catalog')">Explorar Colección</button>
+        <a href="https://wa.me/56930347664" target="_blank"><button class="btn btn-outline">Asesoría VIP 💬</button></a>
+      </div>
+    </div>
+  </div>
+  <div id="stats">
+    <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600">2.400+</div><div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-top:2px">Clientes VIP</div></div>
+    <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600">100%</div><div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-top:2px">Envío Discreto</div></div>
+    <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600">4.9★</div><div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-top:2px">Calificación</div></div>
+    <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600">48h</div><div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-top:2px">Despacho Express</div></div>
+  </div>
+  <div style="max-width:1060px;margin:0 auto;padding:56px 24px">
+    <div class="section-head"><div class="section-sup">Más Vendidos</div><h2 class="section-title">Lo más <em>deseado</em></h2><div class="section-line"></div></div>
+    <div class="product-grid" id="featured-grid"></div>
+    <div style="text-align:center;margin-top:28px"><button class="btn btn-outline" onclick="showView('catalog')">Ver Colección Completa →</button></div>
+  </div>
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 24px">
+    <div class="section-head" style="margin-bottom:28px"><div class="section-sup">Explorar por</div><h2 class="section-title">Categorías</h2><div class="section-line"></div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center" id="cats-strip"></div>
+  </div>
+  <div class="guarantees">
+    <div class="guarantees-grid">
+      <div><div style="font-size:24px;margin-bottom:7px">🔒</div><div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px">Privacidad Total</div><div style="font-size:11px;color:var(--muted)">Pago y datos 100% seguros</div></div>
+      <div><div style="font-size:24px;margin-bottom:7px">📦</div><div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px">Packaging Neutro</div><div style="font-size:11px;color:var(--muted)">Sin marcas visibles</div></div>
+      <div><div style="font-size:24px;margin-bottom:7px">💳</div><div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px">Cargo Discreto</div><div style="font-size:11px;color:var(--muted)">Anónimo en tu resumen</div></div>
+      <div><div style="font-size:24px;margin-bottom:7px">↩️</div><div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px">30 Días</div><div style="font-size:11px;color:var(--muted)">Devolución sin preguntas</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CATALOG -->
+<div id="catalog-view" class="view">
+  <div style="padding:40px 24px 24px;text-align:center">
+    <div class="section-head" style="margin-bottom:20px"><div class="section-sup">Boutique LuxeToy</div><h2 class="section-title">La <em>Colección</em></h2><div class="section-line"></div></div>
+    <div class="search-wrap"><span>🔍</span><input class="search-input" id="search-input" placeholder="Buscar productos..." oninput="renderCatalog()"/></div>
+  </div>
+  <div id="filter-bar">
+    <div style="display:flex;gap:4px;flex-wrap:wrap" id="cat-filters"></div>
+    <select id="sort-select" style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:6px 10px;font-size:9px;cursor:pointer" onchange="renderCatalog()">
+      <option value="featured">Destacados</option><option value="price-asc">Precio ↑</option><option value="price-desc">Precio ↓</option><option value="rating">Mejor valorados</option>
+    </select>
+  </div>
+  <div class="product-grid" id="catalog-grid"></div>
+</div>
+
+<!-- DETAIL -->
+<div id="detail-view" class="view">
+  <div style="max-width:860px;margin:0 auto;padding:38px 24px 80px">
+    <button class="detail-back" onclick="showView('catalog')">← Volver a la colección</button>
+    <div class="detail-grid">
+      <div><div class="detail-img" id="detail-img"></div></div>
+      <div>
+        <div style="font-size:8px;color:var(--goldD);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:7px" id="detail-cat"></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--cream);font-weight:600;line-height:1.1;margin-bottom:5px" id="detail-name"></div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:0.1em;margin-bottom:16px" id="detail-sub"></div>
+        <div id="detail-stars" style="margin-bottom:18px"></div>
+        <div style="font-size:12px;color:#9e9080;line-height:1.8;border-left:2px solid var(--goldD);padding-left:12px;margin-bottom:20px" id="detail-desc"></div>
+        <div id="detail-stock" style="font-size:10px;margin-bottom:18px"></div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);font-weight:600" id="detail-price"></span>
+          <span id="detail-old" style="font-size:12px;color:var(--muted);text-decoration:line-through"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;margin:16px 0">
+          <span style="font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase">Cant.</span>
+          <div class="qty-box">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <span class="qty-n" id="qty-display">1</span>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+        <button class="detail-add" id="detail-add-btn" onclick="addFromDetail()">Agregar al Carrito</button>
+        <div style="display:flex;gap:14px;font-size:10px;color:var(--muted)"><span>🔒 Pago seguro</span><span>📦 Discreto</span><span>↩️ 30 días</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART -->
+<div id="cart-view" class="view">
+  <div style="max-width:860px;margin:0 auto;padding:38px 24px 80px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--cream);font-weight:300;margin-bottom:5px">Tu <em>Carrito</em></div>
+    <div style="width:36px;height:1px;background:var(--gold);margin-bottom:28px"></div>
+    <div id="cart-empty" style="text-align:center;padding:80px 0;display:none">
+      <div style="font-size:40px;opacity:0.2;margin-bottom:14px">🛒</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--muted);font-weight:300;margin-bottom:20px">Tu carrito está vacío</div>
+      <button class="btn btn-outline" onclick="showView('catalog')">Explorar Colección</button>
+    </div>
+    <div id="cart-items"></div>
+    <div id="cart-summary-box" class="cart-summary" style="display:none">
+      <div class="gold-divider"></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:9px"><span style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase">Subtotal</span><span id="summary-sub" style="font-size:12px;color:var(--text)"></span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:9px"><span style="font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase">Envío</span><span id="summary-ship" style="font-size:12px;color:var(--gold)"></span></div>
+      <div id="ship-hint" style="font-size:9px;color:var(--muted);margin-bottom:9px"></div>
+      <div class="divider"></div>
+      <div style="display:flex;justify-content:space-between;margin:12px 0 16px">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);font-weight:600">Total</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);font-weight:600" id="summary-total"></span>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="showCheckout()">Proceder al Pago →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout-view" class="view">
+  <div style="max-width:800px;margin:0 auto;padding:38px 24px 80px">
+    <button class="detail-back" onclick="showView('cart')">← Volver al carrito</button>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--cream);font-weight:300;margin-bottom:5px">Checkout <em>Seguro</em></div>
+    <div style="width:36px;height:1px;background:var(--gold);margin-bottom:28px"></div>
+    <div style="display:flex;align-items:center;margin-bottom:32px" id="checkout-steps">
+      <div class="step-circle active" id="step1-circle">1</div>
+      <span style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;margin-left:8px;color:var(--gold)">Envío</span>
+      <div style="flex:1;height:1px;background:var(--border);margin:0 10px" id="step-line"></div>
+      <div class="step-circle inactive" id="step2-circle">2</div>
+      <span style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;margin-left:8px;color:var(--muted)" id="step2-label">Pago</span>
+    </div>
+    <div id="checkout-success" style="display:none;text-align:center;padding:60px 0">
+      <div style="font-size:56px;margin-bottom:20px">✦</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold);font-weight:600;margin-bottom:6px">¡Pago Exitoso!</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:5px">Orden confirmada</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);margin-bottom:24px" id="order-num"></div>
+      <div style="background:var(--bg2);border:1px solid var(--border);padding:20px 28px;margin-bottom:24px;display:inline-block;text-align:left;min-width:280px" id="success-details"></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:24px" id="success-email"></div>
+      <button class="btn btn-gold" onclick="checkoutDone()">Volver al inicio</button>
+    </div>
+    <div id="checkout-form-area">
+      <div class="checkout-grid">
+        <div>
+          <div id="step1-form">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:16px">Datos de Envío</div>
+            <div class="form-grid2">
+              <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input" id="f-name" placeholder="Juan García"/></div>
+              <div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" id="f-phone" placeholder="+56 9 xxxx xxxx"/></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="f-email" type="email" placeholder="tu@email.com"/></div>
+            <div class="form-group"><label class="form-label">Dirección *</label><input class="form-input" id="f-address" placeholder="Calle, número, depto"/></div>
+            <div class="form-grid2">
+              <div class="form-group"><label class="form-label">Ciudad</label><input class="form-input" id="f-city" value="Santiago"/></div>
+              <div class="form-group"><label class="form-label">Región</label>
+                <select class="form-input" id="f-region"><option>Metropolitana</option><option>Valparaíso</option><option>Biobío</option><option>Araucanía</option><option>Los Lagos</option><option>Antofagasta</option><option>Coquimbo</option><option>O'Higgins</option><option>Maule</option></select>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label">Nota (opcional)</label><textarea class="form-input" id="f-notes" rows="2" placeholder="Instrucciones especiales..."></textarea></div>
+            <button class="btn btn-gold btn-full" onclick="goToStep2()">Continuar al pago →</button>
+          </div>
+          <div id="step2-form" style="display:none">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:16px">Método de Pago</div>
+            <div class="pay-methods">
+              <div class="pay-method active" onclick="selectPayMethod('mp')" id="pm-mp"><span class="pay-icon">🟡</span><div class="pay-label">Mercado Pago</div></div>
+              <div class="pay-method" onclick="selectPayMethod('card')" id="pm-card"><span class="pay-icon">💳</span><div class="pay-label">Tarjeta</div></div>
+              <div class="pay-method" onclick="selectPayMethod('webpay')" id="pm-webpay"><span class="pay-icon">🇨🇱</span><div class="pay-label">Webpay</div></div>
+              <div class="pay-method" onclick="selectPayMethod('transfer')" id="pm-transfer"><span class="pay-icon">🏦</span><div class="pay-label">Transferencia</div></div>
+            </div>
+            <div id="pay-mp">
+              <div class="mp-box">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="width:40px;height:40px;background:#FFE600;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🟡</div>
+                  <div><div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);font-weight:600">Mercado Pago</div><div style="font-size:8px;color:#c8b800;margin-top:2px">Sin costo · Pago instantáneo</div></div>
+                </div>
+                <div class="mp-opts">
+                  <div class="mp-opt active" onclick="selMp('qr',this)"><div style="font-size:22px;margin-bottom:5px">📱</div><div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--cream);font-weight:600">QR</div><div style="font-size:9px;color:var(--muted)">Escanea con la app</div></div>
+                  <div class="mp-opt" onclick="selMp('link',this)"><div style="font-size:22px;margin-bottom:5px">🔗</div><div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--cream);font-weight:600">Link de pago</div><div style="font-size:9px;color:var(--muted)">Te enviamos el link</div></div>
+                </div>
+              </div>
+            </div>
+            <div id="pay-card" style="display:none">
+              <div class="form-group"><label class="form-label">Número de tarjeta</label><input class="form-input" id="f-card" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)"/></div>
+              <div class="form-group"><label class="form-label">Titular</label><input class="form-input" id="f-holder" placeholder="Como aparece en la tarjeta"/></div>
+              <div class="form-grid2">
+                <div class="form-group"><label class="form-label">Vencimiento</label><input class="form-input" id="f-exp" placeholder="MM/AA" maxlength="5" oninput="fmtExp(this)"/></div>
+                <div class="form-group"><label class="form-label">CVV</label><input class="form-input" id="f-cvv" type="password" placeholder="•••" maxlength="4"/></div>
+              </div>
+            </div>
+            <div id="pay-webpay" style="display:none">
+              <div class="transfer-box" style="text-align:center;padding:24px">
+                <div style="font-size:28px;margin-bottom:10px">🇨🇱</div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:7px">Webpay Plus</div>
+                <div style="font-size:11px;color:var(--muted);line-height:1.6">Serás redirigido al portal seguro de Transbank.</div>
+              </div>
+            </div>
+            <div id="pay-transfer" style="display:none">
+              <div class="transfer-box">
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:9px;color:var(--muted);text-transform:uppercase">Banco</span><span style="font-size:11px;color:var(--text);font-weight:500">Banco de Chile</span></div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:9px;color:var(--muted);text-transform:uppercase">Cuenta</span><span style="font-size:11px;color:var(--text);font-weight:500">Cte. 123-456-789</span></div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:9px;color:var(--muted);text-transform:uppercase">Nombre</span><span style="font-size:11px;color:var(--text);font-weight:500">LuxeToy SpA</span></div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:9px;color:var(--muted);text-transform:uppercase">Email</span><span style="font-size:11px;color:var(--text);font-weight:500"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2959484e465a69455c514c5d4650074a45">[email&#160;protected]</a></span></div>
+              </div>
+            </div>
+            <div style="display:flex;gap:9px;margin-top:16px">
+              <button class="btn btn-outline btn-sm" onclick="goToStep1()">← Atrás</button>
+              <button class="btn btn-gold btn-full" id="pay-btn" onclick="processPayment()" style="flex:1">Pagar <span id="pay-total"></span></button>
+            </div>
+            <div style="font-size:9px;color:var(--muted);text-align:center;margin-top:8px">🔒 Pago SSL/TLS · Datos encriptados</div>
+          </div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);padding:20px;position:sticky;top:80px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);font-weight:600;margin-bottom:12px">Resumen</div>
+          <div class="gold-divider"></div>
+          <div id="checkout-items" style="max-height:180px;overflow-y:auto;margin:12px 0"></div>
+          <div class="divider" style="margin-bottom:10px"></div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);font-weight:600">Total</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);font-weight:600" id="checkout-total"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact-view" class="view">
+  <div style="max-width:800px;margin:0 auto;padding:38px 24px 80px">
+    <div class="section-head"><div class="section-sup">Estamos para ti</div><h2 class="section-title">Contáctanos</h2><div class="section-line"></div></div>
+    <div class="contact-grid">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);font-weight:300;line-height:1.5;font-style:italic">"Discreción y elegancia en cada consulta."</div>
+        <div class="gold-divider"></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:18px;margin-top:1px">💬</span><div><div style="font-size:8px;color:var(--goldD);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:2px">WhatsApp</div><div style="font-size:12px;color:var(--text)">+56 9 3034 7664</div></div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:18px;margin-top:1px">💌</span><div><div style="font-size:8px;color:var(--goldD);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:2px">Email</div><div style="font-size:12px;color:var(--text)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="355d5a59547559404d50415a4c1b5659">[email&#160;protected]</a></div></div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:18px;margin-top:1px">📍</span><div><div style="font-size:8px;color:var(--goldD);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:2px">Ubicación</div><div style="font-size:12px;color:var(--text)">Santiago, Chile</div></div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:18px;margin-top:1px">🕐</span><div><div style="font-size:8px;color:var(--goldD);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:2px">Atención</div><div style="font-size:12px;color:var(--text)">Lun–Vie 9–18h</div></div></div>
+        <a href="https://wa.me/56930347664" target="_blank"><button class="btn btn-gold btn-full">💬 Chatear por WhatsApp</button></a>
+        <div style="background:var(--bg2);border:1px solid var(--border);padding:14px 16px"><div style="font-size:10px;color:var(--muted);line-height:1.8">🔒 Toda comunicación es <strong style="color:var(--goldD)">100% privada y confidencial</strong>.</div></div>
+      </div>
+      <div id="contact-form-box" class="contact-form">
+        <div class="gold-divider"></div>
+        <div class="form-grid2">
+          <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input" id="c-name" placeholder="Tu nombre"/></div>
+          <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="c-email" type="email" placeholder="tu@email.com"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Asunto</label>
+          <select class="form-input" id="c-subject"><option value="">Selecciona un asunto</option><option>Consulta de producto</option><option>Estado de pedido</option><option>Devolución</option><option>Asesoría VIP</option><option>Otro</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Mensaje *</label><textarea class="form-input" id="c-msg" rows="4" placeholder="Escríbenos con total confianza..."></textarea></div>
+        <button class="btn btn-gold btn-full" id="contact-submit" onclick="sendContact()">Enviar Mensaje</button>
+      </div>
+      <div id="contact-success" style="display:none;background:var(--bg2);border:1px solid var(--goldD);padding:36px;text-align:center">
+        <div style="font-size:36px;margin-bottom:14px">✦</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600;margin-bottom:7px">¡Mensaje enviado!</div>
+        <div style="font-size:12px;color:var(--muted)">Responderemos en menos de 24h.</div>
+        <button class="btn btn-outline btn-sm" style="margin-top:20px" onclick="resetContact()">Enviar otro</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="footer">
+  <div class="logo" style="justify-content:center;margin-bottom:12px">
+    <div class="logo-box"><span class="logo-lt">LT</span></div>
+    <div><div class="logo-name">LUXETOY</div><div class="logo-sub">VIP BOUTIQUE</div></div>
+  </div>
+  <div style="font-size:8px;color:var(--muted);letter-spacing:0.18em;line-height:2.2">© 2026 LuxeToy · Boutique Íntima VIP · Chile</div>
+  <div class="footer-links"><span onclick="showView('contact')">Contacto</span><span>·</span><span>Privacidad</span><span>·</span><span>Términos</span></div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const CATS=[{id:'all',label:'Todo'},{id:'vibradores',label:'Vibradores'},{id:'dildos',label:'Dildos'},{id:'anillos',label:'Anillos Vibrador'},{id:'app',label:'Control APP'},{id:'bomba',label:'Bomba de Vacío'},{id:'masturbador',label:'Masturbadores'}];
+const PRODUCTS=[
+  {id:1,cat:'vibradores',name:'Velvet Pulse Pro',sub:'12 velocidades · silicona médica',price:89900,oldPrice:119900,emoji:'💜',img:'',stock:15,desc:'Silicona médica premium. Carga magnética. Sumergible 1m. Motor ultra silencioso.',rating:4.9,reviews:312,hot:true},
+  {id:2,cat:'vibradores',name:'Aura Dual Sensation',sub:'Estimulador dual alta frecuencia',price:74900,oldPrice:null,emoji:'🌸',img:'',stock:22,desc:'Doble estimulación simultánea. 8 patrones de vibración. Diseño ergonómico. Recargable USB.',rating:4.7,reviews:441,hot:false},
+  {id:3,cat:'dildos',name:'Obsidian Classic',sub:'Silicona premium tono realista',price:54900,oldPrice:69900,emoji:'🖤',img:'',stock:18,desc:'Silicona 100% libre de ftalatos. Tacto ultra realista. Compatible con arnés. Base ventosa.',rating:4.8,reviews:287,hot:false},
+  {id:4,cat:'dildos',name:'Crystal Luxe G-Spot',sub:'Vidrio borosilicato · curva perfecta',price:64900,oldPrice:null,emoji:'💎',img:'',stock:9,desc:'Vidrio borosilicato templado. Temperatura regulable. Curva diseñada para estimulación precisa.',rating:4.9,reviews:154,hot:true},
+  {id:5,cat:'anillos',name:'Noir Ring Pro',sub:'Anillo vibrador con control remoto',price:39900,oldPrice:49900,emoji:'⭕',img:'',stock:25,desc:'Silicona elástica. Vibración dual. Control remoto incluido. Resistente al agua. 2h de uso.',rating:4.6,reviews:389,hot:false},
+  {id:6,cat:'anillos',name:'Couple Bliss Ring',sub:'Vibración para dos · recargable',price:44900,oldPrice:null,emoji:'💍',img:'',stock:20,desc:'Para el placer de la pareja. Vibración potente y silenciosa. Carga magnética. 7 modos.',rating:4.8,reviews:201,hot:true},
+  {id:7,cat:'app',name:'Smart Bliss APP',sub:'Control desde smartphone iOS/Android',price:99900,oldPrice:129900,emoji:'📱',img:'',stock:12,desc:'Conectividad Bluetooth. Control desde cualquier distancia. Para parejas a distancia. 15 patrones.',rating:4.7,reviews:178,hot:true},
+  {id:8,cat:'app',name:'Remote Passion Pro',sub:'App + control remoto físico',price:119900,oldPrice:null,emoji:'🎮',img:'',stock:7,desc:'Doble control: app + mando físico. Sincronización con música. Responde a voz.',rating:4.9,reviews:93,hot:false},
+  {id:9,cat:'bomba',name:'Vacuum Luxe X200',sub:'Bomba eléctrica de vacío profesional',price:79900,oldPrice:99900,emoji:'🔮',img:'',stock:10,desc:'Motor eléctrico silencioso. 5 niveles de succión. Kit completo con accesorios.',rating:4.6,reviews:134,hot:false},
+  {id:10,cat:'bomba',name:'Hydro Pump Elite',sub:'Bomba hidroneumática premium',price:94900,oldPrice:null,emoji:'🫧',img:'',stock:8,desc:'Tecnología hidráulica. Uso en ducha o bañera. Material médico seguro. Resultados progresivos.',rating:4.8,reviews:88,hot:true},
+  {id:11,cat:'masturbador',name:'Stroker Noir Pocket',sub:'Masturbador de bolsillo texturizado',price:34900,oldPrice:44900,emoji:'🌊',img:'',stock:30,desc:'Textura interior ultra realista. Material Superskin. Compacto y discreto. Fácil limpieza.',rating:4.7,reviews:521,hot:false},
+  {id:12,cat:'masturbador',name:'Automatic Stroker Pro',sub:'Masturbador automático 7 modos',price:89900,oldPrice:null,emoji:'⚡',img:'',stock:14,desc:'Mecanismo automático de vaivén. 7 velocidades y 7 vibraciones. Pantalla LCD. Batería 2h.',rating:4.9,reviews:267,hot:true},
+];
+let cart=[],activeCat='all',currentProduct=null,currentQty=1,payMethod='mp';
+const fmt=n=>'$'+Number(n).toLocaleString('es-CL');
+const stars=r=>'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function showView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById(v+'-view').classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(el=>el.classList.remove('active'));
+  const m={home:0,catalog:1,contact:2};if(m[v]!==undefined)document.querySelectorAll('.nav-link')[m[v]].classList.add('active');
+  document.getElementById('cart-btn').classList.toggle('active',v==='cart');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='home')renderFeatured();
+  if(v==='catalog')renderCatalog();
+  if(v==='cart')renderCart();
+  if(v==='checkout')renderCheckout();
+}
+function makeCard(p){
+  const div=document.createElement('div');div.className='pcard';
+  const img=p.img?`<img src="${p.img}" alt="${p.name}" onerror="this.style.display='none'"/><span style="position:relative;z-index:1">${p.emoji}</span>`:p.emoji;
+  div.innerHTML=`<div class="pcard-top"></div><div class="pcard-img">${img}<div class="pcard-badges">${p.hot?'<span class="badge badge-gold">🔥 Hot</span>':''}${p.oldPrice?'<span class="badge badge-gray">Oferta</span>':''}${p.stock<=5?`<span class="badge badge-gray">×${p.stock}</span>`:''}</div></div><div class="pcard-body"><div><div class="pcard-name">${p.name}</div><div class="pcard-sub">${p.sub}</div></div><div style="color:var(--gold);font-size:11px">${stars(p.rating)} <span style="font-size:9px;color:var(--muted)">(${p.reviews})</span></div><div><span style="font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--gold);font-weight:600">${fmt(p.price)}</span>${p.oldPrice?`<span style="font-size:10px;color:var(--muted);text-decoration:line-through;margin-left:8px">${fmt(p.oldPrice)}</span>`:''}</div><button class="pcard-add" id="add-btn-${p.id}" onclick="addToCart(${p.id},event)">Agregar al carrito</button></div>`;
+  div.querySelector('.pcard-img').onclick=()=>openDetail(p);div.querySelector('.pcard-name').onclick=()=>openDetail(p);
+  return div;
+}
+function renderFeatured(){const g=document.getElementById('featured-grid');g.innerHTML='';PRODUCTS.filter(p=>p.hot).slice(0,4).forEach(p=>g.appendChild(makeCard(p)));}
+function renderCatalog(){
+  const g=document.getElementById('catalog-grid'),q=document.getElementById('search-input').value.toLowerCase(),s=document.getElementById('sort-select').value;
+  let items=PRODUCTS.filter(p=>p.active!==false).filter(p=>activeCat==='all'||p.cat===activeCat).filter(p=>!q||p.name.toLowerCase().includes(q)||p.sub.toLowerCase().includes(q));
+  if(s==='price-asc')items.sort((a,b)=>a.price-b.price);
+  else if(s==='price-desc')items.sort((a,b)=>b.price-a.price);
+  else if(s==='rating')items.sort((a,b)=>b.rating-a.rating);
+  else items.sort((a,b)=>b.hot-a.hot);
+  g.innerHTML='';
+  if(!items.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:80px 0;font-family:Cormorant Garamond,serif;font-size:20px;color:var(--muted);font-style:italic">Sin resultados.</div>';return;}
+  items.forEach(p=>g.appendChild(makeCard(p)));
+}
+function buildCats(){
+  const s=document.getElementById('cats-strip');s.innerHTML='';
+  CATS.filter(c=>c.id!=='all').forEach(c=>{const b=document.createElement('button');b.className='cat-btn';b.textContent=c.label;b.onclick=()=>{activeCat=c.id;showView('catalog');};s.appendChild(b);});
+  const cf=document.getElementById('cat-filters');cf.innerHTML='';
+  CATS.forEach(c=>{const b=document.createElement('button');b.className='cat-btn'+(c.id===activeCat?' active':'');b.textContent=c.label;b.onclick=()=>{activeCat=c.id;document.querySelectorAll('#cat-filters .cat-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderCatalog();};cf.appendChild(b);});
+}
+function openDetail(p){
+  currentProduct=p;currentQty=1;
+  document.getElementById('detail-cat').textContent=CATS.find(c=>c.id===p.cat)?.label||p.cat;
+  document.getElementById('detail-name').textContent=p.name;
+  document.getElementById('detail-sub').textContent=p.sub;
+  document.getElementById('detail-desc').textContent=p.desc;
+  document.getElementById('detail-stars').innerHTML=`<span style="color:var(--gold);font-size:11px">${stars(p.rating)}</span> <span style="font-size:10px;color:var(--muted)">${p.rating} · ${p.reviews} reseñas</span>`;
+  document.getElementById('detail-price').textContent=fmt(p.price);
+  document.getElementById('detail-old').textContent=p.oldPrice?fmt(p.oldPrice):'';
+  document.getElementById('detail-stock').innerHTML=p.stock<=5?`<span style="color:var(--error)">⚠ Últimas ${p.stock} unidades</span>`:`<span style="color:var(--muted)">✓ ${p.stock} en stock</span>`;
+  document.getElementById('qty-display').textContent=1;
+  const btn=document.getElementById('detail-add-btn');btn.textContent='Agregar al Carrito';btn.classList.remove('added');
+  const imgEl=document.getElementById('detail-img');imgEl.innerHTML='<div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>';
+  if(p.img){const im=document.createElement('img');im.src=p.img;im.alt=p.name;im.onerror=()=>{im.style.display='none';};imgEl.appendChild(im);}
+  imgEl.innerHTML+=p.emoji;
+  showView('detail');
+}
+function changeQty(d){if(!currentProduct)return;currentQty=Math.max(1,Math.min(currentProduct.stock,currentQty+d));document.getElementById('qty-display').textContent=currentQty;}
+function addFromDetail(){if(!currentProduct)return;for(let i=0;i<currentQty;i++)addToCartById(currentProduct.id);const btn=document.getElementById('detail-add-btn');btn.textContent=`✓ ${currentQty} Agregado${currentQty>1?'s':''}`;btn.classList.add('added');setTimeout(()=>{btn.textContent='Agregar al Carrito';btn.classList.remove('added');},2000);}
+function addToCart(id,e){if(e)e.stopPropagation();addToCartById(id);}
+function addToCartById(id){
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+  const ex=cart.find(i=>i.id===id);if(ex)ex.qty++;else cart.push({...p,qty:1});
+  updateCartCount();toast(`✓ ${p.name} agregado`);
+  const btn=document.getElementById('add-btn-'+id);if(btn){btn.textContent='✓ Agregado';btn.classList.add('added');setTimeout(()=>{btn.textContent='Agregar al carrito';btn.classList.remove('added');},1800);}
+}
+function updateCartCount(){const n=cart.reduce((s,i)=>s+i.qty,0);const el=document.getElementById('cart-count');el.textContent=n;el.style.display=n>0?'flex':'none';}
+function updateQty(id,d){const item=cart.find(i=>i.id===id);if(!item)return;item.qty+=d;if(item.qty<=0)cart=cart.filter(i=>i.id!==id);renderCart();updateCartCount();}
+function removeItem(id){cart=cart.filter(i=>i.id!==id);renderCart();updateCartCount();}
+function renderCart(){
+  const ie=document.getElementById('cart-items'),ee=document.getElementById('cart-empty'),se=document.getElementById('cart-summary-box');
+  ie.innerHTML='';
+  if(!cart.length){ee.style.display='block';se.style.display='none';return;}
+  ee.style.display='none';se.style.display='block';
+  cart.forEach(item=>{
+    const div=document.createElement('div');div.className='cart-item fade-in';
+    div.innerHTML=`<div class="cart-thumb">${item.img?`<img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'"/>`:''}<span style="${item.img?'position:relative;z-index:1':''}">${item.emoji}</span></div><div style="flex-grow:1;min-width:120px"><div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);font-weight:600">${item.name}</div><div style="font-size:9px;color:var(--muted)">${item.sub}</div></div><div style="display:flex;align-items:center;gap:5px"><button style="width:26px;height:26px;background:var(--bg3);border:1px solid var(--border);color:var(--gold);cursor:pointer;font-size:14px" onclick="updateQty(${item.id},-1)">−</button><span style="width:30px;text-align:center;font-size:13px;color:var(--cream)">${item.qty}</span><button style="width:26px;height:26px;background:var(--bg3);border:1px solid var(--border);color:var(--gold);cursor:pointer;font-size:14px" onclick="updateQty(${item.id},1)">+</button></div><div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);font-weight:600;min-width:80px;text-align:right">${fmt(item.price*item.qty)}</div><button style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:3px;transition:color 0.2s" onmouseover="this.style.color='var(--error)'" onmouseout="this.style.color='var(--muted)'" onclick="removeItem(${item.id})">×</button>`;
+    ie.appendChild(div);
+  });
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0),ship=sub>=50000?0:4990;
+  document.getElementById('summary-sub').textContent=fmt(sub);
+  document.getElementById('summary-ship').textContent=ship===0?'GRATIS ✓':fmt(ship);
+  document.getElementById('ship-hint').textContent=ship>0?`Agrega ${fmt(50000-sub)} más para envío gratis`:'';
+  document.getElementById('summary-total').textContent=fmt(sub+ship);
+}
+function getTotal(){const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);return sub+(sub>=50000?0:4990);}
+function showCheckout(){showView('checkout');}
+function renderCheckout(){
+  const total=getTotal();
+  document.getElementById('pay-total').textContent=fmt(total);
+  document.getElementById('checkout-total').textContent=fmt(total);
+  document.getElementById('checkout-success').style.display='none';
+  document.getElementById('checkout-form-area').style.display='block';
+  document.getElementById('checkout-steps').style.display='flex';
+  goToStep1(false);
+  const el=document.getElementById('checkout-items');el.innerHTML='';
+  cart.forEach(i=>{el.innerHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;gap:7px;align-items:center"><span style="font-size:16px">${i.emoji}</span><div><div style="font-size:10px;color:var(--text)">${i.name}</div><div style="font-size:9px;color:var(--muted)">×${i.qty}</div></div></div><span style="font-size:10px;color:var(--gold)">${fmt(i.price*i.qty)}</span></div>`;});
+}
+function goToStep1(s=true){
+  document.getElementById('step1-form').style.display='block';document.getElementById('step2-form').style.display='none';
+  document.getElementById('step1-circle').className='step-circle active';document.getElementById('step2-circle').className='step-circle inactive';
+  document.getElementById('step-line').style.background='var(--border)';document.getElementById('step2-label').style.color='var(--muted)';
+  if(s)window.scrollTo({top:0,behavior:'smooth'});
+}
+function goToStep2(){
+  if(!document.getElementById('f-name').value||!document.getElementById('f-email').value||!document.getElementById('f-address').value){toast('⚠ Completa los campos obligatorios');return;}
+  document.getElementById('step1-form').style.display='none';document.getElementById('step2-form').style.display='block';
+  document.getElementById('step1-circle').className='step-circle active';document.getElementById('step2-circle').className='step-circle active';
+  document.getElementById('step-line').style.background='var(--goldD)';document.getElementById('step2-label').style.color='var(--gold)';
+}
+function selectPayMethod(m){
+  payMethod=m;['mp','card','webpay','transfer'].forEach(x=>{document.getElementById('pm-'+x).classList.remove('active');document.getElementById('pay-'+x).style.display='none';});
+  document.getElementById('pm-'+m).classList.add('active');document.getElementById('pay-'+m).style.display='block';
+}
+function selMp(opt,el){document.querySelectorAll('.mp-opt').forEach(x=>x.classList.remove('active'));el.classList.add('active');}
+function fmtCard(el){el.value=el.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19);}
+function fmtExp(el){el.value=el.value.replace(/\D/g,'').replace(/^(\d{2})(\d)/,'$1/$2').slice(0,5);}
+function processPayment(){
+  const btn=document.getElementById('pay-btn');btn.innerHTML='<span class="spinner"></span>Procesando...';btn.disabled=true;
+  setTimeout(()=>{btn.innerHTML='Pagar '+fmt(getTotal());btn.disabled=false;showSuccess();},2400);
+}
+function showSuccess(){
+  const num='#LT-'+Math.floor(1000+Math.random()*8999),email=document.getElementById('f-email').value,city=document.getElementById('f-city').value;
+  document.getElementById('order-num').textContent=num;
+  document.getElementById('success-email').innerHTML=`Confirmación enviada a <strong style="color:var(--text)">${email}</strong>`;
+  document.getElementById('success-details').innerHTML=`<div class="gold-divider"></div><div style="height:12px"></div>${[['Orden',num],['Destino',city],['Total',fmt(getTotal())],['Despacho','48h · Envío discreto']].map(([k,v])=>`<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:9px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase">${k}</span><span style="font-size:11px;color:var(--text)">${v}</span></div>`).join('')}`;
+  document.getElementById('checkout-success').style.display='block';document.getElementById('checkout-form-area').style.display='none';document.getElementById('checkout-steps').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function checkoutDone(){cart=[];updateCartCount();showView('home');}
+function sendContact(){
+  if(!document.getElementById('c-name').value||!document.getElementById('c-email').value||!document.getElementById('c-msg').value){toast('⚠ Completa los campos obligatorios');return;}
+  const btn=document.getElementById('contact-submit');btn.innerHTML='<span class="spinner"></span>Enviando...';btn.disabled=true;
+  setTimeout(()=>{document.getElementById('contact-form-box').style.display='none';document.getElementById('contact-success').style.display='block';},1600);
+}
+function resetContact(){
+Id('c-subject').value='';
+  document.getElementById('contact-form-box').style.display='flex';document.getElementById('contact-success').style.display='none';
+  document.getElementById('contact-submit').innerHTML='Enviar Mensaje';document.getElementById('contact-submit').disabled=false;
+}
+buildCats();renderFeatured();
+
+// ═══════════════════════════════════════════════
+// ADMIN LOGIC
+// ═══════════════════════════════════════════════
+const ADMIN_PIN = '1234';
+const EMOJIS_LIST = ['💜','🌸','🖤','💎','⭕','💍','📱','🎮','🔮','🫧','🌊','⚡','🌹','✨','🔥','💫','🌙','✦'];
+let adminAuth = false;
+let editingId = null;
+let modalFlags = {hot:false, active:true};
+let modalImgData = '';
+let modalEmoji = '💜';
+let activeAdminTab = 'products';
+
+function openAdmin(){
+  document.getElementById('admin-overlay').classList.add('open');
+  if(!adminAuth){
+    document.getElementById('admin-pin-screen').style.display='flex';
+    document.getElementById('admin-app').style.display='none';
+  } else {
+    showAdminApp();
+  }
+}
+
+function closeAdmin(){
+  document.getElementById('admin-overlay').classList.remove('open');
+}
+
+function checkPin(){
+  const pin = document.getElementById('admin-pin-input').value;
+  if(pin === ADMIN_PIN){
+    adminAuth = true;
+    document.getElementById('pin-error').style.display='none';
+    document.getElementById('admin-pin-input').value='';
+    showAdminApp();
+  } else {
+    document.getElementById('pin-error').style.display='block';
+    document.getElementById('admin-pin-input').value='';
+    setTimeout(()=>document.getElementById('pin-error').style.display='none',2000);
+  }
+}
+
+function showAdminApp(){
+  document.getElementById('admin-pin-screen').style.display='none';
+  document.getElementById('admin-app').style.display='flex';
+  renderAdminProducts();
+  renderCatAdmin();
+  renderStats();
+}
+
+function adminTab(t){
+  activeAdminTab = t;
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.admin-tab')[['products','categories','stats'].indexOf(t)].classList.add('active');
+  ['products','categories','stats'].forEach(x=>document.getElementById('atab-'+x).style.display=x===t?'block':'none');
+  if(t==='categories') renderCatAdmin();
+  if(t==='stats') renderStats();
+}
+
+function renderAdminProducts(){
+  const q = (document.getElementById('admin-search')?.value||'').toLowerCase();
+  const list = document.getElementById('admin-products-list');
+  list.innerHTML='';
+  const items = PRODUCTS.filter(p=>!q||p.name.toLowerCase().includes(q));
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:40px;font-family:Cormorant Garamond,serif;font-size:18px;color:var(--muted);font-style:italic">Sin resultados.</div>';return;}
+  items.forEach(p=>{
+    const row = document.createElement('div');
+    row.className = 'admin-row' + (p.active?'':' inactive');
+    const catLabel = CATS.find(c=>c.id===p.cat)?.label||p.cat;
+    const thumb = p.img ? `<div style="width:40px;height:40px;overflow:hidden;border:1px solid var(--border);position:relative;"><img src="${p.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/><span style="position:relative;z-index:1;font-size:18px">${p.emoji}</span></div>`
+      : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border)">${p.emoji}</div>`;
+    row.innerHTML = `
+      ${thumb}
+      <div><div style="font-size:11px;color:var(--text);font-weight:500">${p.name}</div><div style="font-size:9px;color:var(--muted)">${catLabel}</div></div>
+      <div><div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);font-weight:600">${fmt(p.price)}</div>${p.oldPrice?`<div style="font-size:9px;color:var(--muted);text-decoration:line-through">${fmt(p.oldPrice)}</div>`:''}</div>
+      <div style="font-size:11px;color:${p.stock<=5?'var(--error)':p.stock<=10?'var(--goldD)':'var(--text)'}">${p.stock} u.</div>
+      <button class="tog-btn ${p.active?'tog-on':'tog-off'}" onclick="toggleProd(${p.id},'active')">${p.active?'ON':'OFF'}</button>
+      <button class="tog-btn ${p.hot?'tog-vip-on':'tog-vip-off'}" onclick="toggleProd(${p.id},'hot')">${p.hot?'🔥':'—'}</button>
+      <div style="display:flex;gap:4px">
+        <button onclick="openProductModal(${p.id})" style="flex:1;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:5px 6px;font-size:8px;cursor:pointer;letter-spacing:0.1em">✏ Editar</button>
+        <button onclick="deleteProduct(${p.id})" style="background:rgba(139,32,32,0.1);border:1px solid rgba(139,32,32,0.4);color:var(--error);padding:5px 9px;font-size:12px;cursor:pointer">×</button>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+function toggleProd(id, key){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(p) p[key]=!p[key];
+  renderAdminProducts();
+  buildCats();
+}
+
+function deleteProduct(id){
+  if(!confirm('¿Eliminar este producto?')) return;
+  const idx = PRODUCTS.findIndex(p=>p.id===id);
+  if(idx>-1) PRODUCTS.splice(idx,1);
+  renderAdminProducts();
+  renderStats();
+  toast('Producto eliminado');
+}
+
+// ── PRODUCT MODAL ──
+function openProductModal(id){
+  editingId = id;
+  modalImgData = '';
+  modalFlags = {hot:false, active:true};
+
+  // Build emoji picker
+  const ep = document.getElementById('emoji-picker');
+  ep.innerHTML='';
+  EMOJIS_LIST.forEach(e=>{
+    const b=document.createElement('button');
+    b.className='emoji-btn';b.textContent=e;
+    b.onclick=()=>{modalEmoji=e;ep.querySelectorAll('.emoji-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');document.getElementById('modal-preview-emoji').textContent=e;};
+    ep.appendChild(b);
+  });
+
+  // Build cat select
+  const catSel = document.getElementById('modal-cat');
+  catSel.innerHTML='';
+  CATS.filter(c=>c.id!=='all').forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.label;catSel.appendChild(o);});
+
+  if(id){
+    const p = PRODUCTS.find(x=>x.id===id);
+    document.getElementById('modal-title').textContent='Editar Producto';
+    document.getElementById('modal-name').value=p.name;
+    document.getElementById('modal-sub').value=p.sub;
+    document.getElementById('modal-desc').value=p.desc;
+    document.getElementById('modal-price').value=p.price;
+    document.getElementById('modal-old-price').value=p.oldPrice||'';
+    document.getElementById('modal-stock').value=p.stock;
+    document.getElementById('modal-img-url').value=p.img&&!p.img.startsWith('data:')?p.img:'';
+    catSel.value=p.cat;
+    modalImgData=p.img||'';
+    modalEmoji=p.emoji||'💜';
+    modalFlags={hot:!!p.hot,active:p.active!==false};
+    if(modalImgData){setImgPreview(modalImgData);}else{clearModalImg();}
+    ep.querySelectorAll('.emoji-btn').forEach(b=>{if(b.textContent===modalEmoji)b.classList.add('sel');});
+    document.getElementById('modal-preview-emoji').textContent=modalEmoji;
+  } else {
+    document.getElementById('modal-title').textContent='Nuevo Producto';
+    ['modal-name','modal-sub','modal-desc','modal-img-url'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('modal-price').value='';
+    document.getElementById('modal-old-price').value='';
+    document.getElementById('modal-stock').value='10';
+    clearModalImg();
+    modalEmoji='💜';
+    ep.querySelectorAll('.emoji-btn')[0]?.classList.add('sel');
+    document.getElementById('modal-preview-emoji').textContent='💜';
+  }
+  updateModalFlagBtns();
+  document.getElementById('product-modal').classList.add('open');
+
+  // Paste listener
+  window._adminPasteHandler = (e)=>{
+    const items=e.clipboardData?.items;
+    if(!items)return;
+    for(const item of items){
+      if(item.type.startsWith('image/')){
+        e.preventDefault();
+        const reader=new FileReader();
+        reader.onload=ev=>{modalImgData=ev.target.result;setImgPreview(modalImgData);};
+        reader.readAsDataURL(item.getAsFile());
+        return;
+      }
+    }
+  };
+  window.addEventListener('paste', window._adminPasteHandler);
+}
+
+function closeProductModal(){
+  document.getElementById('product-modal').classList.remove('open');
+  if(window._adminPasteHandler) window.removeEventListener('paste',window._adminPasteHandler);
+}
+
+function handleImgFile(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=ev=>{modalImgData=ev.target.result;setImgPreview(modalImgData);};r.readAsDataURL(f);}
+function handleImgDrop(e){e.preventDefault();document.getElementById('img-drop-zone').classList.remove('drag');const f=e.dataTransfer.files?.[0];if(!f||!f.type.startsWith('image/'))return;const r=new FileReader();r.onload=ev=>{modalImgData=ev.target.result;setImgPreview(modalImgData);};r.readAsDataURL(f);}
+function previewImgUrl(){const url=document.getElementById('modal-img-url').value;if(url){modalImgData=url;setImgPreview(url);}else{clearModalImg();}}
+function setImgPreview(src){
+  const box=document.getElementById('modal-img-preview');
+  box.innerHTML='';box.style.borderColor='var(--gold)';
+  const img=document.createElement('img');img.src=src;
+  img.onerror=()=>{document.getElementById('img-error').style.display='block';clearModalImg();};
+  img.onload=()=>document.getElementById('img-error').style.display='none';
+  box.appendChild(img);
+  const xBtn=document.createElement('button');
+  xBtn.style.cssText='position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.7);border:none;color:#fff;width:18px;height:18px;border-radius:50%;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;z-index:2';
+  xBtn.textContent='×';xBtn.onclick=clearModalImg;box.appendChild(xBtn);
+}
+function clearModalImg(){modalImgData='';document.getElementById('modal-img-preview').innerHTML=`<span id="modal-preview-emoji" style="font-size:30px">${modalEmoji}</span>`;document.getElementById('modal-img-preview').style.borderColor='var(--border)';document.getElementById('modal-img-url').value='';document.getElementById('img-error').style.display='none';}
+
+function toggleModalFlag(f){modalFlags[f]=!modalFlags[f];updateModalFlagBtns();}
+function updateModalFlagBtns(){
+  const hb=document.getElementById('tog-hot'),ab=document.getElementById('tog-active');
+  hb.className=`btn btn-sm ${modalFlags.hot?'btn-gold':'btn-outline'}`;
+  ab.className=`btn btn-sm ${modalFlags.active?'btn-gold':'btn-outline'}`;
+}
+
+function saveProduct(){
+  const name=document.getElementById('modal-name').value.trim();
+  const price=Number(document.getElementById('modal-price').value);
+  const stock=Number(document.getElementById('modal-stock').value);
+  if(!name||!price){toast('⚠ Nombre y precio son obligatorios');return;}
+  const prod={
+    id: editingId||Date.now(),
+    name, price, stock,
+    sub: document.getElementById('modal-sub').value,
+    desc: document.getElementById('modal-desc').value,
+    oldPrice: Number(document.getElementById('modal-old-price').value)||null,
+    cat: document.getElementById('modal-cat').value,
+    emoji: modalEmoji,
+    img: modalImgData,
+    hot: modalFlags.hot,
+    active: modalFlags.active,
+    rating: 4.8, reviews: 0,
+  };
+  if(editingId){
+    const idx=PRODUCTS.findIndex(p=>p.id===editingId);
+    if(idx>-1) PRODUCTS[idx]={...PRODUCTS[idx],...prod};
+  } else {
+    PRODUCTS.push(prod);
+  }
+  closeProductModal();
+  renderAdminProducts();
+  renderStats();
+  buildCats();
+  // Rebuild catalog category filters too
+  const cf=document.getElementById('cat-filters');
+  if(cf) buildCats();
+  toast(editingId?'✓ Producto actualizado':'✓ Producto creado');
+}
+
+// ── CATEGORIES ──
+function renderCatAdmin(){
+  const list=document.getElementById('cat-admin-list');list.innerHTML='';
+  CATS.filter(c=>c.id!=='all').forEach(c=>{
+    const count=PRODUCTS.filter(p=>p.cat===c.id).length;
+    const row=document.createElement('div');row.className='cat-row';
+    row.innerHTML=`
+      <div style="flex:1"><span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);font-weight:600">${c.label}</span><span style="font-size:9px;color:var(--muted);margin-left:10px">${count} producto${count!==1?'s':''}</span></div>
+      <span style="font-size:9px;color:var(--muted);background:var(--bg3);padding:3px 8px;border:1px solid var(--border)">${c.id}</span>
+      <button onclick="editCat('${c.id}')" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 10px;font-size:9px;cursor:pointer">✏ Renombrar</button>
+      <button onclick="deleteCat('${c.id}',${count})" style="background:rgba(139,32,32,0.1);border:1px solid ${count>0?'var(--border)':'rgba(139,32,32,0.4)'};color:${count>0?'var(--border)':'var(--error)'};padding:5px 9px;font-size:12px;cursor:${count>0?'not-allowed':'pointer'}">×</button>`;
+    list.appendChild(row);
+  });
+}
+
+function addCategory(){
+  const input=document.getElementById('new-cat-input');
+  const label=input.value.trim();if(!label)return;
+  const id=label.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'')+'-'+Date.now().toString().slice(-4);
+  CATS.push({id,label});
+  input.value='';
+  renderCatAdmin();buildCats();
+  toast('✓ Categoría creada');
+}
+
+function editCat(id){
+  const c=CATS.find(x=>x.id===id);if(!c)return;
+  const label=prompt('Nuevo nombre para "'+c.label+'":', c.label);
+  if(label&&label.trim()){c.label=label.trim();renderCatAdmin();buildCats();toast('✓ Categoría renombrada');}
+}
+
+function deleteCat(id, count){
+  if(count>0){toast('⚠ Reasigna los productos antes de eliminar');return;}
+  const idx=CATS.findIndex(c=>c.id===id);if(idx>-1)CATS.splice(idx,1);
+  renderCatAdmin();buildCats();toast('Categoría eliminada');
+}
+
+// ── STATS ──
+function renderStats(){
+  const active=PRODUCTS.filter(p=>p.active).length;
+  const totalStock=PRODUCTS.reduce((s,p)=>s+p.stock,0);
+  const totalVal=PRODUCTS.reduce((s,p)=>s+p.price*p.stock,0);
+  const low=PRODUCTS.filter(p=>p.stock<=5).length;
+  const cards=[
+    ['📦',`${active} / ${PRODUCTS.length}`,'Productos activos'],
+    ['🏷',`${totalStock} u.`,'Stock total'],
+    ['💰',fmt(totalVal),'Valor inventario'],
+    ['🔴',`${low}`,'Stock crítico ≤5'],
+    ['⭐',(PRODUCTS.reduce((s,p)=>s+p.rating,0)/PRODUCTS.length||0).toFixed(1)+'★','Rating promedio'],
+    ['🔥',PRODUCTS.filter(p=>p.hot).length,'Productos Hot'],
+  ];
+  document.getElementById('stats-cards').innerHTML=cards.map(([ico,v,t])=>`
+    <div class="stat-card">
+      <div style="font-size:20px;margin-bottom:6px">${ico}</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);font-weight:600;margin-bottom:3px">${v}</div>
+      <div style="font-size:8px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase">${t}</div>
+    </div>`).join('');
+  document.getElementById('stock-bars').innerHTML=PRODUCTS.map(p=>`
+    <div style="background:var(--bg2);border:1px solid var(--border);padding:10px 14px;margin-bottom:3px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;opacity:${p.active?1:0.5}">
+      <span style="font-size:18px">${p.emoji}</span>
+      <div style="flex:1;min-width:100px"><div style="font-size:11px;color:var(--text)">${p.name}</div></div>
+      <div style="flex:2;display:flex;align-items:center;gap:9px">
+        <div style="flex:1;background:var(--bg3);height:5px;border-radius:2px">
+          <div style="width:${Math.min(100,(p.stock/50)*100)}%;height:100%;border-radius:2px;background:${p.stock<=5?'var(--error)':p.stock<=15?'var(--goldD)':'var(--gold)'}"></div>
+        </div>
+        <span style="font-size:10px;color:${p.stock<=5?'var(--error)':'var(--muted)'};min-width:28px;text-align:right">${p.stock}</span>
+      </div>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--gold);min-width:80px;text-align:right">${fmt(p.price)}</span>
+    </div>`).join('');
+}
+</script>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- ADMIN PANEL -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="admin-overlay" class="admin-overlay">
+  <!-- PIN LOGIN -->
+  <div id="admin-pin-screen" class="pin-screen">
+    <div class="pin-box">
+      <div class="gold-divider"></div>
+      <div style="height:24px"></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--cream);font-weight:600;margin-bottom:5px">Panel Admin</div>
+      <div style="font-size:9px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:24px">Acceso Restringido</div>
+      <div class="form-group"><label class="form-label">PIN de acceso</label><input class="form-input" id="admin-pin-input" type="password" placeholder="••••" onkeydown="if(event.key==='Enter')checkPin()"/></div>
+      <div id="pin-error" style="font-size:10px;color:var(--error);margin:7px 0;display:none">PIN incorrecto.</div>
+      <div style="margin-top:12px"><button class="btn btn-gold btn-full" onclick="checkPin()">Ingresar</button></div>
+      <div style="font-size:8px;color:var(--muted);margin-top:14px;letter-spacing:0.1em">Demo PIN: 1234</div>
+    </div>
+  </div>
+
+  <!-- ADMIN APP -->
+  <div id="admin-app" style="display:none;flex-direction:column;min-height:100vh;width:100%">
+    <div class="admin-nav">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);font-weight:600">⚙ Panel de Control</div>
+        <div style="height:18px;width:1px;background:var(--border)"></div>
+        <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase">LuxeToy Admin</div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="closeAdmin()">Cerrar sesión</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="adminTab('products')">📦 Productos</button>
+      <button class="admin-tab" onclick="adminTab('categories')">🏷 Categorías</button>
+      <button class="admin-tab" onclick="adminTab('stats')">📊 Estadísticas</button>
+    </div>
+    <div class="admin-body">
+
+      <!-- PRODUCTS TAB -->
+      <div id="atab-products">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+          <div style="position:relative;flex:1;max-width:300px">
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px">🔍</span>
+            <input id="admin-search" class="form-input" style="padding-left:30px" placeholder="Buscar producto..." oninput="renderAdminProducts()"/>
+          </div>
+          <button class="btn btn-gold" onclick="openProductModal(null)">+ Nuevo Producto</button>
+        </div>
+        <div class="admin-table-head">
+          <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase"></div>
+          <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase">Producto</div>
+          <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase">Precio</div>
+          <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase">Stock</div>
+          <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase">Activo</div>
+          <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase">Hot</div>
+          <div style="font-size:8px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase">Acciones</div>
+        </div>
+        <div id="admin-products-list"></div>
+      </div>
+
+      <!-- CATEGORIES TAB -->
+      <div id="atab-categories" style="display:none">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);font-weight:300;margin-bottom:20px">Gestión de <em>Categorías</em></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);padding:18px 20px;margin-bottom:16px">
+          <div style="font-size:9px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px">Nueva categoría</div>
+          <div style="display:flex;gap:10px">
+            <input id="new-cat-input" class="form-input" placeholder="Nombre de la categoría..." style="flex:1" onkeydown="if(event.key==='Enter')addCategory()"/>
+            <button class="btn btn-gold" onclick="addCategory()">+ Agregar</button>
+          </div>
+        </div>
+        <div id="cat-admin-list"></div>
+        <div style="font-size:9px;color:var(--muted);margin-top:14px;line-height:1.7;border-top:1px solid var(--border);padding-top:14px">
+          💡 No puedes eliminar categorías que tienen productos asignados.
+        </div>
+      </div>
+
+      <!-- STATS TAB -->
+      <div id="atab-stats" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:28px" id="stats-cards"></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);font-weight:300;margin-bottom:14px">Stock por producto</div>
+        <div id="stock-bars"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div id="product-modal" class="admin-modal">
+  <div class="admin-modal-box" onclick="event.stopPropagation()">
+    <div class="gold-divider"></div>
+    <div style="height:16px"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);font-weight:600;margin-bottom:18px" id="modal-title">Nuevo Producto</div>
+    <div style="display:flex;flex-direction:column;gap:13px">
+
+      <!-- IMAGE -->
+      <div style="background:var(--bg3);border:1px solid var(--border2);padding:16px">
+        <div style="font-size:9px;color:var(--goldD);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:10px">🖼 Imagen</div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:1">
+            <div id="img-drop-zone" class="img-drop" onclick="document.getElementById('img-file-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleImgDrop(event)">
+              <div style="font-size:26px;margin-bottom:6px">📋</div>
+              <div style="font-size:11px;color:var(--text);margin-bottom:3px"><strong style="color:var(--gold)">Ctrl+V</strong> para pegar imagen</div>
+              <div style="font-size:9px;color:var(--muted)">o arrastra / click para seleccionar</div>
+              <input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="handleImgFile(event)"/>
+            </div>
+            <div style="height:8px"></div>
+            <div class="form-group">
+              <label class="form-label">O pega una URL</label>
+              <input class="form-input" id="modal-img-url" placeholder="https://..." oninput="previewImgUrl()"/>
+            </div>
+            <div id="img-error" style="font-size:9px;color:var(--error);display:none;margin-top:4px">⚠ No se pudo cargar la imagen.</div>
+          </div>
+          <div class="img-preview-box" id="modal-img-preview">
+            <span id="modal-preview-emoji" style="font-size:30px">🖤</span>
+          </div>
+        </div>
+        <button onclick="clearModalImg()" style="font-size:9px;color:var(--muted);background:transparent;border:none;cursor:pointer;margin-top:6px;letter-spacing:0.1em">× Quitar imagen</button>
+      </div>
+
+      <!-- EMOJI -->
+      <div>
+        <div style="font-size:9px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px">Ícono fallback</div>
+        <div class="emoji-pick" id="emoji-picker"></div>
+      </div>
+
+      <!-- FIELDS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+        <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input" id="modal-name" placeholder="Nombre del producto"/></div>
+        <div class="form-group"><label class="form-label">Categoría</label>
+          <select class="form-input" id="modal-cat"></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Subtítulo</label><input class="form-input" id="modal-sub" placeholder="Breve descripción"/></div>
+      <div class="form-group"><label class="form-label">Descripción</label><textarea class="form-input" id="modal-desc" rows="3" placeholder="Descripción completa..."></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px">
+        <div class="form-group"><label class="form-label">Precio ($) *</label><input class="form-input" id="modal-price" type="number" placeholder="89900"/></div>
+        <div class="form-group"><label class="form-label">Precio anterior</label><input class="form-input" id="modal-old-price" type="number" placeholder="Opcional"/></div>
+        <div class="form-group"><label class="form-label">Stock *</label><input class="form-input" id="modal-stock" type="number" placeholder="10"/></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="tog-hot" onclick="toggleModalFlag('hot')" class="btn btn-outline btn-sm">🔥 Hot</button>
+        <button id="tog-active" onclick="toggleModalFlag('active')" class="btn btn-gold btn-sm">✓ Activo</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:22px">
+      <button class="btn btn-outline" onclick="closeProductModal()">Cancelar</button>
+      <button class="btn btn-gold btn-full" onclick="saveProduct()" id="modal-save-btn">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LUMIÈRE CHAT VIP ═══════════════════════ -->
+<style>
+#lt-btn{position:fixed;bottom:90px;right:22px;z-index:400;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#c4a046,#8a6d2e);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 20px rgba(196,160,70,0.4);transition:transform 0.2s;animation:ltPulse 3s infinite;}
+@keyframes ltPulse{0%,100%{box-shadow:0 4px 20px rgba(196,160,70,0.35)}50%{box-shadow:0 4px 32px rgba(196,160,70,0.65)}}
+#lt-btn:hover{transform:scale(1.1)}
+#lt-notif{position:absolute;top:-5px;right:-5px;background:#f5e9cc;color:#080808;width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:700;display:none;align-items:center;justify-content:center;}
+#lt-panel{position:fixed;bottom:154px;right:22px;z-index:400;width:320px;max-height:500px;background:#0e0e0e;border:1px solid #2a2622;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.85),0 0 0 1px rgba(196,160,70,0.12);animation:ltUp 0.3s cubic-bezier(.22,.68,0,1.2);}
+@keyframes ltUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+#lt-panel.open{display:flex;}
+.lt-head{background:linear-gradient(135deg,#1a1208,#0e0d0a);border-bottom:1px solid #2a2622;padding:13px 15px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.lt-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#c4a046,#8a6d2e);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.lt-hname{font-family:'Cormorant Garamond',serif;font-size:14px;color:#f5e9cc;font-weight:600;line-height:1;}
+.lt-hstatus{font-size:8px;color:#8a6d2e;letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;}
+.lt-hstatus::before{content:'● ';color:#3a7a4a;font-size:7px;}
+.lt-x{background:transparent;border:none;color:#6b6050;cursor:pointer;font-size:18px;margin-left:auto;transition:color 0.2s;}
+.lt-x:hover{color:#c4a046;}
+.lt-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;min-height:180px;max-height:300px;}
+.lt-msgs::-webkit-scrollbar{width:3px;}
+.lt-msgs::-webkit-scrollbar-thumb{background:#2a2622;}
+.lt-bubble{max-width:88%;padding:9px 12px;font-family:'Raleway',sans-serif;font-size:12px;line-height:1.6;}
+.lt-bubble.ai{background:#141414;border:1px solid #1e1e1e;border-left:2px solid #c4a046;color:#e8dfc8;align-self:flex-start;}
+.lt-bubble.user{background:rgba(196,160,70,0.1);border:1px solid rgba(196,160,70,0.22);color:#f5e9cc;align-self:flex-end;text-align:right;}
+.lt-typing{background:#141414;border:1px solid #1e1e1e;border-left:2px solid #c4a046;align-self:flex-start;padding:11px 15px;}
+.lt-dots{display:flex;gap:4px;align-items:center;}
+.lt-dots span{width:6px;height:6px;background:#c4a046;border-radius:50%;animation:ltDot 1.2s infinite;}
+.lt-dots span:nth-child(2){animation-delay:0.2s;}
+.lt-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes ltDot{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-4px);opacity:1}}
+.lt-quick{display:flex;gap:5px;padding:0 12px 9px;flex-wrap:wrap;flex-shrink:0;}
+.lt-qbtn{background:transparent;border:1px solid #2a2622;color:#8a6d2e;padding:4px 9px;font-family:'Raleway',sans-serif;font-size:8px;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.lt-qbtn:hover{border-color:#c4a046;color:#c4a046;}
+.lt-inp-area{border-top:1px solid #1e1e1e;padding:10px;display:flex;gap:7px;flex-shrink:0;}
+.lt-inp{flex:1;background:#141414;border:1px solid #1e1e1e;color:#e8dfc8;padding:8px 11px;font-family:'Raleway',sans-serif;font-size:12px;outline:none;resize:none;height:36px;transition:border-color 0.2s;}
+.lt-inp:focus{border-color:#8a6d2e;}
+.lt-inp::placeholder{color:#6b6050;}
+.lt-send{width:36px;height:36px;background:#c4a046;border:none;color:#080808;cursor:pointer;font-size:14px;transition:all 0.2s;flex-shrink:0;}
+.lt-send:hover{background:#f0d080;}
+.lt-foot{padding:5px 12px 9px;text-align:center;font-family:'Raleway',sans-serif;font-size:8px;color:#6b6050;letter-spacing:0.1em;border-top:1px solid #1e1e1e;flex-shrink:0;}
+.lt-foot a{color:#8a6d2e;text-decoration:none;}
+.lt-foot a:hover{color:#c4a046;}
+@media(max-width:380px){#lt-panel{right:0;bottom:0;width:100vw;max-height:100vh;border-left:none;border-right:none;border-bottom:none;}#lt-btn{right:14px;bottom:22px;}}
+</style>
+
+<button id="lt-btn" onclick="ltToggle()">✦<span id="lt-notif">1</span></button>
+
+<div id="lt-panel">
+  <div class="lt-head">
+    <div class="lt-av">✦</div>
+    <div><div class="lt-hname">Lumière — Asesora VIP</div><div class="lt-hstatus">En línea · LuxeToy</div></div>
+    <button class="lt-x" onclick="ltToggle()">×</button>
+  </div>
+  <div class="lt-msgs" id="lt-msgs"></div>
+  <div class="lt-quick" id="lt-quick">
+    <button class="lt-qbtn" onclick="ltQuick('¿Qué me recomiendas para regalo?')">🎁 Regalo</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Qué tienen para parejas?')">💑 Parejas</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Cuáles son los más vendidos?')">⭐ Top ventas</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Tienen opciones económicas?')">💰 Económicos</button>
+    <button class="lt-qbtn" onclick="ltQuick('¿Cómo es el envío?')">📦 Envío</button>
+    <button class="lt-qbtn" onclick="ltQuick('Quiero algo para relajarme')">🌿 Relajación</button>
+  </div>
+  <div class="lt-inp-area">
+    <textarea id="lt-inp" class="lt-inp" placeholder="Escribe tu consulta..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ltSend();}"></textarea>
+    <button class="lt-send" onclick="ltSend()">➤</button>
+  </div>
+  <div class="lt-foot">Asistida por IA · Privacidad garantizada · <a href="https://wa.me/56930347664" target="_blank">WhatsApp</a></div>
+</div>
+
+<script>
+// ══ LUMIÈRE — Vendedora VIP Inteligente ══════════════════════════════
+let ltOpen=false, ltReady=false;
+
+const LT_CATALOG = [
+  {n:"Aura Silk",cat:"Estimulador de aire",p:89900,nivel:"Principiante",emoji:"🌸"},
+  {n:"Velvet Breeze Pro",cat:"Estimulador de aire",p:129900,nivel:"Intermedio",emoji:"💨"},
+  {n:"Zephyr Elite",cat:"Estimulador de aire",p:179900,nivel:"Avanzado",emoji:"✨"},
+  {n:"Celeste Touch",cat:"Estimulador de aire",p:64900,nivel:"Principiante",emoji:"🌙"},
+  {n:"Noir Pulse",cat:"Vibrador premium",p:74900,nivel:"Principiante",emoji:"💜"},
+  {n:"Lumière Curve",cat:"Vibrador premium",p:99900,nivel:"Intermedio",emoji:"🌹"},
+  {n:"Obsidian Luxe",cat:"Vibrador de lujo",p:159900,nivel:"Avanzado",emoji:"💎"},
+  {n:"Sakura Slim",cat:"Vibrador compacto",p:54900,nivel:"Principiante",emoji:"🌸"},
+  {n:"Dual Harmony",cat:"Vibrador para parejas",p:119900,nivel:"Intermedio",emoji:"💑"},
+  {n:"Serenity Wand",cat:"Masajeador corporal",p:89900,nivel:"Principiante",emoji:"🌿"},
+  {n:"Velvet Relax",cat:"Masajeador de cuello",p:69900,nivel:"Principiante",emoji:"🧘"},
+  {n:"Jade Pulse",cat:"Masajeador facial",p:49900,nivel:"Principiante",emoji:"💚"},
+  {n:"Aurora Thermo",cat:"Masajeador con calor",p:109900,nivel:"Intermedio",emoji:"🔥"},
+  {n:"Onyx Wearable",cat:"Masajeador portable",p:94900,nivel:"Avanzado",emoji:"⚡"},
+  {n:"Pure Glide",cat:"Lubricante acuoso",p:18900,nivel:"Principiante",emoji:"💧"},
+  {n:"Satin Touch",cat:"Aceite de masaje",p:24900,nivel:"Principiante",emoji:"🌺"},
+  {n:"CleanShield Pro",cat:"Limpiador spray",p:14900,nivel:"Principiante",emoji:"🧴"},
+  {n:"Ritual Oil Set",cat:"Kit de aceites",p:34900,nivel:"Principiante",emoji:"🕯️"},
+  {n:"Harmony Duo",cat:"Kit para parejas",p:139900,nivel:"Principiante",emoji:"❤️"},
+  {n:"Connexion Set",cat:"Kit sensorial parejas",p:89900,nivel:"Intermedio",emoji:"🎁"},
+  {n:"Senses Box",cat:"Caja sorpresa VIP",p:119900,nivel:"Intermedio",emoji:"📦"},
+  {n:"Midnight Ritual",cat:"Kit relajación",p:74900,nivel:"Principiante",emoji:"🌙"},
+  {n:"Velvet Ribbon",cat:"Accesorios textiles",p:39900,nivel:"Principiante",emoji:"🎀"},
+  {n:"Luna Chain",cat:"Joyería corporal",p:34900,nivel:"Principiante",emoji:"✨"},
+  {n:"Étoile Set",cat:"Set de joyería",p:54900,nivel:"Principiante",emoji:"💫"},
+  {n:"Crystal Glow",cat:"Vibrador de vidrio",p:84900,nivel:"Intermedio",emoji:"💎"},
+];
+
+const fmtP = n => "$" + Number(n).toLocaleString("es-CL");
+
+function ltProductLine(p){ return `${p.emoji} <strong style="color:#f0d080">${p.n}</strong> — ${p.cat} — <strong style="color:#c4a046">${fmtP(p.p)}</strong> (${p.nivel})`; }
+
+const LT_RESPONSES = [
+  {
+    keys:["regalo","regalar","obsequio","sorpresa","cumpleaños","aniversario","san valentin","enamorado"],
+    reply(){ 
+      const r=[LT_CATALOG[19],LT_CATALOG[20],LT_CATALOG[17]];
+      return `¡Un regalo de LuxeToy es siempre una elección memorable! ✦
+
+Para un regalo especial te recomiendo:
+
+${r.map(ltProductLine).join("
+")}
+
+Todos vienen en embalaje elegante y envío 100% discreto. ¿Tienes algún presupuesto en mente?`; 
+    }
+  },
+  {
+    keys:["pareja","parejas","juntos","dos","novio","novia","esposo","esposa","juntas"],
+    reply(){ 
+      const r=[LT_CATALOG[8],LT_CATALOG[18],LT_CATALOG[19]];
+      return `Para compartir en pareja, tenemos opciones especialmente diseñadas para la conexión y el bienestar de dos: ✦
+
+${r.map(ltProductLine).join("
+")}
+
+¿Prefieren algo suave y romántico, o buscan una experiencia más estimulante?`; 
+    }
+  },
+  {
+    keys:["vendido","popular","top","mejor","recomendado","más vendido","favorito"],
+    reply(){ 
+      const r=[LT_CATALOG[0],LT_CATALOG[4],LT_CATALOG[9],LT_CATALOG[18]];
+      return `Nuestros productos más amados por la comunidad VIP ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Todos cuentan con excelentes evaluaciones de nuestra clientela. ¿Alguno te llama la atención?`; 
+    }
+  },
+  {
+    keys:["económico","barato","precio","menos","accesible","presupuesto","bajo"],
+    reply(){ 
+      const r=LT_CATALOG.filter(p=>p.p<60000).sort((a,b)=>a.p-b.p).slice(0,3);
+      return `Tenemos opciones premium a precios muy accesibles ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Cada uno tiene la misma calidad y discreción que toda nuestra colección. ¿Te interesa alguno?`; 
+    }
+  },
+  {
+    keys:["lujo","premium","exclusivo","especial","lo mejor","alto","top","lujoso"],
+    reply(){ 
+      const r=LT_CATALOG.filter(p=>p.p>100000).sort((a,b)=>b.p-a.p).slice(0,3);
+      return `Nuestra línea de alta gama, para quienes buscan lo mejor ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Son nuestras joyas de colección. ¿Te gustaría saber más detalles de alguno?`; 
+    }
+  },
+  {
+    keys:["masaj","relaj","tension","espalda","cuello","muscul","dolor","estrés","stress"],
+    reply(){ 
+      const r=[LT_CATALOG[9],LT_CATALOG[10],LT_CATALOG[12],LT_CATALOG[13]];
+      return `Para el bienestar y la relajación, estas son nuestras opciones estrella ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Perfectos para aliviar la tensión del día a día. ¿Buscas algo para uso personal o para compartir?`; 
+    }
+  },
+  {
+    keys:["vibrad","estimulad","aire","succión","onda"],
+    reply(){ 
+      const r=[LT_CATALOG[0],LT_CATALOG[4],LT_CATALOG[5],LT_CATALOG[25]];
+      return `Nuestra colección de estimuladores y vibradores premium ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Todos en silicona médica, recargables y 100% impermeables. ¿Eres principiante o buscas algo más avanzado?`; 
+    }
+  },
+  {
+    keys:["envio","envío","despacho","llegada","discreto","discreción","embalaje","paquete"],
+    reply(){ 
+      return `Nuestra política de envío es 100% discreta ✦
+
+📦 <strong style="color:#f0d080">Packaging neutro</strong> — sin logos ni marcas visibles
+💳 <strong style="color:#f0d080">Cargo discreto</strong> — aparece como "Boutique JV" en tu estado de cuenta
+🚀 <strong style="color:#f0d080">Despacho en 48h</strong> — a todo Chile
+🆓 <strong style="color:#f0d080">Envío gratis</strong> sobre $50.000
+
+¿Tienes alguna consulta sobre tu pedido?`; 
+    }
+  },
+  {
+    keys:["aceite","lubricante","gel","crema","fragancia","aroma","olor"],
+    reply(){ 
+      const r=[LT_CATALOG[15],LT_CATALOG[14],LT_CATALOG[17]];
+      return `Nuestra línea de aceites y lubricantes premium ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Todos de origen natural, sin parabenos y dermatológicamente testeados. ¿Para uso personal o como parte de un ritual de pareja?`; 
+    }
+  },
+  {
+    keys:["joya","joyeria","cadena","collar","pulsera","accesorio","brazalete"],
+    reply(){ 
+      const r=[LT_CATALOG[23],LT_CATALOG[24],LT_CATALOG[22]];
+      return `Nuestra colección de joyería corporal discreta ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Acero inoxidable hipoalergénico, elegante y discreto para cualquier ocasión. ¿Tienes preferencia por dorado o plateado?`; 
+    }
+  },
+  {
+    keys:["principiante","primera vez","nuevo","nueva","nunca","empezar","comenzar","primer"],
+    reply(){ 
+      const r=LT_CATALOG.filter(p=>p.nivel==="Principiante").slice(0,3);
+      return `Para quienes se inician en el bienestar íntimo, estas son mis recomendaciones ✦
+
+${r.map(ltProductLine).join("
+")}
+
+Son intuitivos, suaves y perfectos para comenzar. ¿Tienes alguna preferencia de categoría?`; 
+    }
+  },
+  {
+    keys:["hola","hello","buenas","buenos","hi","hey","saludos","bienvenid"],
+    reply(){ return `¡Hola! Un placer tenerte aquí ✦
+
+Soy Lumière, tu asesora VIP en LuxeToy. Estoy aquí para ayudarte a encontrar el producto perfecto con total discreción y elegancia.
+
+¿Qué tipo de experiencia estás buscando hoy? Puedo recomendarte según tu presupuesto, ocasión o preferencia. 🌹`; }
+  },
+  {
+    keys:["gracias","thank","perfecto","excelente","genial","buenísimo","chevere"],
+    reply(){ return `¡Es un placer acompañarte! ✦
+
+En LuxeToy siempre estamos para ti con total discreción. Si tienes más dudas o quieres personalizar tu experiencia, escríbeme cuando quieras.
+
+También puedes contactarme directamente por <a href="https://wa.me/56930347664" target="_blank" style="color:#c4a046">WhatsApp</a> para atención personalizada. 🌹`; }
+  },
+  {
+    keys:["precio","costo","vale","cuánto","cuanto","valor"],
+    reply(){ 
+      return `Nuestros precios van desde <strong style="color:#c4a046">$14.900</strong> hasta <strong style="color:#c4a046">$179.900</strong> dependiendo de la categoría y nivel ✦
+
+💫 Accesorios: desde $14.900
+🌸 Vibradores: desde $54.900
+🌿 Masajeadores: desde $49.900
+🎁 Kits de pareja: desde $74.900
+💎 Línea de lujo: desde $119.900
+
+¿Tienes un presupuesto específico? Te ayudo a encontrar lo mejor dentro de tu rango.`; 
+    }
+  },
+  {
+    keys:["pago","tarjeta","transferencia","mercado","webpay","débito","crédito"],
+    reply(){ 
+      return `Aceptamos todos los medios de pago ✦
+
+🟡 <strong style="color:#f0d080">Mercado Pago</strong> — sin costo adicional
+💳 <strong style="color:#f0d080">Tarjeta de crédito/débito</strong>
+🇨🇱 <strong style="color:#f0d080">Webpay Plus</strong> — portal Transbank
+🏦 <strong style="color:#f0d080">Transferencia bancaria</strong>
+
+Todos los cargos aparecen de forma 100% discreta en tu estado de cuenta. ¿Te puedo ayudar con algo más?`; 
+    }
+  },
+];
+
+const LT_DEFAULT = [
+  "Entiendo tu consulta ✦ ¿Buscas algo para uso personal, para compartir en pareja, o tal vez un regalo especial? Cuéntame y te recomiendo lo mejor.",
+  "Con gusto te asesoro ✦ Cuéntame un poco más: ¿tienes algún presupuesto en mente? Tenemos opciones desde $14.900 hasta $179.900.",
+  "Estoy aquí para ti ✦ ¿Qué tipo de experiencia buscas? Tenemos masajeadores relajantes, estimuladores, kits de pareja y joyería corporal.",
+  "Podría ayudarte mejor con un poco más de información ✦ ¿Es la primera vez que visitas LuxeToy o ya conoces nuestra colección?",
+  "¡Claro que sí! ✦ ¿Te gustaría que te muestre nuestros productos más populares, o prefieres filtrar por categoría o presupuesto?",
+];
+
+function ltRespond(msg){
+  const norm = s => s.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n');
+  const m = norm(msg);
+  for(const r of LT_RESPONSES){
+    if(r.keys.some(k=>m.includes(norm(k)))) return r.reply();
+  }
+  // Detectar palabras de producto y recomendar
+  if(/vibr|estim|masaj|aceite|lubric|joya|cadena|kit|caja/.test(m)){
+    const rand=LT_CATALOG[Math.floor(Math.random()*6)];
+    return `Una opción que podría interesarte ✦
+
+${ltProductLine(rand)}
+
+¿Te gustaría saber más sobre este producto o prefiero mostrarte otras alternativas?`;
+  }
+  return LT_DEFAULT[Math.floor(Math.random()*LT_DEFAULT.length)];
+}
+
+function ltToggle(){
+  ltOpen=!ltOpen;
+  const panel=document.getElementById('lt-panel');
+  const notif=document.getElementById('lt-notif');
+  const btn=document.getElementById('lt-btn');
+  if(ltOpen){
+    panel.classList.add('open');
+    notif.style.display='none';
+    btn.innerHTML='×<span id="lt-notif" style="display:none">1</span>';
+    if(!ltReady){ ltReady=true; setTimeout(()=>ltAddBubble('ai','Bienvenida/o a LuxeToy ✦ Soy Lumière, tu asesora VIP. ¿En qué puedo acompañarte hoy? 🌹'),400); }
+    setTimeout(()=>document.getElementById('lt-inp')?.focus(),300);
+  } else {
+    panel.classList.remove('open');
+    btn.innerHTML='✦<span id="lt-notif" style="display:none">1</span>';
+  }
+}
+
+function ltAddBubble(role,html){
+  const msgs=document.getElementById('lt-msgs');
+  const div=document.createElement('div');
+  div.className=`lt-bubble ${role}`;
+  div.innerHTML=html.replace(/\n/g,'<br/>');
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function ltShowTyping(){
+  const msgs=document.getElementById('lt-msgs');
+  const div=document.createElement('div');
+  div.className='lt-typing';div.id='lt-typing';
+  div.innerHTML='<div class="lt-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+}
+
+function ltQuick(txt){
+  document.getElementById('lt-quick').style.display='none';
+  document.getElementById('lt-inp').value=txt;
+  ltSend();
+}
+
+function ltSend(){
+  const inp=document.getElementById('lt-inp');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  document.getElementById('lt-quick').style.display='none';
+  ltAddBubble('user',txt);
+  inp.value='';
+  ltShowTyping();
+  setTimeout(()=>{
+    document.getElementById('lt-typing')?.remove();
+    ltAddBubble('ai',ltRespond(txt));
+  },900+Math.random()*600);
+}
+
+setTimeout(()=>{
+  if(!ltOpen){
+    const n=document.getElementById('lt-notif');
+    if(n){n.style.display='flex';}
+  }
+},5000);
+</script>
+</body>
+</html>
