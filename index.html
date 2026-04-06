@@ -1725,46 +1725,51 @@
 
 
     <!-- ==================
-         SECCIÓN: ASESORÍA — LUCIEN IA
+         SECCIÓN: ASESORÍA VIP
     ================== -->
     <section class="seccion" id="sec-asesoria">
-      <div class="asesoria-lucien-intro">
-        <div class="asesoria-avatar-grande">🥂</div>
-        <h2>Lucien</h2>
-        <p>Tu Concierge Privado de Lujo.<br/>Te asesora con elegancia y discreción absoluta.</p>
-        <button class="btn-abrir-lucien" onclick="abrirLucien()">
-          Iniciar Conversación Privada →
-        </button>
-      </div>
-      <div class="asesoria-features">
-        <div class="asesoria-feat-item">
-          <div class="asesoria-feat-icono">🎯</div>
-          <div class="asesoria-feat-texto">
-            <h4>Recomendación Personalizada</h4>
-            <p>Lucien analiza tus preferencias y te sugiere la pieza perfecta.</p>
-          </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 24px;text-align:center;">
+        
+        <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:var(--dorado);text-transform:uppercase;margin-bottom:16px;">
+          ✦ Atención Personalizada
         </div>
-        <div class="asesoria-feat-item">
-          <div class="asesoria-feat-icono">💎</div>
-          <div class="asesoria-feat-texto">
-            <h4>Sets VIP Curados</h4>
-            <p>Combinaciones exclusivas diseñadas para elevar tu experiencia.</p>
-          </div>
+        
+        <div style="font-family:'Playfair Display',serif;font-size:28px;color:var(--marron);font-weight:600;margin-bottom:12px;">
+          Asesoría VIP<br/><em style="font-weight:400;color:var(--dorado-oscuro);">Privada y Discreta</em>
         </div>
-        <div class="asesoria-feat-item">
-          <div class="asesoria-feat-icono">🔒</div>
-          <div class="asesoria-feat-texto">
-            <h4>Discreción Total</h4>
-            <p>Tu conversación es completamente privada.</p>
-          </div>
+
+        <div style="width:50px;height:1px;background:linear-gradient(to right,transparent,var(--dorado),transparent);margin:16px auto;"></div>
+
+        <p style="font-size:14px;color:var(--marron-suave);line-height:1.7;max-width:300px;margin-bottom:32px;">
+          Nuestro equipo especializado te guía de forma personalizada para encontrar la pieza perfecta para ti.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px;">
+
+          <a href="https://wa.me/56930347664?text=Hola,+me+gustaría+recibir+asesoría+VIP+personalizada+de+Boutique+VIP.+¿Pueden+ayudarme?" 
+             target="_blank"
+             style="display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#128C7E);color:white;padding:16px;border-radius:12px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;box-shadow:0 4px 16px rgba(37,211,102,0.35);">
+            <span>💬</span> Asesoría por WhatsApp
+          </a>
+
+          <a href="https://wa.me/56930347664?text=Hola,+quisiera+información+sobre+envíos+discretos+de+Boutique+VIP." 
+             target="_blank"
+             style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--blanco);color:var(--marron);padding:16px;border-radius:12px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.3);box-shadow:0 2px 8px rgba(44,24,16,0.08);">
+            <span>🚚</span> Envíos Discretos
+          </a>
+
+          <a href="https://wa.me/56930347664?text=Hola,+tengo+una+consulta+sobre+un+producto+de+Boutique+VIP." 
+             target="_blank"
+             style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--blanco);color:var(--marron);padding:16px;border-radius:12px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(201,168,76,0.3);box-shadow:0 2px 8px rgba(44,24,16,0.08);">
+            <span>💎</span> Consulta de Producto
+          </a>
+
         </div>
-        <div class="asesoria-feat-item">
-          <div class="asesoria-feat-icono">🚀</div>
-          <div class="asesoria-feat-texto">
-            <h4>Cierre por WhatsApp</h4>
-            <p>Lucien te escolta a nuestro canal privado para finalizar tu compra.</p>
-          </div>
+
+        <div style="margin-top:28px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:var(--marron-suave);opacity:0.5;text-transform:uppercase;">
+          🔒 Discreción garantizada · Atención 24/7
         </div>
+
       </div>
     </section>
 
@@ -1830,46 +1835,7 @@
   </div><!-- fin contenido-principal -->
 
 
-  <!-- =============================================
-       BOTÓN FLOTANTE LUCIEN (abre chat IA)
-  ============================================= -->
-  <div class="lucien-fab-label">Lucien · Asesor VIP</div>
-  <button class="lucien-fab" onclick="abrirLucien()" title="Hablar con Lucien">
-    🥂
-  </button>
 
-  <!-- =============================================
-       VENTANA DE CHAT — LUCIEN IA
-  ============================================= -->
-  <div class="lucien-chat" id="lucien-chat">
-
-    <!-- Header del chat -->
-    <div class="lucien-header">
-      <div class="lucien-avatar">🥂</div>
-      <div class="lucien-header-info">
-        <div class="lucien-nombre">Lucien</div>
-        <div class="lucien-estado">Concierge Privado · En línea</div>
-      </div>
-      <button class="lucien-cerrar" onclick="cerrarLucien()">✕</button>
-    </div>
-
-    <!-- Área de mensajes (se llena dinámicamente) -->
-    <div class="lucien-mensajes" id="lucien-mensajes"></div>
-
-    <!-- Input del usuario -->
-    <div class="lucien-input-area">
-      <textarea
-        class="lucien-input"
-        id="lucien-input"
-        placeholder="Escríbame su consulta…"
-        rows="1"
-        onkeydown="lucienKeyDown(event)"
-        oninput="ajustarAltura(this)"
-      ></textarea>
-      <button class="lucien-send" id="lucien-send" onclick="enviarMensaje()">➤</button>
-    </div>
-
-  </div><!-- fin lucien-chat -->
 
 
   <!-- =============================================
@@ -1897,7 +1863,7 @@
     </button>
     <button class="nav-item" onclick="mostrarSeccion('asesoria')" id="nav-asesoria">
       <span class="nav-icono">💬</span>
-      <span class="nav-label">Asesoría</span>
+      <span class="nav-label">Contacto</span>
     </button>
     <button class="nav-item" onclick="mostrarSeccion('cuenta')" id="nav-cuenta">
       <span class="nav-icono">👤</span>
@@ -3443,3 +3409,4 @@ function limpiarPreviewImagen() {
 
 </body>
 </html>
+
